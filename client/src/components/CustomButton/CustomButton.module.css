@@ -1,0 +1,100 @@
+.btn {
+    position: relative;
+    overflow: hidden;
+    padding: 0.5rem 1rem;
+    font-family: 'Roboto', sans-serif;
+    outline: 0;
+    border: 0;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.contained {
+    background-color: currentColor;
+}
+
+.outlined {
+    background-color: transparent;
+    border: 1px solid currentColor;
+    color: currentColor;
+}
+
+.text {
+    border: none;
+    background-color: transparent;
+    color: currentColor;
+    padding: 3px 5px;
+}
+
+.default_contained {
+    color: var(--neutral) !important;
+    background-color: black !important;
+}
+
+.primary_contained {
+    color: var(--neutral) !important;
+    background-color: var(--primary) !important;
+}
+
+.success_contained {
+    color: var(--neutral) !important;
+    background-color: var(--success) !important;
+}
+
+.danger_contained {
+    color: var(--neutral) !important;
+    background-color: var(--danger) !important;
+}
+
+.default {
+    color: black;
+}
+
+.primary {
+    color: var(--primary);
+}
+
+.success {
+    color: var(--success);
+}
+
+.danger {
+    color: var(--danger);
+}
+
+.underline {
+    background-color: transparent;
+    padding: 0 1px;
+    border-radius: 0px;
+}
+
+.underline::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 1.5px;
+    width: 100%;
+    background-color: currentColor;
+    transform: scale(0);
+    transform-origin: center;
+    transition: transform 0.25s linear;
+}
+
+.underline:hover::before {
+    transform: scale(1);
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
