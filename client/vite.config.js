@@ -12,6 +12,7 @@ export default defineConfig({
       services: `${path.resolve(__dirname, "./src/services")}`,
       styles: `${path.resolve(__dirname, "./src/styles")}`,
       util: `${path.resolve(__dirname, "./src/util")}`,
+      pages: `${path.resolve(__dirname, "./src/pages")}`,
     }
   }
 })

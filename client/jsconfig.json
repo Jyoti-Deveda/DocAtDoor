@@ -19,6 +19,9 @@
       "util/*": [
         "src/util/*"
       ],
+      "pages/*": [
+        "src/pages/*"
+      ],
     }
   }
 }

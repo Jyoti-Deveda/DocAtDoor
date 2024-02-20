@@ -1,0 +1,28 @@
+.input :global .MuiOutlinedInput-root {
+    border-radius: 6px !important;
+}
+
+.input :global .Mui-focused {
+    /* color: var(--primary) !important; */
+}
+
+.input :global .MuiOutlinedInput-notchedOutline {
+    border: 1px solid var(--secondary-text) !important;
+}
+
+.input :global .Mui-disabled .MuiOutlinedInput-notchedOutline {
+    /* border: none !important; */
+}
+
+.input :global .Mui-disabled {
+    color: var(--primary-text) !important;
+}
+
+
+.rounded :global .MuiOutlinedInput-root {
+    border-radius: 30px !important;
+}
+
+.bg_white :global .MuiOutlinedInput-root {
+    background-color: white !important;
+}
