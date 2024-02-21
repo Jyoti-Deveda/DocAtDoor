@@ -30,6 +30,7 @@ body {
     min-height: 100vh;
     font-family: "Roboto", sans-serif;
     max-width: 1500px;
+    width: 100vw;
     overflow-x: hidden !important;
 }
 
