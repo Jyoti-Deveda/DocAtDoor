@@ -1,14 +1,36 @@
 .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
     position: relative;
     overflow: hidden;
     padding: 0.5rem 1rem;
-    font-family: 'Roboto', sans-serif;
     outline: 0;
     border: 0;
     border-radius: 0.25rem;
     cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
 }
 
+/* size  */
+.default_size {
+    font-size: 1rem;
+}
+
+.small_size {
+    font-size: 0.8rem;
+}
+
+.extra_small_size {
+    font-size: 0.7rem;
+}
+
+.large_size {
+    font-size: 1.2rem;
+}
+
+/* variant  */
 .contained {
     background-color: currentColor;
 }
@@ -26,28 +48,40 @@
     padding: 3px 5px;
 }
 
+/* color + variant  */
 .default_contained {
-    color: var(--neutral) !important;
+    color: white !important;
     background-color: black !important;
 }
 
 .primary_contained {
-    color: var(--neutral) !important;
+    color: white !important;
     background-color: var(--primary) !important;
 }
 
 .success_contained {
-    color: var(--neutral) !important;
+    color: white !important;
     background-color: var(--success) !important;
 }
 
 .danger_contained {
-    color: var(--neutral) !important;
+    color: white !important;
     background-color: var(--danger) !important;
 }
 
+.warning_contained {
+    color: white !important;
+    background-color: var(--warning) !important;
+}
+
+.primary_grad_contained {
+    color: white !important;
+    background: linear-gradient(90deg, #0149B3 0%, #3A89FF 100%);
+}
+
+
 .default {
-    color: black;
+    color: var(--secondary-text);
 }
 
 .primary {
@@ -60,6 +94,47 @@
 
 .danger {
     color: var(--danger);
+}
+
+.warning {
+    color: var(--warning);
+}
+
+
+.neutral_primary {
+    color: var(--primary);
+    background-color: #0047B11A;
+    border: 1px solid var(--primary);
+    transition: all 0.2s ease-in;
+}
+
+.neutral_primary:hover {
+    color: var(--light);
+    background-color: var(--primary);
+}
+
+.neutral_primary:hover :global .MuiSvgIcon-root {
+    color: var(--light) !important;
+}
+
+
+.group_btn {
+    border: 1px solid var(--light-border);
+    color: var(--primary);
+    background-color: transparent;
+    border-radius: 0;
+    border-right: none;
+}
+
+.group_btn:last-child {
+    border-right: 1px solid var(--light-border);
+}
+
+.group_btn_active {
+    /* border: 1px solid var(--primary); */
+    background-color: var(--primary) !important;
+    color: #fff;
+    /* border-right: 1px solid var(--primary) !important; */
 }
 
 .underline {
@@ -84,11 +159,81 @@
     transform: scale(1);
 }
 
-.ripple {
+
+.text_to_primary {
+    color: var(--primary);
+    border: none;
+    background-color: transparent;
+    transition: all 0.2s ease-in;
+}
+
+.text_to_primary:hover {
+    color: white;
+    background-color: var(--primary);
+}
+
+.iconButton {
+    padding: 0.15rem;
+}
+
+
+
+.rounded {
+    border-radius: 8px;
+}
+
+.roundedFull {
+    border-radius: 50px;
+}
+
+.circle {
+    border-radius: 50%;
+}
+
+.boxShadow {
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+.boxShadow:hover {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+/* more properties here  */
+
+.btn:disabled {
+    cursor: not-allowed !important;
+}
+
+.btn:focus-visible::before {
+    content: '';
     position: absolute;
+    width: 90%;
+    transform: translate(-50, -50%);
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    /* height: 200%; */
+    aspect-ratio: 1.5;
+    animation: focus_effect 2.5s infinite;
+}
+
+.ripple {
+    position: absolute !important;
     border-radius: 50%;
     transform: scale(0);
     animation: ripple 600ms linear;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    /* background-color: rgba(255, 255, 255, 0.3); */
+    z-index: 2;
+}
+
+.contained .ripple,
+.text_to_primary .ripple,
+.neutral_primary .ripple {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.outlined .ripple,
+.group_btn .ripple .text .ripple {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -96,5 +241,37 @@
     to {
         transform: scale(4);
         opacity: 0;
+    }
+}
+
+@keyframes focus_effect {
+    0% {
+        scale: 0.9;
+    }
+
+    50% {
+        scale: 1;
+    }
+
+    100% {
+        scale: 0.9;
+    }
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+    .large_size,
+    .default_size {
+        font-size: 0.8rem;
+    }
+
+    .btn {
+        padding: 0.4rem 0.8rem;
+    }
+
+    .iconButton {
+        padding: 0.1rem !important;
     }
 }

@@ -1,0 +1,16 @@
+.heading {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+@media screen and (max-width: 767px) {
+    .heading {
+        font-size: 14px;
+    }
+}

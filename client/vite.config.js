@@ -13,6 +13,7 @@ export default defineConfig({
       styles: `${path.resolve(__dirname, "./src/styles")}`,
       util: `${path.resolve(__dirname, "./src/util")}`,
       pages: `${path.resolve(__dirname, "./src/pages")}`,
+      assets: `${path.resolve(__dirname, "./src/assets")}`,
     }
   }
 })

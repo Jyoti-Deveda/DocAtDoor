@@ -1,0 +1,9 @@
+.normal_padding {
+    padding: 1rem;
+}
+
+@media screen and (min-width: 767px) {
+    .normal_padding {
+        padding: 2rem;
+    }
+}
