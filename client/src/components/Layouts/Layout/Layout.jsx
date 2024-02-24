@@ -3,13 +3,11 @@ import { Navbar } from '@/components/Common/Navbar'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const Layout = ({
-    children
-}) => {
+const Layout = () => {
     return (
         <div>
             <Navbar />
-            {children}
+            <Outlet />
             <Footer />
         </div>
     )
