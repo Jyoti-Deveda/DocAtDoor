@@ -1,8 +1,10 @@
 import React from 'react'
-import { NavLink, Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import logo from '../../assets/Logo/logo.png'
 
 export const Navbar = () => {
+
+  const navigate = useNavigate();
 
   const NavbarLinks = [
     {
@@ -18,19 +20,26 @@ export const Navbar = () => {
       path: "/contact",
     },
   ];
-  
+
+
+  const handleLoginClick = () => {
+    navigate('login')
+  }
+
+
+
   return (
     <div className='w-full h-[100px] shadow-md flex flex-row justify-between items-center px-4'>
-        <div className='flex flex-row'>
-        
-            <Link to={"/"} className='flex flex-row items-center '>
-              <img src={logo}
-                alt='Logo'
-                className='w-[100px]'
-              />
-              <span className='text-3xl text-sky-600 font-bold'>DocAtDoor</span>
-            </Link>
-        </div>
+      <div className='flex flex-row'>
+
+        <Link to={"/"} className='flex flex-row items-center '>
+          <img src={logo}
+            alt='Logo'
+            className='w-[100px]'
+          />
+          <span className='text-3xl text-sky-600 font-bold'>DocAtDoor</span>
+        </Link>
+      </div>
 
       <div className='flex flex-row items-center gap-4'>
         <div>
@@ -51,7 +60,9 @@ export const Navbar = () => {
 
         {/* display login and signup when user is not logged in  */}
         <div className='flex flex-row gap-x-3'>
-          <button className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
+          <button
+            onClick={handleLoginClick}
+            className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
           hover:bg-sky-600 hover:text-white'>
             Login
           </button>
