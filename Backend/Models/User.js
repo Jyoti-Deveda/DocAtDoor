@@ -2,27 +2,26 @@ const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema(
     {
-        personalDetails:{
-            firstName:{
+        personalDetails: {
+            firstName: {
                 type: String,
                 required: true,
                 trim: true,
             },
-            lastName:{
+            lastName: {
                 type: String,
                 required: true,
                 trim: true,
             },
-            email:{
+            email: {
                 type: String,
                 required: true,
                 trim: true,
             },
-            password:{
+            password: {
                 type: String,
                 required: true,
             },
-            required: true
         },
         additionalDetails: {
             dateOfBirth: {
@@ -33,30 +32,30 @@ const UserSchema = new mongoose.Schema(
             },
             contactNumber: {
                 type: String,
-                required: true,
+                // required: true,
                 validate: {
-                  validator: function(v) {
-                    // Regular expression to match 10-digit phone numbers
-                    return /^\d{10}$/.test(v);
-                  },
-                  message: props => `${props.value} is not a valid 10-digit phone number!`
+                    validator: function (v) {
+                        // Regular expression to match 10-digit phone numbers
+                        return /^\d{10}$/.test(v);
+                    },
+                    message: props => `${props.value} is not a valid 10-digit phone number!`
                 }
             },
             //this is users address, not needed during profile creation but can be added later
             address: {
                 type: String,
-                required: true,
+                // required: true,
             }
         },
         //profile image
-        image:{
-            type:String,
-            required: true
+        image: {
+            type: String,
+            // required: true
         },
-        userType:{
+        userType: {
             type: String,
             required: true,
-            enum: ['user', 'doctor']
+            enum: ['patient', 'doctor']
         },
         //this indicates an array of appointments the patient booked
         patientsAppointments: [
@@ -73,7 +72,7 @@ const UserSchema = new mongoose.Schema(
             }
         ]
     },
-    {timestamps: true}
+    { timestamps: true }
 )
 
 

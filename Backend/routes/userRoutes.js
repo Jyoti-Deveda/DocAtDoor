@@ -1,10 +1,9 @@
 const express = require('express');
+const { userRegister } = require('../controllers/auth');
 const router = express.Router();
 
 
-router.post('/register', (request, response) => {
-    response.json("new user created");
-})
+router.post('/register', userRegister);
 router.post('/login', (request, response) => {
     response.json("user logged in");
 })
