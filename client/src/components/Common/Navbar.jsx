@@ -25,6 +25,9 @@ export const Navbar = () => {
   const handleLoginClick = () => {
     navigate('login')
   }
+  const handleSignupClick = () => {
+    navigate('register')
+  }
 
 
 
@@ -66,7 +69,9 @@ export const Navbar = () => {
           hover:bg-sky-600 hover:text-white'>
             Login
           </button>
-          <button className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
+          <button
+            onClick={handleSignupClick}
+            className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
             hover:bg-sky-600 hover:text-white'>
             Signup
           </button>

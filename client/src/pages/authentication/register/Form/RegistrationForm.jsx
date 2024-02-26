@@ -3,11 +3,12 @@ import { roles } from '@/lib/constant'
 import StyledInput from '@/components/inputs/StyledInput/StyledInput'
 import CustomButton from '@/components/CustomButton/CustomButton'
 import { register } from '@/services/auth'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
     const [error, setError] = useState("")
+
     const [data, setData] = useState({
         firstName: "",
         lastName: "",
@@ -34,6 +35,7 @@ const RegistrationForm = () => {
         if (res && res.user) {
             console.log("Registration successfull");
             navigate('/login');
+            setError("");
         }
         else {
             setError(res.message);
@@ -44,7 +46,6 @@ const RegistrationForm = () => {
 
     return (
         <div className={`flex w-full sm:w-[40%] flex-col gap-6 bg-white rounded-xl shadow-lg p-6`}>
-
 
             <div className={`grid grid-cols-2 items-center gap-6`}>
                 <StyledInput
@@ -116,7 +117,6 @@ const RegistrationForm = () => {
                     disabled={!data.firstName || !data.email || !data.lastName || !data.confirmpass || !data.password || !data.role}
                 >
                     Register
-
                 </CustomButton>
             </div>
 

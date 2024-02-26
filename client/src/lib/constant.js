@@ -1,5 +1,5 @@
 export const roles = [
-    { value: "user", label: "Patient" },
+    { value: "patient", label: "Patient" },
     { value: "doctor", label: "Doctor" }
 ]
 
