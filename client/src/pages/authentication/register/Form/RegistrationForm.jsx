@@ -45,7 +45,7 @@ const RegistrationForm = () => {
     }
 
     return (
-        <div className={`flex w-full sm:w-[40%] flex-col gap-6 bg-white rounded-xl shadow-lg p-6`}>
+        <div className={`flex w-full sm:w-[50%] bg-sky-50 flex-col gap-8 bg-white rounded p-6`}>
 
             <div className={`grid grid-cols-2 items-center gap-6`}>
                 <StyledInput
