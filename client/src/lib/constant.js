@@ -1,3 +1,8 @@
+export const roles = [
+    { value: "user", label: "Patient" },
+    { value: "doctor", label: "Doctor" }
+]
+
 export const symptoms = [
     { value: 'itching', label: 'Itching' },
     { value: 'skin_rash', label: 'Skin Rash' },

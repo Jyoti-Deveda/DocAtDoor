@@ -11,18 +11,18 @@ export const routesMap = {
         path: '/',
         component: Home
     },
-    '/login': {
-        protected: false,
-        label: 'Login',
-        path: '/login',
-        component: Login
-    },
-    '/register': {
-        protected: false,
-        label: 'Register',
-        path: '/register',
-        component: Register
-    },
+    // '/login': {
+    //     protected: false,
+    //     label: 'Login',
+    //     path: '/login',
+    //     component: Login
+    // },
+    // '/register': {
+    //     protected: false,
+    //     label: 'Register',
+    //     path: '/register',
+    //     component: Register
+    // },
 }
 
 export const protectedRoutesMap = {
