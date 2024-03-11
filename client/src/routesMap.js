@@ -4,6 +4,7 @@ import DoctorSettings from "./pages/doctor/settings/Settings";
 import { Home } from "./pages/home/Home"
 import Dashboard from "./pages/patient/dashboard/Dashboard"
 import DocSearch from "./pages/patient/docSearch/DocSearch"
+import { VerifyEmail } from "./pages/authentication/email-verification/VerifyEmail"
 
 export const routesMap = {
     '/': {
@@ -27,6 +28,20 @@ export const routesMap = {
 }
 
 export const protectedRoutesMap = {
+    //a component that simply asks user to check mail for email verification
+    '/verify-email': {
+        // protected: true,
+        label: 'Verify-email',
+        path: '/verify-email',
+        component: VerifyEmail
+    },
+    //the route to be reached when email is verified successfully
+    '/email-verified/:token': {
+        protected: true,
+        label: 'Email-verified',
+        path: '/email-verified/:token',
+        // component: VerifyEmail
+    },
     // routes for patient 
     '/dashboard': {
         protected: true,

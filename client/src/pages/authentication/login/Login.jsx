@@ -2,7 +2,7 @@ import CustomButton from '@/components/CustomButton/CustomButton';
 import StyledInput from '@/components/inputs/StyledInput/StyledInput';
 import React, { useState, useEffect } from 'react'
 import Style from "./Login.module.css";
-import { login } from '@/services/auth';
+import { login } from '@/services/Operations/auth';
 import SectionHeading from '@/components/Headings/SectionHeading/SectionHeading';
 import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';

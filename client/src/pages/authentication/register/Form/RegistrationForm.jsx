@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { roles } from '@/lib/constant'
 import StyledInput from '@/components/inputs/StyledInput/StyledInput'
 import CustomButton from '@/components/CustomButton/CustomButton'
-import { register } from '@/services/auth'
+import { register } from '@/services/Operations/auth'
 import { useNavigate } from 'react-router-dom'
 
 const RegistrationForm = () => {
@@ -34,7 +34,7 @@ const RegistrationForm = () => {
 
         if (res && res.user) {
             console.log("Registration successfull");
-            navigate('/login');
+            navigate('/verify-email');
             setError("");
         }
         else {

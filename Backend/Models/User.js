@@ -50,7 +50,7 @@ const UserSchema = new mongoose.Schema(
         //profile image
         image: {
             type: String,
-            // required: true
+            required: true
         },
         userType: {
             type: String,
@@ -70,7 +70,17 @@ const UserSchema = new mongoose.Schema(
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Appointment'
             }
-        ]
+        ],
+        verified: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+        },
+        tokenExpiry: {
+            type: Date,
+        }
     },
     { timestamps: true }
 )

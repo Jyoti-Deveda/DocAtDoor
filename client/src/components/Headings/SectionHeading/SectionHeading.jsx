@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames';
 
 
-const SectionHeading = ({ title, color = 'default', className, useH1 = false }) => {
+const   SectionHeading = ({ title, color = 'default', className, useH1 = false }) => {
 
     const headingClass = classNames(Style.heading, className, {
         [Style.primary]: color === 'primary'
