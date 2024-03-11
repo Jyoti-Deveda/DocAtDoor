@@ -10,9 +10,13 @@ const ProtectedLayout = () => {
     }
 
     return (
-        <div className={`${Style.container}`}>
-            this is protected layout
-            <Outlet />
+        <div className={`${Style.container} gap-3`}>
+            <div className={`flex flex-col gap-4 border-2 border-black-900 p-1`}>
+                sidebar
+            </div>
+            <div className={`p-3 pr-5`}>
+                <Outlet />
+            </div>
         </div>
     )
 }

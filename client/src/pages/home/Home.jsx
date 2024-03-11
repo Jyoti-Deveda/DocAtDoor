@@ -24,9 +24,9 @@ export const Home = () => {
         <SectionHeading
           title='What we Offer?'
         />
-        <div className='lg:w-9/12 w-[90%] mx-auto flex flex-col items-center gap-[5rem]'>
+        <div className='lg:w-9/12 sm:w-[90%] mx-auto flex flex-col items-center gap-[5rem]'>
           {/* for Doctors */}
-          <div className='flex lg:flex-row flex-col-reverse  items-center  px-5 py-3 rounded-lg border-r-[5px]  border-sky-600 gap-8 w-[80%] shadow-md'>
+          <div className='w-[90%] sm-w-auto flex lg:flex-row flex-col-reverse  items-center  px-5 py-3 rounded-lg border-r-[5px]  border-sky-600 gap-8 w-[80%] shadow-md'>
             <p className='text-[1rem] text-gray-600'>
               <span className='text-3xl text-sky-600 font-medium'>If You are a healthcare Professional... </span><br />
               Our website offers a comprehensive platform for doctors like you to efficiently manage and grow your patient base. With our user-friendly interface, you can easily set up your profile, list your services, and manage appointments, all in one place.
@@ -39,7 +39,7 @@ export const Home = () => {
           </div>
 
           {/* for patients  */}
-          <div className='flex lg:flex-row flex-col items-center  px-5 py-3 rounded-lg border-l-[5px] border-sky-600 gap-8 w-[80%] shadow-md'>
+          <div className='w-[90%] sm-w-auto flex lg:flex-row flex-col items-center  px-5 py-3 rounded-lg border-l-[5px] border-sky-600 gap-8 w-[80%] shadow-md'>
             <img
               src={img6}
               alt='healthcare professional'

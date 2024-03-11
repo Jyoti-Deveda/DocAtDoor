@@ -13,7 +13,7 @@ const Container = ({
     })
 
     return (
-        <div className={`${containerClass} container`}>
+        <div className={`${containerClass}`}>
             {children}
         </div>
     )

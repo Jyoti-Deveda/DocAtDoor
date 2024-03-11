@@ -15,13 +15,13 @@ const Hero = () => {
 
                 <ImgGrid />
 
-                <div className='flex flex-col items-center gap-2'>
+                <div className='flex flex-col items-center gap-3'>
                     <SectionHeading
                         color='primary'
                         title='Get An Appointment'
                         useH1
                     />
-                    <p className='text-md text-gray-600 w-[80%] text-center'>
+                    <p className='text-xs sm:text-md text-gray-600 w-[80%] text-center'>
                         Our dedicated team is committed to providing compassionate and personalized care for you and your loved ones.
                         The assistance is a click away
                     </p>

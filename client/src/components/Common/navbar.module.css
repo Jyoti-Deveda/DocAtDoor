@@ -1,0 +1,17 @@
+.lg_nav_link_container {
+    display: none !important;
+}
+
+.sm_menu_btn {
+    display: block;
+}
+
+@media screen and (min-width: 767px) {
+    .lg_nav_link_container {
+        display: flex !important;
+    }
+
+    .sm_menu_btn {
+        display: none;
+    }
+}

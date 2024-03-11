@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.tab_container {
+    border-bottom: 1px solid var(--divider-color);
+    /* width: max-content; */
+}
+
+.tab_container :global .MuiTab-root {
+    text-transform: none !important;
+    font-size: 14px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    /* color: var(--primary); */
+    min-height: 30px !important;
+    padding: 12px 20px !important;
+}
+
+.tab_container :global .Mui-selected {
+    color: var(--primary) !important;
+}
+
+.tab_container :global .MuiTabs-root {
+    min-height: 30px !important;
+}
+
+.tab_container :global .MuiTabs-indicator {
+    background-color: var(--primary) !important;
+}

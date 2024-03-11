@@ -1,11 +1,17 @@
 .heading {
     color: var(--primary-text);
-    font-size: 2.3rem;
+    font-size: 1.5rem;
 
 }
 
 .primary {
     color: var(--primary);
+}
+
+@media screen and (min-width:767px) {
+    .heading {
+        font-size: 2.3rem;
+    }
 }
 
 @media screen and (min-width: 1024px) {
