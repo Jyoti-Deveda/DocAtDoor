@@ -48,9 +48,9 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                <div className=''>
+                <>
                     {children}
-                </div>
+                </>
             )}
         </div>
     );
