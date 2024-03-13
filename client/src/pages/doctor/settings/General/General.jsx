@@ -5,6 +5,8 @@ import StyledInput from '@/components/inputs/StyledInput/StyledInput'
 import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import AcademicDetailsBox from './AcademicDetailsBox/AcademicDetailsBox'
+import SearchSelect from '@/components/inputs/SearchSelect/SearchSelect'
+import { symptoms } from '@/lib/constant'
 
 const General = ({
     UserProfileBox,
@@ -29,6 +31,18 @@ const General = ({
             return newData;
         });
     };
+
+    // handles specialization changes 
+    const handleSpecializationChange = (selectedOptions) => {
+        setData(prevState => {
+            const newData = { ...prevState };
+            let nestedObject = newData;
+
+            nestedObject["hospital_details"]["specialization"] = selectedOptions;
+
+            return newData;
+        })
+    }
 
     // handles addition of new academic detail object 
     const addAcademicDetails = () => {
@@ -136,12 +150,14 @@ const General = ({
                         onChange={handleChange}
                     />
                 </div>
-                <StyledInput
-                    label='Specialization'
-                    size={"small"}
+
+                {/* TODO-- change options to actual specialization list  */}
+                <SearchSelect
                     value={data.hospital_details.specialization}
-                    name='hospital_details.specialization'
-                    onChange={handleChange}
+                    onChange={handleSpecializationChange}
+                    options={symptoms}
+                    isMulti
+                    placeholder='Select Specializations'
                 />
             </SettingsFormContainer>
 

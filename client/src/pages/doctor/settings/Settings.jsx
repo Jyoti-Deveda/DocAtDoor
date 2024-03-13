@@ -3,6 +3,7 @@ import CustomTabs from '@/components/Tabs/Tabs'
 import React, { useState } from 'react'
 import General from './General/General'
 import UserProfileBox from './userProfileBox/UserProfileBox'
+import DocScheduler from './DocScheduler/DocScheduler'
 
 const Settings = () => {
 
@@ -19,7 +20,7 @@ const Settings = () => {
             state: "",
             postal_code: "",
             contact_info: "",
-            specialization: "",
+            specialization: [],
         },
         academic_details: [
             {
@@ -43,6 +44,14 @@ const Settings = () => {
                 <General
                     data={data}
                     setData={setData}
+                    UserProfileBox={<UserProfileBox />}
+                />
+            )
+        },
+        {
+            label: "Doc Scheduler",
+            component: (
+                <DocScheduler
                     UserProfileBox={<UserProfileBox />}
                 />
             )
