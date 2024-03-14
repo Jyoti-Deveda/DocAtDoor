@@ -8,6 +8,7 @@ import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
+import { RequestVerification } from '@/components/Common/requestVerification/RequestVerification';
 
 const Login = () => {
 
@@ -17,6 +18,7 @@ const Login = () => {
 
     const [showPass, setShowPass] = useState(false);
     const [error, setError] = useState(null);
+    const [user, setUser] = useState();
 
 
     const handleSubmit = async () => {
@@ -25,9 +27,11 @@ const Login = () => {
             return;
         }
         const data = { email, password };
-        const res = await login(data);
-        if (res && res.token) {
+        const res = await login(data, navigate);
+        console.log("REs: ", res);
+        if (res && res.status === 200) {
             // set token, user data to cookies 
+            setUser(res.data.user)
         }
         else {
             console.log(res.message);
@@ -40,7 +44,7 @@ const Login = () => {
 
     return (
         <div className={Style.container}>
-            <div className={`shadow-xl p-6 rounded-xl ${Style.form}`}>
+            <div className={`min-w-[20%] shadow-xl p-3 sm:p-6 py-6 rounded-xl ${Style.form}`}>
                 <SectionHeading
                     title='Login'
                     className={`text-4xl`}
@@ -94,6 +98,8 @@ const Login = () => {
                 </div>
 
             </div>
+
+            <RequestVerification customClasses={'px-3 sm:px-6 min-w-[20%]'}/>
         </div>
     )
 }

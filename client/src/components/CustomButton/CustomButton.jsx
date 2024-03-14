@@ -107,7 +107,6 @@ const CustomButton = ({
     )
 };
 
-
 CustomButton.propTypes = {
     variant: PropTypes.oneOf(['contained', 'outlined', 'text', 'underline', 'group', 'group-active', 'text-primary']),
     color: PropTypes.oneOf(['primary', 'danger', 'success', 'warning', 'default', 'primary-gradient', 'neutral-primary']),
@@ -116,6 +115,5 @@ CustomButton.propTypes = {
     rounded: PropTypes.bool,
     roundedFull: PropTypes.bool,
 }
-
 
 export default CustomButton;

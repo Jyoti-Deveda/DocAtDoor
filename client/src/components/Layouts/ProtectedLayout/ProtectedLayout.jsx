@@ -14,7 +14,7 @@ const ProtectedLayout = () => {
             <div className={`flex flex-col gap-4 border-2 border-black-900 p-1`}>
                 sidebar
             </div>
-            <div className={`p-3 pr-5`}>
+            <div className={`flex flex-col justify-center p-3 pr-5`}>
                 <Outlet />
             </div>
         </div>

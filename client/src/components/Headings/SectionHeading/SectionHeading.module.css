@@ -1,7 +1,9 @@
 .heading {
     color: var(--primary-text);
     font-size: 1.5rem;
-
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .primary {
@@ -11,11 +13,13 @@
 @media screen and (min-width:767px) {
     .heading {
         font-size: 2.3rem;
+        flex-direction: row;
     }
 }
 
 @media screen and (min-width: 1024px) {
     .heading {
         font-size: 3rem;
+        flex-direction: row;
     }
 }

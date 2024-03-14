@@ -40,10 +40,10 @@ exports.userRegister = asyncHandler(async (req, res, next) => {
     }
 
     // Check password format
-    // if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{8,}/.test(password)) {
-    //     res.status(400);
-    //     throw new Error("Password must be at least 8 characters long, contain at least one digit, one lowercase and one uppercase letter");
-    // }
+    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{8,}/.test(password)) {
+        res.status(400);
+        throw new Error("Password must be at least 8 characters long, contain at least one digit, a special character, one lowercase and one uppercase letter");
+    }
 
     //check if user already exists
     const userExists = await user.findOne({ "personalDetails.email": email });
@@ -105,19 +105,28 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
     //todo:check if user is verified already
     if(userDetails.verified){
         res.status(403)
-        throw new Error("User already verified")
+        throw new Error("User already verified.. You may login")
     }
 
     //User exists-> generate token 
     const token = crypto.randomBytes(20).toString('hex')
+    payload = {
+        email,
+        token
+    }
 
+    const encryptedToken = jwt.sign(payload, process.env.JWT_SECRET)
+    console.log("encryptedToken: ", encryptedToken);
+
+    //original token is saved to DB
     userDetails.verificationToken = token;
-    userDetails.tokenExpiry = Date.now() + 3*24*60*60*1000
+    userDetails.tokenExpiry = Date.now() + 3*24*60*60*1000;
 
     userDetails.save();
-    console.log("Updated user details: ", userDetails);
+    // console.log("Updated user details: ", userDetails);
 
-    const url = `http://localhost:5173/email-verification/${token}`
+    const url = `http://localhost:5173/email-verified/${encryptedToken}`
+    console.log("URL: ", url)
 
     const mailResponse = await mailSender(
         email,
@@ -125,7 +134,7 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
         `To verify your email click on the link below <br> ${url}`
     )
 
-    console.log("Mail response: ", mailResponse)
+    // console.log("Mail response: ", mailResponse)
 
     if(!mailResponse){
         res.status(500)
@@ -143,36 +152,131 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
 //verify email
 exports.verifyEmail = asyncHandler(async(req, res) => {
 
-    const {token, email} = req.body;
+    const verificationToken = req.body.token;
+    // console.log("Token fetched")
+
+    try{
+        const decryptToken = jwt.verify(verificationToken, process.env.JWT_SECRET);
+        var { email, token } = decryptToken
+    }
+    catch(err){
+        res.status(400);
+        throw new Error("Verification token invalid")
+    }
+
+    // console.log("Token decrypted")
+
 
     //check if user is already registered
     const userDetails = await user.findOne({"personalDetails.email":email})
+    // console.log("USER DETAILS: ", userDetails)
 
     if(!userDetails){
         res.status(400);
         throw new Error("User entry not found.. Please signup")
     }
 
+    // console.log("User exists")
+
     //check if email is already verified
-    if(userDetails.verified){
-        res.status(403)
-        throw new Error("User already verified")
+    // console.log("USERDETAILS VERIFIED: ", userDetails.verified)
+    if(userDetails.verified ){
+        //if user is already verified
+        res.status(200).json({
+            success: true,
+            message: "User verified success"
+        })
     }
 
+    // check token expiry 
+    if(Date.now() > userDetails.tokenExpiry){
+        res.status(400);
+        throw new Error("Token has expired... Request for new")
+    }
+
+    // console.log("Perform verification")
     if(userDetails.verificationToken !== token){
         res.status(401);
         throw new Error("Invalid verification token");
     }
 
     userDetails.verified = true;
+    userDetails.save();
+    // console.log("Marked verified and return response")
     res.status(200).json({
         success: true,
-        message: "User verified success"
+        message: "User verified successfully"
     })
 
 })
 
 //login
+exports.login = asyncHandler(async(req, res) => {
+
+    const { email, password } = req.body;
+
+    if(!email || !password){
+        res.status(400);
+        throw new Error("All fields are required for login");
+    }
+
+    const userDetails = await user.findOne({"personalDetails.email":email});
+    // console.log("USER_DETAILS: ", userDetails);
+    if(!userDetails){
+        res.status(400);
+        throw new Error("User is not registered");
+    }
+
+    if(!userDetails.verified){
+        res.status(403);
+        throw new Error("User is not verified");
+    }
+    // console.log("USer is verified")
+    if(await bcrypt.compare(password, userDetails.personalDetails.password)){
+        const payload = {
+            userId:userDetails._id,
+            email: userDetails.personalDetails.email,
+            verified: userDetails.verified
+        }
+
+        const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: "3d"
+        })   
+
+        // console.log("Created token")
+        // userDetails.authToken = authToken;
+        // userDetails.personalDetails.password = undefined;
+        // userDetails.verificationToken = undefined;
+        // userDetails.tokenExpiry = undefined
+
+        const userData = {...userDetails.personalDetails, 
+            userType:userDetails.userType, 
+            verified:userDetails.verified,
+            authToken
+        }
+        
+        const options = {
+            expires: 3*24*60*60*1000, 
+            httpOnly:true, 
+            secure: true
+        }
+
+        // console.log("Sending token")
+        return res.cookie("authToken", authToken, options).status(200).json({
+            success: true,
+            user: userData,
+            authToken,
+            message: "User login successfull"
+        })
+    }
+    else{
+        res.status(401);
+        throw new Error("Incorrect password");
+    }
+})
+
+
+
 
 
 // module.exports = { userRegister }
