@@ -27,7 +27,16 @@ const StyledInput = ({
     size,
     startAdornment,
     endAdornment,
+    isPositive = false
 }) => {
+
+    const handleChanges = (e) => {
+
+        //handeling number should not be negative 
+        if (isPositive && type == "number" && e.target.value < 0) return;
+
+        onChange(e, ...param);
+    }
 
     const inputClas = classNames(Style.input, {
         [Style.rounded]: rounded,
@@ -40,7 +49,7 @@ const StyledInput = ({
             variant={variant}
             name={name}
             value={value}
-            onChange={(e) => onChange(e, ...param)}
+            onChange={handleChanges}
             label={label}
             placeholder={placeholder}
             id={id}

@@ -62,9 +62,9 @@ body {
 body {
     min-height: 100vh;
     font-family: "Roboto", sans-serif;
-    max-width: 1500px;
-    width: 100vw;
-    overflow-x: hidden !important;
+    max-width: 1800px;
+    width: 100%;
+    margin-inline: auto;
 }
 
 /* .d-flex {
@@ -261,3 +261,25 @@ body {
         gap: 1rem;
     }
 } */
+
+
+
+/* width */
+::-webkit-scrollbar {
+    /* width: 7px; */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #cac7c7;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #a4a3a3;
+}

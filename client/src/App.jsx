@@ -7,7 +7,7 @@ import Register from './pages/authentication/register/Register'
 
 const App = () => {
   return (
-    <div className='App w-screen overflow-x-hidden'>
+    <div className='App'>
       <BrowserRouter>
         <ReactRoutes>
           <Route path='/login' element={<Login />} />
