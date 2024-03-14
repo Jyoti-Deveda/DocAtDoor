@@ -116,7 +116,7 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
     }
 
     const encryptedToken = jwt.sign(payload, process.env.JWT_SECRET)
-    console.log("encryptedToken: ", encryptedToken);
+    // console.log("encryptedToken: ", encryptedToken);
 
     //original token is saved to DB
     userDetails.verificationToken = token;
@@ -236,7 +236,8 @@ exports.login = asyncHandler(async(req, res) => {
         const payload = {
             userId:userDetails._id,
             email: userDetails.personalDetails.email,
-            verified: userDetails.verified
+            verified: userDetails.verified,
+            userType: userDetails.userType
         }
 
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {

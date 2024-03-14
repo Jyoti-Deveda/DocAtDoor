@@ -8,10 +8,12 @@ const doctorsProfileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    specialization:{
-        type: String,
-        required: true
-    },
+    specialization:[
+        {
+            type: String,
+            required: true
+        }
+    ],
     specializedDiseases: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -60,41 +62,61 @@ const doctorsProfileSchema = new mongoose.Schema({
         },
     },
     officeDetails:{
-        address: {
-            hospitalName: {
-                type: String,
-                required: true
-            },
-            city: {
-                type: String,
-                required: true
-            },
-            state: {
-                type: String,
-                required: true
-            },
-            postalCode: {
-                type: Number,
-                required: true
-            },
+        hospitalName: {
+            type: String,
+            required: true
         },
-        treatments:[
-            {
-                name: {
-                    type: String,
-                    required: true
-                },
-                desc: {
-                    type: String,
-                    required: true,
-                },
-                fees: {
-                    type: Number,
-                    required: true
-                }
+        city: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        postalCode: {
+            type: Number,
+            required: true
+        },
+        contact:{
+            type: Number,
+            maxlength: 10
+        },
+        // address: {
+        //     hospitalName: {
+        //         type: String,
+        //         required: true
+        //     },
+        //     city: {
+        //         type: String,
+        //         required: true
+        //     },
+        //     state: {
+        //         type: String,
+        //         required: true
+        //     },
+        //     postalCode: {
+        //         type: Number,
+        //         required: true
+        //     },
+        // },
+        // treatments:[
+        //     {
+        //         name: {
+        //             type: String,
+        //             required: true
+        //         },
+        //         desc: {
+        //             type: String,
+        //             required: true,
+        //         },
+        //         fees: {
+        //             type: Number,
+        //             required: true
+        //         }
 
-            }
-        ],
+        //     }
+        // ],
         offDays: [
             {
                 date: Date

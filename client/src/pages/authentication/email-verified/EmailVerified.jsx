@@ -34,7 +34,7 @@ export const EmailVerified = () => {
   }, []);
 
   return (
-    <div className='w-full flex justify-center items-center'>
+    <div className='w-full min-h-screen flex justify-center items-center'>
       {
         !verified ? 
         (
@@ -44,7 +44,7 @@ export const EmailVerified = () => {
           <VerificationContainer
             verified={true}
             title={"Email Verification "}
-            desc={"A verification email has been sent to the registered email id. Check your mail and get verified."}
+            desc={"Your email has been verified successfully. Proceed with logging in and being a part."}
             btnText={"Login"}
             btnHandler={() => {navigate("/login")}}
           />

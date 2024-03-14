@@ -24,15 +24,15 @@ const Settings = () => {
         },
         academic_details: [
             {
-                university_name: "",
+                universityName: "",
                 course: "",
                 certification: "",
             },
         ],
         verification_details: {
-            reg_number: "",
-            reg_year: "",
-            state_medial_council: "",
+            registrationNum: "",
+            registrationYear: "",
+            stateMedicalCouncil: "",
         }
     })
 

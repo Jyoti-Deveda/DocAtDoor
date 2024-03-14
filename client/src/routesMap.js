@@ -23,12 +23,12 @@ export const routesMap = {
     //     component: VerifyEmailMessage
     // },
     //the route to be reached when email is verified successfully
-    '/email-verified/:token': {
-        protected: true,
-        label: 'Email-verified',
-        path: '/email-verified/:token',
-        component: EmailVerified
-    },
+    // '/email-verified/:token': {
+    //     protected: true,
+    //     label: 'Email-verified',
+    //     path: '/email-verified/:token',
+    //     component: EmailVerified
+    // },
     // '/login': {
     //     protected: false,
     //     label: 'Login',

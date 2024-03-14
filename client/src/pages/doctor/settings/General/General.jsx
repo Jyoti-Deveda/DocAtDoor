@@ -20,6 +20,7 @@ const General = ({
         setData(prevState => {
             // deep copy 
             const newData = { ...prevState };
+            console.log("New data: ", newData);
 
             let nestedObject = newData;
             const fieldPath = name.split('.');

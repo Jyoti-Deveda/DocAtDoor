@@ -50,6 +50,30 @@ exports.isUserVerified = asyncHandler(async (req, res, next) => {
         res.status(401)
         throw new Error("User is not verified")
     }
+    else{
+        next();
+    }
+})
 
-    next();
+exports.isDoctor = asyncHandler(async (req, res, next) => {
+
+    if(req.user.userType !== 'doctor'){
+        res.status(401)
+        throw new Error("User is not verified asa doctor")
+    }else{
+        next();
+    }
+
+})
+
+exports.isPatient = asyncHandler(async (req, res, next) => {
+
+    if(req.user.userType !== 'patient'){
+        res.status(401)
+        throw new Error("User is not verified asa doctor")
+    }
+    else{
+        next();
+    }
+
 })
