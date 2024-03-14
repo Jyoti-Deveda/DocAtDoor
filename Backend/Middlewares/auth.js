@@ -43,3 +43,13 @@ exports.auth = async (req, res, next) => {
         })
     }
 }
+
+exports.isUserVerified = asyncHandler(async (req, res, next) => {
+    
+    if(!req.user.verified){
+        res.status(401)
+        throw new Error("User is not verified")
+    }
+
+    next();
+})

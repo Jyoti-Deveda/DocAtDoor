@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 const RegistrationForm = () => {
     const navigate = useNavigate();
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState({
         firstName: "",
@@ -28,20 +29,24 @@ const RegistrationForm = () => {
 
     // handle registration 
     const handleClick = async (e) => {
+        setLoading(true);
         e.preventDefault();
 
-        const res = await register(data);
+        // const res = await register(data);
+        const res = await register(data, navigate);
+        console.log("RESPONSE: ", res);
 
-        if (res && res.user) {
+        if (res && res.data) {
+            
             console.log("Registration successfull");
-            navigate('/verify-email');
+            // navigate('/verify-email');
             setError("");
         }
         else {
             setError(res.message);
             console.log(res.message);
         }
-
+        setLoading(false);
     }
 
     return (
@@ -91,7 +96,7 @@ const RegistrationForm = () => {
                 name='password'
                 size={'small'}
                 label='Password'
-                type='password'
+                type='text'
             />
             <StyledInput
                 onChange={handleChange}
@@ -99,7 +104,7 @@ const RegistrationForm = () => {
                 name='confirmpass'
                 size={'small'}
                 label='Confirm Password'
-                type='password'
+                type='text'
             />
 
             {error &&
@@ -114,7 +119,7 @@ const RegistrationForm = () => {
                     color='primary'
                     rounded
                     onClick={handleClick}
-                    disabled={!data.firstName || !data.email || !data.lastName || !data.confirmpass || !data.password || !data.role}
+                    disabled={loading || !data.firstName || !data.email || !data.lastName || !data.confirmpass || !data.password || !data.role}
                 >
                     Register
                 </CustomButton>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames';
 
 
-const   SectionHeading = ({ title, color = 'default', className, useH1 = false }) => {
+const SectionHeading = ({ title, color = 'default', className, useH1 = false, children }) => {
 
     const headingClass = classNames(Style.heading, className, {
         [Style.primary]: color === 'primary'
@@ -14,9 +14,9 @@ const   SectionHeading = ({ title, color = 'default', className, useH1 = false }
         <>
             {useH1
                 ?
-                <h1 className={headingClass}>{title}</h1>
+                <h1 className={headingClass}>{title} {children}</h1>
                 :
-                <h3 className={headingClass}>{title}</h3>
+                <h3 className={headingClass}>{title} {children}</h3>
             }
         </>
     )

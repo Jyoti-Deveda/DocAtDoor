@@ -81,7 +81,6 @@ const General = ({
         <SettingsTabWrapper
             UserProfileBox={UserProfileBox}
         >
-
             <SettingsFormContainer
                 title='Personal Details'
             >

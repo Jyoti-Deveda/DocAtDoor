@@ -13,7 +13,7 @@ const ImgGrid = () => {
                 <img
                     src={img1}
                     alt='doctor'
-                    className='w-[100px] sm:w-[160px]'
+                    className='w-[6rem] sm:w-[10rem] aspect-square'
                 />
             </div>
             <div className='flex justify-center items-center border-b-2 border-sky-600 border-dashed aspect-square'>

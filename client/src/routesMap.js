@@ -4,7 +4,9 @@ import DoctorSettings from "./pages/doctor/settings/Settings";
 import { Home } from "./pages/home/Home"
 import Dashboard from "./pages/patient/dashboard/Dashboard"
 import DocSearch from "./pages/patient/docSearch/DocSearch"
-import { VerifyEmail } from "./pages/authentication/email-verification/VerifyEmail"
+import { VerifyEmailMessage } from "./pages/authentication/email-verification/VerifyEmailMessage"
+import { EmailVerified } from "./pages/authentication/email-verified/EmailVerified";
+import { CustomError } from "./components/Common/CustomError/CustomError";
 
 export const routesMap = {
     '/': {
@@ -12,6 +14,20 @@ export const routesMap = {
         label: 'Home',
         path: '/',
         component: Home
+    },
+    //a component that simply asks user to check mail for email verification
+    '/verify-email': {
+        // protected: true,
+        label: 'Verify-email',
+        path: '/verify-email',
+        component: VerifyEmailMessage
+    },
+    //the route to be reached when email is verified successfully
+    '/email-verified/:token': {
+        protected: true,
+        label: 'Email-verified',
+        path: '/email-verified/:token',
+        component: EmailVerified
     },
     // '/login': {
     //     protected: false,
@@ -25,23 +41,15 @@ export const routesMap = {
     //     path: '/register',
     //     component: Register
     // },
+    '/error':{
+        protected: false,
+        label: 'Error',
+        path: '/error',
+        component: CustomError
+    }
 }
 
 export const protectedRoutesMap = {
-    //a component that simply asks user to check mail for email verification
-    '/verify-email': {
-        // protected: true,
-        label: 'Verify-email',
-        path: '/verify-email',
-        component: VerifyEmail
-    },
-    //the route to be reached when email is verified successfully
-    '/email-verified/:token': {
-        protected: true,
-        label: 'Email-verified',
-        path: '/email-verified/:token',
-        // component: VerifyEmail
-    },
     // routes for patient 
     '/dashboard': {
         protected: true,
@@ -67,7 +75,6 @@ export const protectedRoutesMap = {
         path: '/settings',
         component: Home
     },
-
 
     // route for doctor 
     '/doctor/settings': {
