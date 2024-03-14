@@ -22,11 +22,11 @@ export const VerifyEmailMessage = () => {
 
   //the email which is being passed here is from the verificationContainer component
   const resendToken = async (email) => {
-    if(email){
+    if (email) {
       setIstokensent(false);
       await resendVerificationToken(email);
       setIstokensent(true);
-    }else{
+    } else {
       toast.error("Email is required")
     }
   }
@@ -34,21 +34,21 @@ export const VerifyEmailMessage = () => {
 
 
   return (
-    <div className='w-full flex justify-center items-center'>
+    <div className='w-full min-h-screen flex justify-center items-center'>
       {
-        !isTokensent ? 
-        (
-          <div className='spinner mx-auto flex justify-center items-center'></div>
-        ) : 
-        (
-          <VerificationContainer
-            email={userEmail}
-            title='Check email for Verification'
-            desc={"A verification email has been sent to the registered email id. Check your mail and get verified."}
-            btnText={"Resend"}
-            btnHandler={resendToken}
-          />
-        )
+        !isTokensent ?
+          (
+            <div className='spinner mx-auto flex justify-center items-center'></div>
+          ) :
+          (
+            <VerificationContainer
+              email={userEmail}
+              title='Check email for Verification'
+              desc={"A verification email has been sent to the registered email id. Check your mail and get verified."}
+              btnText={"Resend"}
+              btnHandler={resendToken}
+            />
+          )
       }
     </div>
   )

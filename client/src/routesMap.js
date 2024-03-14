@@ -16,12 +16,12 @@ export const routesMap = {
         component: Home
     },
     //a component that simply asks user to check mail for email verification
-    '/verify-email': {
-        // protected: true,
-        label: 'Verify-email',
-        path: '/verify-email',
-        component: VerifyEmailMessage
-    },
+    // '/verify-email': {
+    //     // protected: true,
+    //     label: 'Verify-email',
+    //     path: '/verify-email',
+    //     component: VerifyEmailMessage
+    // },
     //the route to be reached when email is verified successfully
     '/email-verified/:token': {
         protected: true,
@@ -41,7 +41,7 @@ export const routesMap = {
     //     path: '/register',
     //     component: Register
     // },
-    '/error':{
+    '/error': {
         protected: false,
         label: 'Error',
         path: '/error',
