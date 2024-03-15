@@ -8,7 +8,7 @@ const doctorsProfileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    specialization:[
+    specialization: [
         {
             type: String,
             required: true
@@ -20,20 +20,20 @@ const doctorsProfileSchema = new mongoose.Schema({
             ref: 'Disease'
         }
     ],
-    bio:{
+    bio: {
         type: String,
         required: true,
         maxlength: 200
     },
     //will get user's experince by a dropdown of predefined experience periods e.g x<1, 1<x<5 , x>5 where x is years
-    experience:{
+    experience: {
         type: String,
         required: true
     },
-    educationalQualification:[
+    educationalQualification: [
         {
             universityName: {
-                type:String,
+                type: String,
                 required: true
             },
             course: {
@@ -56,12 +56,12 @@ const doctorsProfileSchema = new mongoose.Schema({
             type: Date,
             required: true,
         },
-        stateMedicalCouncil:{
+        stateMedicalCouncil: {
             type: String,
             required: true
         },
     },
-    officeDetails:{
+    officeDetails: {
         hospitalName: {
             type: String,
             required: true
@@ -78,7 +78,7 @@ const doctorsProfileSchema = new mongoose.Schema({
             type: Number,
             required: true
         },
-        contact:{
+        contact: {
             type: Number,
             maxlength: 10
         },
@@ -126,7 +126,32 @@ const doctorsProfileSchema = new mongoose.Schema({
             {
                 time: String
             }
-        ]
+        ],
+        rating: {
+            value: {
+                type: Number,
+                min: 0,
+                max: 5,
+                default: 0
+            },
+            count: {
+                type: Number,
+                default: 0
+            },
+            ratedBy: [
+                {
+                    userId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "User"
+                    },
+                    rating: {
+                        type: Number,
+                        min: 0,
+                        max: 5
+                    }
+                }
+            ]
+        }
     }
 
 })

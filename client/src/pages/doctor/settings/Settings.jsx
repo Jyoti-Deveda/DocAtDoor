@@ -13,6 +13,7 @@ const Settings = () => {
             first_name: "",
             last_name: "",
             email: "",
+            bio: ""
         },
         hospital_details: {
             name: "",
@@ -21,6 +22,7 @@ const Settings = () => {
             postal_code: "",
             contact_info: "",
             specialization: [],
+            experience: "",
         },
         academic_details: [
             {

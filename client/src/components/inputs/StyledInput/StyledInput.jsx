@@ -27,13 +27,21 @@ const StyledInput = ({
     size,
     startAdornment,
     endAdornment,
-    isPositive = false
+    isPositive = false,
+    maxCharacter = -1,
 }) => {
 
     const handleChanges = (e) => {
 
+        const val = e.target.value;
+
         //handeling number should not be negative 
-        if (isPositive && type == "number" && e.target.value < 0) return;
+        if (isPositive && type == "number" && val < 0) return;
+
+        //handle max character
+        if (maxCharacter != -1 && val.length > maxCharacter) {
+            return;
+        }
 
         onChange(e, ...param);
     }

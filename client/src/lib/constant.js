@@ -3,6 +3,13 @@ export const roles = [
     { value: "doctor", label: "Doctor" }
 ]
 
+export const experienceYears = [
+    { value: 'lessThan1Year', label: "Less than 1 year" },
+    { value: '1to5Years', label: "1 - 5 years" },
+    { value: 'moreThan5Years', label: "More than 5 years" }
+];
+
+
 export const symptoms = [
     { value: 'itching', label: 'Itching' },
     { value: 'skin_rash', label: 'Skin Rash' },

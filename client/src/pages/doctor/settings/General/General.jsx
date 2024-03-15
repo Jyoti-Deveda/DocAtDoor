@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import AcademicDetailsBox from './AcademicDetailsBox/AcademicDetailsBox'
 import SearchSelect from '@/components/inputs/SearchSelect/SearchSelect'
-import { symptoms } from '@/lib/constant'
+import { experienceYears, symptoms } from '@/lib/constant'
 
 const General = ({
     UserProfileBox,
@@ -73,7 +73,7 @@ const General = ({
     }
 
     //handle save and submit
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
     }
 
@@ -109,6 +109,16 @@ const General = ({
                     name='personal_details.email'
                     value={data.personal_details.email}
                     onChange={handleChange}
+                />
+                <StyledInput
+                    multiline
+                    label='Bio'
+                    size={"small"}
+                    placeholder='Bio'
+                    name='personal_details.bio'
+                    value={data.personal_details.bio}
+                    onChange={handleChange}
+                    maxCharacter={200}
                 />
             </SettingsFormContainer>
 
@@ -150,6 +160,16 @@ const General = ({
                         onChange={handleChange}
                     />
                 </div>
+
+                <StyledInput
+                    select
+                    options={experienceYears}
+                    size={"small"}
+                    onChange={handleChange}
+                    name="hospital_details.experience"
+                    value={data.hospital_details.experience}
+                    label='Years of Experiance'
+                />
 
                 {/* TODO-- change options to actual specialization list  */}
                 <SearchSelect

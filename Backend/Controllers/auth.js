@@ -53,7 +53,7 @@ exports.userRegister = asyncHandler(async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const imageUrl= `https://api.dicebear.com/7.x/shapes/svg?seed=${firstName}`
+    const imageUrl = `https://api.dicebear.com/7.x/shapes/svg?seed=${firstName}`
 
     // create new user 
     const newUser = await user.create({
@@ -85,25 +85,25 @@ exports.userRegister = asyncHandler(async (req, res, next) => {
 })
 
 //for email verification
-exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
+exports.generateVerificationToken = asyncHandler(async (req, res, next) => {
 
     const { email } = req.body;
 
-    if(!email){
+    if (!email) {
         res.status(400);
         throw new Error("Email to be verified not found")
     }
 
     //check if user entry is created in db
-    const userDetails = await user.findOne({"personalDetails.email":email})
+    const userDetails = await user.findOne({ "personalDetails.email": email })
 
-    if(!userDetails){
+    if (!userDetails) {
         res.status(400)
         throw new Error("User entry not found.. Please sign up")
     }
 
     //todo:check if user is verified already
-    if(userDetails.verified){
+    if (userDetails.verified) {
         res.status(403)
         throw new Error("User already verified.. You may login")
     }
@@ -120,7 +120,7 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
 
     //original token is saved to DB
     userDetails.verificationToken = token;
-    userDetails.tokenExpiry = Date.now() + 3*24*60*60*1000;
+    userDetails.tokenExpiry = Date.now() + 3 * 24 * 60 * 60 * 1000;
 
     userDetails.save();
     // console.log("Updated user details: ", userDetails);
@@ -136,7 +136,7 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
 
     // console.log("Mail response: ", mailResponse)
 
-    if(!mailResponse){
+    if (!mailResponse) {
         res.status(500)
         throw new Error("Email verification failed");
     }
@@ -145,21 +145,21 @@ exports.generateVerificationToken = asyncHandler(async(req, res, next) => {
         success: true,
         message: "Verification email sent successfully"
     })
-     
-     
+
+
 })
 
 //verify email
-exports.verifyEmail = asyncHandler(async(req, res) => {
+exports.verifyEmail = asyncHandler(async (req, res) => {
 
     const verificationToken = req.body.token;
     // console.log("Token fetched")
 
-    try{
+    try {
         const decryptToken = jwt.verify(verificationToken, process.env.JWT_SECRET);
         var { email, token } = decryptToken
     }
-    catch(err){
+    catch (err) {
         res.status(400);
         throw new Error("Verification token invalid")
     }
@@ -168,10 +168,10 @@ exports.verifyEmail = asyncHandler(async(req, res) => {
 
 
     //check if user is already registered
-    const userDetails = await user.findOne({"personalDetails.email":email})
+    const userDetails = await user.findOne({ "personalDetails.email": email })
     // console.log("USER DETAILS: ", userDetails)
 
-    if(!userDetails){
+    if (!userDetails) {
         res.status(400);
         throw new Error("User entry not found.. Please signup")
     }
@@ -180,7 +180,7 @@ exports.verifyEmail = asyncHandler(async(req, res) => {
 
     //check if email is already verified
     // console.log("USERDETAILS VERIFIED: ", userDetails.verified)
-    if(userDetails.verified ){
+    if (userDetails.verified) {
         //if user is already verified
         res.status(200).json({
             success: true,
@@ -189,13 +189,13 @@ exports.verifyEmail = asyncHandler(async(req, res) => {
     }
 
     // check token expiry 
-    if(Date.now() > userDetails.tokenExpiry){
+    if (Date.now() > userDetails.tokenExpiry) {
         res.status(400);
         throw new Error("Token has expired... Request for new")
     }
 
     // console.log("Perform verification")
-    if(userDetails.verificationToken !== token){
+    if (userDetails.verificationToken !== token) {
         res.status(401);
         throw new Error("Invalid verification token");
     }
@@ -211,30 +211,30 @@ exports.verifyEmail = asyncHandler(async(req, res) => {
 })
 
 //login
-exports.login = asyncHandler(async(req, res) => {
+exports.login = asyncHandler(async (req, res) => {
 
     const { email, password } = req.body;
 
-    if(!email || !password){
+    if (!email || !password) {
         res.status(400);
         throw new Error("All fields are required for login");
     }
 
-    const userDetails = await user.findOne({"personalDetails.email":email});
+    const userDetails = await user.findOne({ "personalDetails.email": email });
     // console.log("USER_DETAILS: ", userDetails);
-    if(!userDetails){
+    if (!userDetails) {
         res.status(400);
         throw new Error("User is not registered");
     }
 
-    if(!userDetails.verified){
+    if (!userDetails.verified) {
         res.status(403);
         throw new Error("User is not verified");
     }
     // console.log("USer is verified")
-    if(await bcrypt.compare(password, userDetails.personalDetails.password)){
+    if (await bcrypt.compare(password, userDetails.personalDetails.password)) {
         const payload = {
-            userId:userDetails._id,
+            userId: userDetails._id,
             email: userDetails.personalDetails.email,
             verified: userDetails.verified,
             userType: userDetails.userType
@@ -242,7 +242,7 @@ exports.login = asyncHandler(async(req, res) => {
 
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "3d"
-        })   
+        })
 
         // console.log("Created token")
         // userDetails.authToken = authToken;
@@ -250,27 +250,30 @@ exports.login = asyncHandler(async(req, res) => {
         // userDetails.verificationToken = undefined;
         // userDetails.tokenExpiry = undefined
 
-        const userData = {...userDetails.personalDetails, 
-            userType:userDetails.userType, 
-            verified:userDetails.verified,
+        const userData = {
+            ...userDetails.personalDetails,
+            userType: userDetails.userType,
+            verified: userDetails.verified,
             authToken
         }
-        
+
         const options = {
-            expires: 3*24*60*60*1000, 
-            httpOnly:true, 
-            secure: true
+            expires: 3 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            secure: false
         }
 
-        // console.log("Sending token")
-        return res.cookie("authToken", authToken, options).status(200).json({
-            success: true,
-            user: userData,
-            authToken,
-            message: "User login successfull"
-        })
+        return res
+            .status(200)
+            .cookie("authToken", authToken, options)
+            .json({
+                success: true,
+                user: userData,
+                authToken,
+                message: "User login successfull"
+            });
     }
-    else{
+    else {
         res.status(401);
         throw new Error("Incorrect password");
     }
