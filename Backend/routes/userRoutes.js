@@ -8,6 +8,8 @@ router.post('/login', login);
 router.post('/generate-verification-token', generateVerificationToken);
 router.post('/verify-email', verifyEmail);
 
+
+
 // router.post('/login', (request, response) => {
 //     response.json("user logged in");
 // })

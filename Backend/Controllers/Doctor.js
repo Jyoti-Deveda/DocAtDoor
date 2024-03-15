@@ -4,6 +4,8 @@ exports.createProfile = asyncHandler(async(req, res) => {
 
     const { userId } = req.user;
 
+    res.send("Reached create ")
+
     
 
 })

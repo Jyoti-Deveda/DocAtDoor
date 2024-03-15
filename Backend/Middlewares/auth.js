@@ -7,8 +7,8 @@ exports.auth = async (req, res, next) => {
         //extract token
         console.log("Before token verification")
         // console.log("req ", req);
-        const token = req.cookies.token || 
-                        req.body.token  || 
+        const token = req.cookies.authToken || 
+                        req.body.authToken  || 
                         req.header("Authorization").replace("Bearer ", "");
 
        

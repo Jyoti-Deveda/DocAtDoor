@@ -22,7 +22,8 @@ const errorHandler = (err, req, res, next) => {
             break;
         default:
             console.log("Status code: ", statusCode);
-            res.json({success: true});
+            console.log("Error: ", err.message);
+            res.json({success: false, error: err.message, stackTrace: err.stack});
             break;
 
     }

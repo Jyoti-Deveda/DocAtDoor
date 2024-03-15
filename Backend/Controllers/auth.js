@@ -245,11 +245,9 @@ exports.login = asyncHandler(async (req, res) => {
         })
 
         // console.log("Created token")
-        // userDetails.authToken = authToken;
-        // userDetails.personalDetails.password = undefined;
-        // userDetails.verificationToken = undefined;
-        // userDetails.tokenExpiry = undefined
-
+        userDetails.authToken = authToken;
+        userDetails.personalDetails.password = undefined;
+        
         const userData = {
             ...userDetails.personalDetails,
             userType: userDetails.userType,
@@ -257,8 +255,9 @@ exports.login = asyncHandler(async (req, res) => {
             authToken
         }
 
+
         const options = {
-            expires: 3 * 24 * 60 * 60 * 1000,
+            expiresIn: 3 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: false
         }
@@ -278,9 +277,5 @@ exports.login = asyncHandler(async (req, res) => {
         throw new Error("Incorrect password");
     }
 })
-
-
-
-
 
 // module.exports = { userRegister }
