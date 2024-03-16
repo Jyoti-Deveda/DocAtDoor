@@ -3,6 +3,7 @@ import StyledInput from '@/components/inputs/StyledInput/StyledInput'
 import { Delete } from '@mui/icons-material';
 import React, { useState } from 'react'
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import Style from "./TimingSlot.module.css";
 
 const TimingSlot = ({
     data,
@@ -28,6 +29,7 @@ const TimingSlot = ({
                             onChange={handleChange}
                             value={data.start_time}
                             size={"small"}
+                            className={Style.time_input}
                         />
                         <TrendingFlatIcon className='text-gray-300 mt-2' />
                         <StyledInput
@@ -36,6 +38,7 @@ const TimingSlot = ({
                             onChange={handleChange}
                             value={data.end_time}
                             size={"small"}
+                            className={Style.time_input}
                         />
                     </div>
                 </div>
