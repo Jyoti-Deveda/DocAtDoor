@@ -52,8 +52,11 @@ const ScheduleManager = () => {
     })
 
     // this handles the changes in data 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (e, isCheckbox) => {
+        let { name, value } = e.target;
+        if (isCheckbox) {
+            value = e.target.checked;
+        }
         setData(prevState => {
             // deep copy 
             const newData = { ...prevState };
@@ -99,8 +102,17 @@ const ScheduleManager = () => {
         })
     }
 
-    // console.log(data);
-
+    // handles the apply to all 
+    const handleApplyToAll = (key) => {
+        const day = data[key];
+        if (day) {
+            const newData = {};
+            Object.keys(data).forEach((item) => {
+                newData[item] = JSON.parse(JSON.stringify(day));
+            });
+            setData(newData);
+        }
+    }
 
     return (
         <SettingsFormContainer title='Manage Schedule' >
@@ -110,8 +122,9 @@ const ScheduleManager = () => {
                     index={index}
                     date={item}
                     data={data}
-                    setData={setData}
                     onAdd={() => handleAddition(item)}
+                    handleChange={handleChange}
+                    onApplyToAll={() => handleApplyToAll(item)}
                 >
                     {data[item] && data[item].slots?.map((slot, idx) => (
                         <TimingSlot

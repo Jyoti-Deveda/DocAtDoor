@@ -1,0 +1,18 @@
+.container :global .MuiDialog-paper {
+    padding: 1rem !important;
+    border-radius: 15px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.7rem !important;
+}
+
+.container :global .MuiDialogTitle-root,
+.container :global .MuiDialogContent-root,
+.container :global .MuiDialogActions-root {
+    padding: 0 !important;
+}
+
+
+.container :global .MuiDialogActions-root {
+    margin-top: 1rem;
+}
