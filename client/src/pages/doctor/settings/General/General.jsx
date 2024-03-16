@@ -18,19 +18,27 @@ const General = ({
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData(prevState => {
-            // deep copy 
+            // shallow copy 
             const newData = { ...prevState };
             console.log("New data: ", newData);
 
+            //nestedObj = data;
             let nestedObject = newData;
+
+            //e.g name = verification_details.regsitrationYear
             const fieldPath = name.split('.');
+            //fieldpath = ['verification_details', 'regsitrationYear']
             for (let i = 0; i < fieldPath.length - 1; i++) {
                 nestedObject = nestedObject[fieldPath[i]];
+                //nestedObject = data[verification_details];
+                nestedObject[fieldPath[fieldPath.length - 1]] = value;
             }
-            nestedObject[fieldPath[fieldPath.length - 1]] = value;
+            // console.log("Nested object after updates: ", nestedObject);
 
             return newData;
         });
+
+        console.log("Data after changes: ", data);
     };
 
     // handles specialization changes 

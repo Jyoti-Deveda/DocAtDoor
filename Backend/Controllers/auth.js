@@ -278,4 +278,19 @@ exports.login = asyncHandler(async (req, res) => {
     }
 })
 
+exports.logout = asyncHandler((req, res) => {
+
+    try{
+        res.clearCookie('authToken', {path: '/'});
+    }catch(err){
+        throw new Error(err);    
+    }
+
+    res.json({
+        success: true,
+        message: "Logout successfully"
+    })
+
+})
+
 // module.exports = { userRegister }

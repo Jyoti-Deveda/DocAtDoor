@@ -9,7 +9,7 @@ const SettingsTabWrapper = ({
     return (
         <div className={`${Style.container} ${hasProfileBox && Style.container_grid} relative gap-10 items-start pb-8`}>
             {hasProfileBox &&
-                <div className={`sticky top-4 w-full flex flex-col`}>
+                <div className={`md:sticky top-4 w-full flex flex-col`}>
                     {UserProfileBox}
                 </div>
             }

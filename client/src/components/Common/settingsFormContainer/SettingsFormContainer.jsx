@@ -9,6 +9,7 @@ const SettingsFormContainer = ({ children, title = "", action }) => {
                 <SectionSubHeading
                     title={title}
                 />
+                {/* for button in academic details to add or remove  */}
                 {action}
             </div>
             {children}

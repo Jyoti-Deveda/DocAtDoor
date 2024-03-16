@@ -27,15 +27,16 @@ const Login = () => {
             return;
         }
         const data = { email, password };
-        const res = await login(data, navigate);
-        console.log("REs: ", res);
-        if (res && res.status === 200) {
-            // set token, user data to cookies 
-            setUser(res.data.user)
-        }
-        else {
-            console.log(res.message);
-        }
+        await login(data, navigate)
+        // const res = await login(data, navigate);
+        // console.log("REs: ", res);
+        // if (res && res.status === 200) {
+        //     // set token, user data to cookies 
+        //     setUser(res.data.user)
+        // }
+        // else {
+        //     console.log(res.message);
+        // }
     }
 
     const handlePasswordVisibility = (e) => {

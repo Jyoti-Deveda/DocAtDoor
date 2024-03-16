@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const asyncHandler = require('express-async-handler')
 
 //auth
 exports.auth = async (req, res, next) => {
@@ -8,14 +9,17 @@ exports.auth = async (req, res, next) => {
         console.log("Before token verification")
         // console.log("req ", req);
         const token = req.cookies.authToken || 
-                        req.body.authToken  || 
-                        req.header("Authorization").replace("Bearer ", "");
+                        req.body.authToken  
+                        // || req.header("Authorization").replace("Bearer ", "");
 
+        console.log("Token in middleware")
+        console.log("req.cookies.authToken: ", req.cookies.authToken );
+        // console.log("req.body.authToken: ", req.body.authToken);
+        // console.log(`req.header("Authorization").replace("Bearer ", ""): `, req.header("Authorization").replace("Bearer ", ""));
        
         if(!token){
             return res.status(401).json({
                 success: false,
-                error: err.message,
                 message: "Token is missing",
             })
         }

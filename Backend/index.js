@@ -3,11 +3,14 @@ const cors = require('cors');
 const dotenv = require('dotenv').config;
 const { spawn } = require("child_process")
 
-const pythonRoutes = require("./routes/pythonScriptRoutes")
-const userRoutes = require('./routes/userRoutes');
 const dbConnect = require('./Config/database');
 const errorHandler = require('./Middlewares/errorHandler');
 const cookieParser = require('cookie-parser');
+
+const pythonRoutes = require("./routes/pythonScriptRoutes")
+const userRoutes = require('./routes/userRoutes');
+const doctorRoutes = require('./routes/doctorRoutes');
+
 
 // connect database here 
 dbConnect();
@@ -26,6 +29,7 @@ app.use(express.json());
 app.use(cookieParser())
 
 app.use('/api/user', userRoutes);
+app.use('/api/doctor', doctorRoutes);
 app.use('/api/python', pythonRoutes)
 
 app.use(errorHandler)

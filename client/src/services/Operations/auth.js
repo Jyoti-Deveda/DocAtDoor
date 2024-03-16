@@ -8,7 +8,8 @@ const {
     REGISTER_API, 
     RESEND_VERIFICATIONTOKEN_API, 
     VERIFYEMAIL_API,
-    LOGIN_API
+    LOGIN_API,
+    LOGOUT_API
  } = authEndpoints
 
 export const register = async(data, navigate) => {
@@ -34,7 +35,8 @@ export const register = async(data, navigate) => {
     }catch(err){
         res = err;
         console.log("ERROR IN REGISTER API: ", err);
-        toast.error(err?.response?.data?.error);
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
     }
     toast.dismiss(toastId);
     return res;
@@ -63,7 +65,8 @@ export const resendVerificationToken = async(email) => {
     }catch(err){
         res = err;
         console.log("ERROR IN RESEND API: ", err);
-        toast.error(err?.response?.data?.error);
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
     }
     toast.dismiss(toastId);
     return res;
@@ -94,7 +97,8 @@ export const verifyEmail = async(token) => {
     }catch(err){
         res = err;
         console.log("ERROR IN TOKEN VERIFICATION API: ", err);
-        toast.error(err?.response?.data?.error);
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
     }
     toast.dismiss(toastId);
     console.log("reached end")
@@ -118,20 +122,51 @@ export const login = async (data, navigate) => {
             throw new Error("Registration failed")
         }
 
-        toast.success("Login successfull")
-        // localStorage.setItem("authToken", res.data.authToken);
-        Cookies.set('authToken', res.data.authToken, {expires: 3, path:'/'});
-        navigate("/dashboard") 
+        if(!res?.data?.user) {
+            throw new Error("User data is missing in login response")
+        }
 
+        Cookies.set('UserData', JSON.stringify(res?.data?.user), {expires: 3, path:'/'});
+        const userData = Cookies.get('UserData')
+        console.log("Userdata from cookie: ", JSON.parse(userData))
+        toast.success("Login successfull")
+        navigate("/dashboard") 
+        
         // return res?.response?.data;
         
 
     }catch(err){
         res = err;
-        console.log("ERROR IN LOGIN API: ", err);
-        toast.error(err?.response?.data?.error);
+        console.log("ERROR IN LOGIN API: ", err.message);
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
     }
     toast.dismiss(toastId);
-    return res;
+    // return res;
 
+}
+
+
+export const logout = async(navigate) => {
+    const toastId = toast.loading();
+    let res = null;
+    try{
+        res = await apiConnector("POST", LOGOUT_API);
+        console.log("LOGOUT API RESPONSE: ", res);
+
+        if(!res?.data?.success){
+            throw new Error("Logout failed");
+        }
+        Cookies.remove('UserData');
+        localStorage.removeItem('UserData')
+        toast.success("Logout successfull")
+        navigate("/");
+
+    }catch(err){
+        res = err;
+        console.log("ERROR IN LOGOUT API: ", err);
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
+    }
+    toast.dismiss(toastId);
 }

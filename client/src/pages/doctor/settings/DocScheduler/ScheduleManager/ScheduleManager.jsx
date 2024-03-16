@@ -126,16 +126,18 @@ const ScheduleManager = () => {
                     handleChange={handleChange}
                     onApplyToAll={() => handleApplyToAll(item)}
                 >
-                    {data[item] && data[item].slots?.map((slot, idx) => (
-                        <TimingSlot
-                            index={idx}
-                            data={slot}
-                            key={`${index}-${idx}`}
-                            handleChange={handleChange}
-                            name={`${item}.slots.${idx}`}
-                            handleDelete={() => handleDeletion(item, idx)}
-                        />
-                    ))}
+                    {
+                        data[item] && data[item].slots?.map((slot, idx) => (
+                            <TimingSlot
+                                index={idx}
+                                data={slot}
+                                key={`${index}-${idx}`}
+                                handleChange={handleChange}
+                                name={`${item}.slots.${idx}`}
+                                handleDelete={() => handleDeletion(item, idx)}
+                            />
+                        ))
+                    }
                 </DayContainer>
             ))}
         </SettingsFormContainer>
