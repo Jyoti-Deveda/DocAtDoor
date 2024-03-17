@@ -13,7 +13,8 @@ const Settings = () => {
             first_name: "",
             last_name: "",
             email: "",
-            bio: ""
+            bio: "",
+            experience: "",
         },
         hospital_details: {
             name: "",
@@ -21,8 +22,7 @@ const Settings = () => {
             state: "",
             postal_code: "",
             contact_info: "",
-            specialization: [],
-            experience: "",
+            appointment_fee: 0
         },
         academic_details: [
             {
@@ -35,7 +35,9 @@ const Settings = () => {
             reg_number: "",
             reg_year: "",
             state_medial_council: "",
-        }
+        },
+        specialization: [],
+        specializedDiseases: []
     })
 
 

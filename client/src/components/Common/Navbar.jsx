@@ -54,6 +54,7 @@ export const Navbar = () => {
           />
           <span className='text-xl sm:text-3xl text-sky-600 font-bold'>DocAtDoor</span>
         </Link>
+
       </div>
 
       <div className={`${Style.lg_nav_link_container} flex flex-row items-center gap-4`}>
@@ -64,7 +65,7 @@ export const Navbar = () => {
               {/* dashboard link to the user's dashboard if logged in  */}
               {user &&
                 <>
-                  <li className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer'>
+                  <li className='text-sky-600 hover:text-sky-400 text-lg font-semibold cursor-pointer transition-all duration-200'>
                     <Link to={role === userRoles.PATIENT ? patientDashboardPath : doctorDashboardPath}>
                       Dashboard
                     </Link>
@@ -74,7 +75,7 @@ export const Navbar = () => {
 
               {
                 NavbarLinks.map((link, index) => (
-                  <li key={index} className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer'>
+                  <li key={index} className='text-sky-600 hover:text-sky-400 text-lg font-semibold cursor-pointer transition-all duration-200'>
                     <Link to={link.path}>
                       {link.title}
                     </Link>

@@ -8,7 +8,6 @@ import { LogoutButton } from '../Logout/LogoutButton';
 import { userRoles } from '@/config/config';
 
 
-
 const patientDashboardPath = '/patient/dashboard';
 const doctorDashboardPath = '/doctor/dashboard';
 

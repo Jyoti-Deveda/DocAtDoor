@@ -55,7 +55,7 @@ const UserSchema = new mongoose.Schema(
         userType: {
             type: String,
             required: true,
-            enum: ['patient', 'doctor']
+            enum: ['Patient', 'Doctor']
         },
         //this indicates an array of appointments the patient booked
         patientsAppointments: [

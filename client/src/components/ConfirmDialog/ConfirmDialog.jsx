@@ -17,7 +17,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 
-
 const ConfirmDialog = ({
   heading = "Please Confirm",
   question,
@@ -58,7 +57,7 @@ const ConfirmDialog = ({
         aria-describedby="alert-dialog-slide-description"
         className={Style.container}
       >
-
+      
 
         <DialogTitle className={Style.heading}>
           {/* <SectionSubHeading title={heading} /> */}

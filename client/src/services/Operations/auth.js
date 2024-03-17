@@ -21,7 +21,7 @@ export const register = async (data, navigate) => {
 
         console.log("REGISTER API RESPONSE: ", res);
 
-        if (!res?.data?.success) {
+        if (!res?.data?.success){
             throw new Error("Registration failed")
         }
 
@@ -140,7 +140,6 @@ export const login = async (data, navigate) => {
         else if (user.userType === userRoles.DOCTOR) {
             navigate("/doctor/dashboard");
         }
-
 
         // return res?.response?.data;
 

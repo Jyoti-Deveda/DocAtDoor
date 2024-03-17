@@ -32,7 +32,7 @@ const doctorsProfileSchema = new mongoose.Schema({
     },
     educationalQualification: [
         {
-            universityName: {
+            university_name: {
                 type: String,
                 required: true
             },
@@ -40,29 +40,29 @@ const doctorsProfileSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
-            certificate: {
+            certification: {
                 type: String,
-                required: true
+                // required: true
             }
         },
 
     ],
     verificationDetails: {
-        registrationNum: {
+        reg_number: {
             type: String,
             required: true,
         },
-        registrationYear: {
+        reg_year: {
             type: Date,
             required: true,
         },
-        stateMedicalCouncil: {
+        state_medical_council: {
             type: String,
             required: true
         },
     },
     officeDetails: {
-        hospitalName: {
+        name: {
             type: String,
             required: true
         },
@@ -74,13 +74,17 @@ const doctorsProfileSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        postalCode: {
+        postal_code: {
             type: Number,
             required: true
         },
-        contact: {
+        contact_info: {
             type: Number,
-            maxlength: 10
+            trim: true,
+        },
+        appointment_fee: {
+            type: Number,
+            required: true
         },
         // address: {
         //     hospitalName: {
@@ -117,11 +121,6 @@ const doctorsProfileSchema = new mongoose.Schema({
 
         //     }
         // ],
-        offDays: [
-            {
-                date: Date
-            }
-        ],
         timeSlots: [
             {
                 time: String
