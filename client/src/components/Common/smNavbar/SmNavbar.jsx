@@ -4,13 +4,23 @@ import { Link } from 'react-router-dom';
 import logo from '../../../assets/Logo/logo.png'
 import CustomButton from '@/components/CustomButton/CustomButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { LogoutButton } from '../Logout/LogoutButton';
+import { userRoles } from '@/config/config';
+
+
+
+const patientDashboardPath = '/patient/dashboard';
+const doctorDashboardPath = '/doctor/dashboard';
+
 
 const SmNavbar = ({
     show = false,
     NavbarLinks,
     onClose,
     handleLoginClick,
-    handleSignupClick
+    handleSignupClick,
+    user,
+    role,
 }) => {
 
     const handleClick = () => {
@@ -54,33 +64,52 @@ const SmNavbar = ({
                         >
                             <CloseIcon />
                         </CustomButton>
-
                     </div>
-                    {
-                        NavbarLinks.map((link, index) => (
-                            <div key={index} className='text-sky-600 text-lg font-semibold cursor-pointer px-2'>
-                                <Link to={link.path} onClick={handleClick}>
-                                    {link.title}
-                                </Link>
+
+                    {user &&
+                        <Link to={role === userRoles.PATIENT ? patientDashboardPath : doctorDashboardPath} onClick={handleClick}>
+                            <div className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer px-2'>
+                                Dashboard
                             </div>
-                        ))
+                        </Link>
                     }
 
-                    {/* display login and signup when user is not logged in  */}
-                    <div className='flex flex-row gap-4 px-2'>
-                        <button
-                            onClick={handleLoginClick}
-                            className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
+                    {NavbarLinks.map((link, index) => (
+                        <Link to={link.path} onClick={handleClick}>
+                            <div key={index} className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer px-2'>
+                                {link.title}
+                            </div>
+                        </Link>
+                    ))}
+
+                    {/* display login and signup only when user is not logged in  */}
+                    {!user ?
+                        <div className='flex flex-row gap-x-3'>
+                            <button
+                                onClick={handleLoginClick}
+                                className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
           hover:bg-sky-600 hover:text-white'>
-                            Login
-                        </button>
-                        <button
-                            onClick={handleSignupClick}
-                            className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
+                                Login
+                            </button>
+                            <button
+                                onClick={handleSignupClick}
+                                className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
             hover:bg-sky-600 hover:text-white'>
-                            Signup
-                        </button>
-                    </div>
+                                Signup
+                            </button>
+                        </div>
+                        :
+                        <div>
+
+                            <LogoutButton
+                                variant='contained'
+                                color="primary"
+                                rounded
+                                size='small'
+                                className={'ml-2'}
+                            />
+                        </div>
+                    }
 
                 </div>
             </div>

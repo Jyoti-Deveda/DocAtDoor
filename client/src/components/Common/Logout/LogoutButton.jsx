@@ -5,17 +5,18 @@ import React from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-export const LogoutButton = () => {
+export const LogoutButton = ({ ...rest }) => {
 
   const navigate = useNavigate();
 
   return (
-    <CustomButton 
-    onClick={() => logout(navigate)}
-    variant='contained'
-    color='primary'
+    <CustomButton
+      onClick={() => logout(navigate)}
+      variant='contained'
+      color='primary'
+      {...rest}
     >
-        Logout
+      Logout
     </CustomButton>
   )
 }

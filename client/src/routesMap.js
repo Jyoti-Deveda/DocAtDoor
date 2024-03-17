@@ -7,6 +7,10 @@ import DocSearch from "./pages/patient/docSearch/DocSearch"
 import { VerifyEmailMessage } from "./pages/authentication/email-verification/VerifyEmailMessage"
 import { EmailVerified } from "./pages/authentication/email-verified/EmailVerified";
 import { CustomError } from "./components/Common/CustomError/CustomError";
+import { userRoles } from "./config/config";
+
+const PATIENT = userRoles.PATIENT
+const DOCTOR = userRoles.DOCTOR
 
 export const routesMap = {
     '/': {
@@ -25,34 +29,46 @@ export const routesMap = {
 
 export const protectedRoutesMap = {
     // routes for patient 
-    '/dashboard': {
+    '/patient/dashboard': {
         protected: true,
+        allowed_roles: [PATIENT],
         label: 'Dashboard',
-        path: '/dashboard',
+        path: '/patient/dashboard',
         component: Dashboard
     },
     '/search-doctor': {
         protected: true,
+        allowed_roles: [PATIENT],
         label: 'Search Doctor',
         path: '/search-doctor',
         component: DocSearch
     },
     '/doc-list/:disease': {
         protected: true,
+        allowed_roles: [PATIENT],
         label: 'Doctor List',
         path: '/doc-list/:disease',
         component: Home
     },
     '/settings': {
         protected: true,
+        allowed_roles: [PATIENT],
         label: 'Settings',
         path: '/settings',
         component: Home
     },
 
     // route for doctor 
+    '/doctor/dashboard': {
+        protected: true,
+        allowed_roles: [DOCTOR],
+        label: 'Dashboard',
+        path: '/doctor/dashboard',
+        component: Dashboard
+    },
     '/doctor/settings': {
         protected: true,
+        allowed_roles: [DOCTOR],
         label: 'Settings',
         path: '/doctor/settings',
         component: DoctorSettings

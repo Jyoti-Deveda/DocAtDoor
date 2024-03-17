@@ -5,9 +5,17 @@ import Style from "./navbar.module.css";
 import CustomButton from '../CustomButton/CustomButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SmNavbar from './smNavbar/SmNavbar';
+import useAuth from '@/util/useAuth';
+import { LogoutButton } from './Logout/LogoutButton';
+import { userRoles } from '@/config/config';
+
+
+const patientDashboardPath = '/patient/dashboard';
+const doctorDashboardPath = '/doctor/dashboard';
 
 export const Navbar = () => {
 
+  const { user, role } = useAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const NavbarLinks = [
@@ -52,9 +60,21 @@ export const Navbar = () => {
         <div>
           <nav>
             <ul className='flex flex-row gap-x-6'>
+
+              {/* dashboard link to the user's dashboard if logged in  */}
+              {user &&
+                <>
+                  <li className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer'>
+                    <Link to={role === userRoles.PATIENT ? patientDashboardPath : doctorDashboardPath}>
+                      Dashboard
+                    </Link>
+                  </li>
+                </>
+              }
+
               {
                 NavbarLinks.map((link, index) => (
-                  <li key={index} className='text-sky-600 text-lg font-semibold cursor-pointer'>
+                  <li key={index} className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer'>
                     <Link to={link.path}>
                       {link.title}
                     </Link>
@@ -65,21 +85,32 @@ export const Navbar = () => {
           </nav>
         </div>
 
-        {/* display login and signup when user is not logged in  */}
-        <div className='flex flex-row gap-x-3'>
-          <button
-            onClick={handleLoginClick}
-            className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
+        {/* display login and signup only when user is not logged in  */}
+        {!user ?
+          <div className='flex flex-row gap-x-3'>
+            <button
+              onClick={handleLoginClick}
+              className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
           hover:bg-sky-600 hover:text-white'>
-            Login
-          </button>
-          <button
-            onClick={handleSignupClick}
-            className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
+              Login
+            </button>
+            <button
+              onClick={handleSignupClick}
+              className='border-2 border-sky-500 text-sky-600 px-3 py-2 rounded-md font-medium uppercase
             hover:bg-sky-600 hover:text-white'>
-            Signup
-          </button>
-        </div>
+              Signup
+            </button>
+          </div>
+          :
+          <LogoutButton
+            variant='contained'
+            color="primary"
+            rounded
+            size='small'
+            className={'ml-4'}
+          />
+        }
+
       </div>
 
       <div className={`${Style.sm_menu_btn}`}>
@@ -99,6 +130,8 @@ export const Navbar = () => {
         onClose={() => setShow(false)}
         handleLoginClick={handleLoginClick}
         handleSignupClick={handleSignupClick}
+        user={user}
+        role={role}
       />
 
     </div>

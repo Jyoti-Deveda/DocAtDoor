@@ -1,0 +1,16 @@
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 200px;
+}
+
+.link {
+
+    @apply p-2 px-4 text-gray-500 hover:bg-sky-500 hover:text-white
+}
+
+.active_link {
+    @apply bg-sky-500 text-white !important
+}
