@@ -293,4 +293,59 @@ exports.logout = asyncHandler((req, res) => {
 
 })
 
-// module.exports = { userRegister }
+exports.changePassword = asyncHandler(async (req, res) => {
+	const { userId } = req.user;
+	// Get user data from req.user
+	const userDetails = await user.findById(userId);
+
+	const { oldPassword, newPassword, confirmNewPassword } = req.body;
+
+    if(!oldPassword || !newPassword || !confirmNewPassword){
+        res.status(404);
+        throw new Error("All fields are required")
+    }
+
+	// Validate old password
+	const isPasswordMatch = await bcrypt.compare(
+		oldPassword,
+		userDetails.personalDetails.password
+	);
+	if (!isPasswordMatch) {
+		res.status(401)
+        throw new Error("The password is incorrect");
+	}
+
+	// Match new password and confirm new password
+	if (newPassword !== confirmNewPassword) {
+		res.status(400);
+        throw new Error("The password and confirm password does not match");
+	}
+
+	// Update password
+	const encryptedPassword = await bcrypt.hash(newPassword, 10);
+	const updatedUserDetails = await user.findByIdAndUpdate(
+		userId,
+		{ "personalDetails.password": encryptedPassword },
+		{ new: true }
+	);
+
+	// Send notification email
+	try {
+		const emailResponse = await mailSender(
+            updatedUserDetails.personalDetails.email,
+            "Password Updated",
+            `Password updated successfully for ${updatedUserDetails.personalDetails.firstName} ${updatedUserDetails.personalDetails.lastName}`
+        )
+		console.log("Email sent successfully:", emailResponse.response);
+
+	} catch (error) {
+		console.error("Error occurred while sending email:", error);
+		throw new Error(error.message);
+	}
+
+	// Return success response
+	return res.status(200).json({
+        success: true,
+        message: "Password updated successfully" 
+    });
+})

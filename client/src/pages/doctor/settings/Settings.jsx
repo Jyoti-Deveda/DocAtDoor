@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import General from './General/General'
 import UserProfileBox from './userProfileBox/UserProfileBox'
 import DocScheduler from './DocScheduler/DocScheduler'
+import { ChangePassword } from './ChangePassword/ChangePassword'
 
 const Settings = () => {
 
@@ -62,7 +63,9 @@ const Settings = () => {
         },
         {
             label: "Change Password",
-            component: "Change Password"
+            component: (
+                <ChangePassword/>
+            )
         },
     ]
 

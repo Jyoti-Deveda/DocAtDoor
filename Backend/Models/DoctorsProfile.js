@@ -61,7 +61,7 @@ const doctorsProfileSchema = new mongoose.Schema({
             required: true
         },
     },
-    officeDetails: {
+    hospitalDetails: {
         name: {
             type: String,
             required: true
