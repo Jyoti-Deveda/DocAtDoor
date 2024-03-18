@@ -30,12 +30,63 @@ exports.createProfile = asyncHandler(async (req, res) => {
         reg_number, reg_year, state_medical_council
     } = verification_details;
 
+    //validations
     //1 - check if personal details are present
     if (!personal_details || !first_name || !last_name || !email || !bio || !experience) {
         res.status(404);
         throw new Error("Personal details are missing")
     }
+    console.log("Checked personal details")
 
+    //2 - check for hospital_details
+    if (!hospital_details || !name || !city || !state || !postal_code || !contact_info || !experience || !appointment_fee) {
+        res.status(404);
+        throw new Error("Hospital details are missing")
+    }
+    console.log("Checked hospital details: ", hospital_details);
+
+
+    //3 - check for specialization and specialized diseases 
+    if (!specialization || specialization.length <= 0) {
+        res.status(404);
+        throw new Error("Atleast one specialization is required");
+    }
+
+    if (!specializedDiseases || specializedDiseases.length <= 0) {
+        res.status(404);
+        throw new Error("Atleast one disease, the doctor is specialized at is required");
+    }
+    console.log("Checked specialization details")
+
+    //4 - check verification details
+    // console.log("Registration number: ", reg_number)
+    // console.log("Registration year: ", reg_year)
+    // console.log("Registration state medical council: ", state_medical_council)
+    
+    if (!verification_details || !reg_number || !reg_year || !state_medical_council) {
+        res.status(404);
+        throw new Error("Verification details are missing");
+    }
+    console.log("Checked verification details: ", verification_details);
+
+    //5 - check academic_details 
+    if (academic_details && academic_details.length > 0) {
+
+        academic_details.forEach((detail, index) => {
+            if (!detail.university_name || !detail.course || !detail.certification) {
+                res.status(404);
+                throw new Error(`Academic details at index${index} is missing`)
+            }
+        });
+
+    } else {
+        res.status(404);
+        throw new Error("Academic details are required")
+    }
+    console.log("Checked academic details")
+
+    //updations
+    //1 - update firstname and lastname
     try {
         //upadte firstname and lastname
         const userDetails = await user.findByIdAndUpdate(
@@ -53,30 +104,9 @@ exports.createProfile = asyncHandler(async (req, res) => {
         throw new Error(err.message);
     }
 
-    console.log("Checked personal details")
-
-    //2 - check for hospital_details
-    if (!hospital_details || !name || !city || !state || !postal_code || !contact_info || !experience || !appointment_fee) {
-        res.status(404);
-        throw new Error("Hospital details are missing")
-    }
-    console.log("Checked hospital details: ", hospital_details);
-
-
-    //check for specialization and specialized diseases 
-    if (!specialization || specialization.length <= 0) {
-        res.status(404);
-        throw new Error("Atleast one specialization is required");
-    }
-
-    if (!specializedDiseases || specializedDiseases.length <= 0) {
-        res.status(404);
-        throw new Error("Atleast one disease, the doctor is specialized at is required");
-    }
-    console.log("Checked specialization details")
-
-
-    //for each disease a doctor is specialized in, create a disease document if it does not already exist and add doctor id to it
+    
+    //2 - for each disease a doctor is specialized in, 
+    //create a disease document if it does not already exist and add doctorId to it
     const diseasesArr = await Promise.all(specializedDiseases.map(async (disease) => {
 
         const diseaseDetails = await Disease.findOne({ diseaseName: disease });
@@ -104,35 +134,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
         return diseaseId;
     }))
     console.log("Disease array: ", diseasesArr);
-
-    //3 - check academic_details 
-    if (academic_details && academic_details.length > 0) {
-
-        academic_details.forEach((detail, index) => {
-            if (!detail.university_name || !detail.course || !detail.certification) {
-                res.status(404);
-                throw new Error(`Academic details at index${index} is missing`)
-            }
-        });
-
-    } else {
-        res.status(404);
-        throw new Error("Academic details are required")
-    }
-    console.log("Checked academic details")
-
-
-    //check - verification details
-    console.log("Registration number: ", reg_number)
-    console.log("Registration year: ", reg_year)
-    console.log("Registration state medical council: ", state_medical_council)
-    console.log("Checked verification details: ", verification_details);
-
-    if (!verification_details || !reg_number || !reg_year || !state_medical_council) {
-        res.status(404);
-        throw new Error("Verification details are missing");
-    }
-
+    
     const profileDetails = await DoctorsProfile.findOne({ doctorId: userId });
 
     let profile = {
@@ -146,13 +148,12 @@ exports.createProfile = asyncHandler(async (req, res) => {
         hospitalDetails: hospital_details,
     };
 
-    // if (profileDetails) {
-    //     profile.specialization = profileDetails.specialization.concat(specialization);
-    //     profile.specializedDiseases = profileDetails.specializedDiseases.concat(diseasesArr);
-    // }
-
     if (profileDetails) {
-        profile = await DoctorsProfile.findByIdAndUpdate(profileDetails._id, profile, { new: true });
+        profile = await DoctorsProfile.findByIdAndUpdate(
+            profileDetails._id, 
+            profile, 
+            { new: true }
+        );
         console.log("Doctor's updated profile: ", profile);
     } else {
         profile = await DoctorsProfile.create(profile);
