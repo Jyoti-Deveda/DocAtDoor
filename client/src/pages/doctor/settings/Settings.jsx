@@ -5,15 +5,18 @@ import General from './General/General'
 import UserProfileBox from './userProfileBox/UserProfileBox'
 import DocScheduler from './DocScheduler/DocScheduler'
 import { ChangePassword } from './ChangePassword/ChangePassword'
+import useAuth from '@/util/useAuth'
 
 const Settings = () => {
+
+    const { user } = useAuth();
 
     // doctor's details 
     const [data, setData] = useState({
         personal_details: {
             first_name: "",
             last_name: "",
-            email: "",
+            email: user.email,
             bio: "",
             experience: "",
         },
@@ -64,7 +67,7 @@ const Settings = () => {
         {
             label: "Change Password",
             component: (
-                <ChangePassword/>
+                <ChangePassword />
             )
         },
     ]

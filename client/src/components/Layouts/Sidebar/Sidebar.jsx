@@ -3,13 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import logo from '../../../assets/Logo/logo.png';
 import Style from './Sidebar.module.css';
 import useAuth from '@/util/useAuth';
+import { userRoles } from '@/config/config';
 
 const sidebarLinks = {
-    patient: [
+    [userRoles.PATIENT]: [
         { label: 'Dashboard', path: '/patient/dashboard' },
         { label: 'Settings', path: '/patient/settings' },
     ],
-    doctor: [
+    [userRoles.DOCTOR]: [
         { label: 'Dashboard', path: '/doctor/dashboard' },
         { label: 'Settings', path: '/doctor/settings' },
     ]

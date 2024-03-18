@@ -13,6 +13,7 @@ const SearchSelect = ({
     value,
     onChange,
     placeholder = "",
+    id,
 }) => {
     return (
         <Select
@@ -23,6 +24,7 @@ const SearchSelect = ({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
+            id={id ? id : `search-select-${placeholder}`}
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,

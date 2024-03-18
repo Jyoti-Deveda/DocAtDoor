@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AcademicDetailsBox from './AcademicDetailsBox/AcademicDetailsBox'
 import SearchSelect from '@/components/inputs/SearchSelect/SearchSelect'
 import { experienceYears, symptoms } from '@/lib/constant'
+import { createGenrealProfile } from '@/services/Operations/doctor/createProfile'
 
 const General = ({
     UserProfileBox,
@@ -18,36 +19,25 @@ const General = ({
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData(prevState => {
-            // shallow copy 
             const newData = { ...prevState };
-            console.log("New data: ", newData);
-
-            //nestedObj = data;
             let nestedObject = newData;
-
-            //e.g name = verification_details.regsitrationYear
             const fieldPath = name.split('.');
-            //fieldpath = ['verification_details', 'regsitrationYear']
+
             for (let i = 0; i < fieldPath.length - 1; i++) {
                 nestedObject = nestedObject[fieldPath[i]];
-                //nestedObject = data[verification_details];
                 nestedObject[fieldPath[fieldPath.length - 1]] = value;
             }
-            // console.log("Nested object after updates: ", nestedObject);
-
             return newData;
         });
-
-        console.log("Data after changes: ", data);
     };
 
     // handles specialization changes 
-    const handleSpecializationChange = (selectedOptions) => {
+    const handleSearchSelectChange = (selectedOptions, name) => {
         setData(prevState => {
             const newData = { ...prevState };
             let nestedObject = newData;
 
-            nestedObject["hospital_details"]["specialization"] = selectedOptions;
+            nestedObject[name] = selectedOptions;
 
             return newData;
         })
@@ -82,9 +72,8 @@ const General = ({
 
     //handle save and submit
     const handleSubmit = async () => {
-
+        const res = await createGenrealProfile(data);
     }
-
 
     return (
         <SettingsTabWrapper
@@ -118,6 +107,17 @@ const General = ({
                     value={data.personal_details.email}
                     onChange={handleChange}
                 />
+
+                <StyledInput
+                    select
+                    options={experienceYears}
+                    size={"small"}
+                    onChange={handleChange}
+                    name="personal_details.experience"
+                    value={data.personal_details.experience}
+                    label='Years of Experiance'
+                />
+
                 <StyledInput
                     multiline
                     label='Bio'
@@ -170,23 +170,38 @@ const General = ({
                 </div>
 
                 <StyledInput
-                    select
-                    options={experienceYears}
-                    size={"small"}
+                    name='hospital_details.appointment_fee'
+                    value={data.hospital_details.appointment_fee}
                     onChange={handleChange}
-                    name="hospital_details.experience"
-                    value={data.hospital_details.experience}
-                    label='Years of Experiance'
+                    label='Appointment Fee'
+                    size={"small"}
+                    type='number'
+                    isPositive
                 />
 
                 {/* TODO-- change options to actual specialization list  */}
-                <SearchSelect
-                    value={data.hospital_details.specialization}
-                    onChange={handleSpecializationChange}
-                    options={symptoms}
-                    isMulti
-                    placeholder='Select Specializations'
-                />
+                <div className={`flex flex-col gap-1`}>
+                    <span className={`text-sm text-gray-700`}>Specialization</span>
+                    <SearchSelect
+                        value={data.specialization}
+                        onChange={(list) => handleSearchSelectChange(list, 'specialization')}
+                        options={symptoms}
+                        isMulti
+                        placeholder='Select Specializations'
+                    />
+                </div>
+
+                {/* TOTO-- add specializaed diseases to options  */}
+                <div className={`flex flex-col gap-1`}>
+                    <span className={`text-sm text-gray-700`}>Specialized Diseases</span>
+                    <SearchSelect
+                        value={data.specializedDiseases}
+                        onChange={(list) => handleSearchSelectChange(list, 'specializedDiseases')}
+                        options={symptoms}
+                        isMulti
+                        placeholder='Select Specialized Diseases'
+                    />
+                </div>
             </SettingsFormContainer>
 
             <SettingsFormContainer
