@@ -7,3 +7,11 @@ export const objToStringArray = (dataArray) => {
     }
     return arr;
 }
+
+
+export const convertToObjectArray = (stringArray, objectArray) => {
+    return stringArray.map(str => {
+        const foundObject = objectArray.find(obj => obj.value === str);
+        return foundObject ? { label: foundObject.label, value: foundObject.value } : null;
+    }).filter(obj => obj !== null);
+}

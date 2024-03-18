@@ -16,8 +16,17 @@ const General = ({
 }) => {
 
     // handle input change 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (e, type) => {
+        let name = e.target.name;
+        let value;
+        if (type === "file") {
+            // value = e.target.files ? e.target.files[0] : "";
+            // currently saving only a string [name] for file but later have to save the whole file 
+            value = e.target.files[0].name;
+        } else {
+            value = e.target.value;
+        }
+
         setData(prevState => {
             const newData = { ...prevState };
             let nestedObject = newData;
@@ -30,6 +39,7 @@ const General = ({
             return newData;
         });
     };
+    console.log(data?.academic_details)
 
     // handles specialization changes 
     const handleSearchSelectChange = (selectedOptions, name) => {
@@ -66,6 +76,17 @@ const General = ({
             return {
                 ...prevState,
                 academic_details: newAcademicDetails,
+            }
+        })
+    }
+    //handles deletion of academic detail > certificate
+    const removeCertificate = (index) => {
+        setData(prevState => {
+            const newAcademicDetails = [...prevState.academic_details];
+            newAcademicDetails[index].certification = "";
+            return {
+                ...prevState,
+                academic_details: newAcademicDetails
             }
         })
     }
@@ -228,6 +249,7 @@ const General = ({
                         index={index}
                         handleChange={handleChange}
                         onDelete={deleteAcademicDetails}
+                        removeCertificate={removeCertificate}
                     />
                 ))}
             </SettingsFormContainer>

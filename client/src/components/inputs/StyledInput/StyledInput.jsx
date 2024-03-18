@@ -43,14 +43,6 @@ const StyledInput = ({
         if (maxCharacter != -1 && val.length > maxCharacter) {
             return;
         }
-        //handle the date validation
-        // if (type === "date") {
-        //     const currentDate = new Date();
-        //     const inputDate = new Date(val);
-        //     if (inputDate > currentDate) {
-        //         return;
-        //     }
-        // }
 
         onChange(e, ...param);
     }
