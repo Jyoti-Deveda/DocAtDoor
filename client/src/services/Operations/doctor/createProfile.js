@@ -57,6 +57,7 @@ export const createGenrealProfile = async (data) => {
 
     try {
         const res = await apiConnector('POST', doctorEndpoints.CREATE_GENERAL_PROFILE, data);
+        console.log(res);
 
     } catch (error) {
         console.log(error);

@@ -8,3 +8,8 @@ export const authEndpoints = {
     LOGOUT_API: `${BACKEND_URL}user/logout`,
     CHANGE_PASSWORD_API: `${BACKEND_URL}user/change-password`
 }
+
+
+export const doctorEndpoints = {
+    CREATE_GENERAL_PROFILE: `${BACKEND_URL}doctor/create-general-profile`
+}
