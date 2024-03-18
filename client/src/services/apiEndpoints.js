@@ -6,8 +6,5 @@ export const authEndpoints = {
     RESEND_VERIFICATIONTOKEN_API: `${BACKEND_URL}user/generate-verification-token`,
     VERIFYEMAIL_API: `${BACKEND_URL}user/verify-email`,
     LOGOUT_API: `${BACKEND_URL}user/logout`,
-}
-
-export const doctorEndpoints = {
-    CREATE_GENERAL_PROFILE: `${BACKEND_URL}doctor/create-general-profile`
+    CHANGE_PASSWORD_API: `${BACKEND_URL}user/change-password`
 }

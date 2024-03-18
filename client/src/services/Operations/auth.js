@@ -9,7 +9,8 @@ const {
     RESEND_VERIFICATIONTOKEN_API,
     VERIFYEMAIL_API,
     LOGIN_API,
-    LOGOUT_API
+    LOGOUT_API,
+    CHANGE_PASSWORD_API
 } = authEndpoints
 
 export const register = async (data, navigate) => {
@@ -174,6 +175,34 @@ export const logout = async (navigate) => {
     } catch (err) {
         res = err;
         console.log("ERROR IN LOGOUT API: ", err);
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
+    }
+    toast.dismiss(toastId);
+}
+
+export const updatePassword = async (data) => {
+    const toastId = toast.loading();
+    let res = null;
+    try{
+
+        //verify data
+        if(!data?.oldPassword || !data?.newPassword || !data?.confirmNewPassword){
+            throw new Error("All fields are required")
+        }
+
+        res = await apiConnector("POST", CHANGE_PASSWORD_API, data);
+        console.log("CHANGE PASSWORD API RESPONSE: ", res);
+
+        if (!res?.data?.success) {
+            throw new Error("Password update failed");
+        }
+
+        toast.success("Password changed Successfully")
+
+    }catch(err){
+        res = err;
+        console.log("ERROR IN CHANGEPASSWORD API: ", err);
         const message = err?.response?.data?.error || err?.message;
         toast.error(message);
     }

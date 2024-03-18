@@ -67,7 +67,9 @@ const Settings = () => {
         {
             label: "Change Password",
             component: (
-                <ChangePassword />
+                <ChangePassword
+                    UserProfileBox={<UserProfileBox />}
+                />
             )
         },
     ]
