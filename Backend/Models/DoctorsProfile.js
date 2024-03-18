@@ -121,36 +121,36 @@ const doctorsProfileSchema = new mongoose.Schema({
 
         //     }
         // ],
-        timeSlots: [
-            {
-                time: String
-            }
-        ],
-        rating: {
-            value: {
-                type: Number,
-                min: 0,
-                max: 5,
-                default: 0
-            },
-            count: {
-                type: Number,
-                default: 0
-            },
-            ratedBy: [
-                {
-                    userId: {
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: "User"
-                    },
-                    rating: {
-                        type: Number,
-                        min: 0,
-                        max: 5
-                    }
-                }
-            ]
+    },
+    timeSlots: [
+        {
+            time: String
         }
+    ],
+    rating: {
+        value: {
+            type: Number,
+            min: 0,
+            max: 5,
+            default: 0
+        },
+        count: {
+            type: Number,
+            default: 0
+        },
+        ratedBy: [
+            {
+                userId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User"
+                },
+                rating: {
+                    type: Number,
+                    min: 0,
+                    max: 5
+                }
+            }
+        ]
     }
 
 })

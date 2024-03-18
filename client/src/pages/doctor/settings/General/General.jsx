@@ -39,7 +39,7 @@ const General = ({
             return newData;
         });
     };
-    console.log(data?.academic_details)
+    // console.log(data?.academic_details)
 
     // handles specialization changes 
     const handleSearchSelectChange = (selectedOptions, name) => {

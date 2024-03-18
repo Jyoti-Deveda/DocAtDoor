@@ -13,8 +13,8 @@ exports.auth = async (req, res, next) => {
             req.body.authToken
         // || req.header("Authorization").replace("Bearer ", "");
 
-        console.log("Token in middleware")
-        console.log("req.cookies.authToken: ", req.cookies.authToken);
+        // console.log("Token in middleware")
+        // console.log("req.cookies.authToken: ", req.cookies.authToken);
         // console.log("req.body.authToken: ", req.body.authToken);
         // console.log(`req.header("Authorization").replace("Bearer ", ""): `, req.header("Authorization").replace("Bearer ", ""));
 

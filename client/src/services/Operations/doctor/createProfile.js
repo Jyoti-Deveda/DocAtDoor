@@ -73,11 +73,11 @@ export const createGenrealProfile = async (data) => {
 
         toast.success(res?.data.message);
 
-    } catch (error) {
-        res = error;
+    } catch (err) {
+        res = err;
         const message = err?.response?.data?.error || err?.message;
         toast.error(message);
-        console.log("Error in doctor general profile", error);
+        console.log("Error in doctor general profile", err);
     }
     toast.dismiss(toastId)
     return res;

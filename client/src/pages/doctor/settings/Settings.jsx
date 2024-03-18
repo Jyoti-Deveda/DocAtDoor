@@ -1,11 +1,12 @@
 import SettingsFormContainer from '@/components/Common/settingsFormContainer/SettingsFormContainer'
 import CustomTabs from '@/components/Tabs/Tabs'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import General from './General/General'
 import UserProfileBox from './userProfileBox/UserProfileBox'
 import DocScheduler from './DocScheduler/DocScheduler'
 import { ChangePassword } from './ChangePassword/ChangePassword'
 import useAuth from '@/util/useAuth'
+import { getDoctorDetails } from '@/services/Operations/doctor/getDoctorDetails'
 
 const Settings = () => {
 
@@ -43,6 +44,23 @@ const Settings = () => {
         specialization: [],
         specializedDiseases: []
     })
+
+    const getDoctorInfo = async () => {
+        return await getDoctorDetails();
+    }
+
+    useEffect(() => {
+
+        const getDoctorInfo = async () => {
+            const response = await getDoctorDetails();
+            console.log("RESPONSE: ", response);
+            setData(response);
+            console.log("DATA: ", data);
+        }
+
+        getDoctorInfo();
+
+    }, [])
 
 
     const tabs = [
