@@ -1,10 +1,13 @@
 import { doctorEndpoints } from "@/services/apiEndpoints";
 import { apiConnector } from "@/services/apiConnector";
 import toast from "react-hot-toast";
+import { objToStringArray } from "@/util/helpers";
 
 export const createGenrealProfile = async (data) => {
 
-    console.log(data, "in create profile")
+    const modifiedData = { ...data };
+    let res = null;
+    const currentDate = new Date();
 
     const {
         personal_details,
@@ -13,9 +16,9 @@ export const createGenrealProfile = async (data) => {
         verification_details,
         specialization,
         specializedDiseases
-    } = data;
+    } = modifiedData;
 
-    // extract data 
+    // extract modifiedData 
     const {
         first_name, last_name, email, bio, experience
     } = personal_details;
@@ -29,7 +32,7 @@ export const createGenrealProfile = async (data) => {
     // ---checks 
     if (!first_name || !last_name || !email || !bio || !experience) {
         toast.error("Please fill the personal details");
-        return null;
+        return res;
     }
     if (!name ||
         !city ||
@@ -41,31 +44,43 @@ export const createGenrealProfile = async (data) => {
         specialization.length == 0
     ) {
         toast.error("Please fill the hospital details");
-        return null;
+        return res;
     }
     if (academic_details.length == 0 || !academicDetailsCheck(academic_details)) {
         toast.error("Please fill the academic details");
-        return null;
+        return res;
     }
     if (!reg_number || !reg_year || !state_medical_council) {
         toast.error("Please fill the verification details");
-        return null;
+        return res;
+    }
+    const reg_date = new Date(reg_year);
+    if (reg_date > currentDate) {
+        toast.error("Please input the correct registration year");
+        return res;
     }
 
+    modifiedData.specialization = objToStringArray(modifiedData.specialization);
+    modifiedData.specializedDiseases = objToStringArray(modifiedData.specializedDiseases);
 
     // request to backend 
-
+    const toastId = toast.loading("Loading..");
     try {
-        const res = await apiConnector('POST', doctorEndpoints.CREATE_GENERAL_PROFILE, data);
-        console.log(res);
+        const res = await apiConnector('POST', doctorEndpoints.CREATE_GENERAL_PROFILE, modifiedData);
+        if (!res?.data?.success) {
+            throw new Error("Profile creation/updation failed!")
+        }
+
+        toast.success(res?.data.message);
 
     } catch (error) {
-        console.log(error);
+        res = error;
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
+        console.log("Error in doctor general profile", error);
     }
-
-
-
-
+    toast.dismiss(toastId)
+    return res;
 }
 
 const academicDetailsCheck = (academic_details) => {

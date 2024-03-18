@@ -159,13 +159,15 @@ const General = ({
                         value={data.hospital_details.postal_code}
                         name='hospital_details.postal_code'
                         onChange={handleChange}
+                        type='number'
                     />
                     <StyledInput
-                        label='Contact Info'
+                        label='Contact Number'
                         size={"small"}
                         value={data.hospital_details.contact_info}
                         name='hospital_details.contact_info'
                         onChange={handleChange}
+                        type='number'
                     />
                 </div>
 
@@ -240,8 +242,9 @@ const General = ({
                         onChange={handleChange}
                     />
                     <StyledInput
-                        label={"Registration Year"}
+                        label={"Registration Year/Date"}
                         size={"small"}
+                        type='date'
                         value={data.verification_details.reg_year}
                         name='verification_details.reg_year'
                         onChange={handleChange}
