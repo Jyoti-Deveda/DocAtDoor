@@ -249,8 +249,8 @@ const General = ({
                     <StyledInput
                         label='State Medical Council'
                         size={"small"}
-                        value={data.verification_details.state_medial_council}
-                        name='verification_details.state_medial_council'
+                        value={data.verification_details.state_medical_council}
+                        name='verification_details.state_medical_council'
                         onChange={handleChange}
                     />
                 </div>

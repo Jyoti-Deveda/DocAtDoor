@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 export const createGenrealProfile = async (data) => {
 
-    console.log(data)
+    console.log(data, "in create profile")
 
     const {
         personal_details,

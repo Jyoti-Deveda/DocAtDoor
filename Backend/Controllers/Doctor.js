@@ -3,9 +3,11 @@ const DoctorsProfile = require("../Models/DoctorsProfile");
 const Disease = require("../Models/Disease");
 const user = require("../Models/user");
 
-exports.createProfile = asyncHandler(async(req, res) => {
+exports.createProfile = asyncHandler(async (req, res) => {
 
     const { userId } = req.user;
+
+    console.log(req.body)
 
     const {
         personal_details,
@@ -29,12 +31,12 @@ exports.createProfile = asyncHandler(async(req, res) => {
     } = verification_details;
 
     //1 - check if personal details are present
-    if(!personal_details || !first_name || !last_name || !email || !bio || !experience){
+    if (!personal_details || !first_name || !last_name || !email || !bio || !experience) {
         res.status(404);
         throw new Error("Personal details are missing")
     }
 
-    try{
+    try {
         //upadte firstname and lastname
         const userDetails = await user.findByIdAndUpdate(
             userId,
@@ -42,10 +44,10 @@ exports.createProfile = asyncHandler(async(req, res) => {
                 "personalDetails.firstName": first_name,
                 "personalDetails.last_name": last_name
             },
-            {new: true}
+            { new: true }
         )
         console.log("Updated user details: ", userDetails);
-    }catch(err){
+    } catch (err) {
         console.log("Error in updating firstname lastname: ", err);
         res.status(400)
         throw new Error(err.message);
@@ -54,7 +56,7 @@ exports.createProfile = asyncHandler(async(req, res) => {
     console.log("Checked personal details")
 
     //2 - check for hospital_details
-    if(!hospital_details || !name || !city || !state || !postal_code || !contact_info ||  !experience || !appointment_fee){
+    if (!hospital_details || !name || !city || !state || !postal_code || !contact_info || !experience || !appointment_fee) {
         res.status(404);
         throw new Error("Hospital details are missing")
     }
@@ -62,12 +64,12 @@ exports.createProfile = asyncHandler(async(req, res) => {
 
 
     //check for specialization and specialized diseases 
-    if(!specialization || specialization.length <= 0){
+    if (!specialization || specialization.length <= 0) {
         res.status(404);
         throw new Error("Atleast one specialization is required");
     }
 
-    if(!specializedDiseases || specializedDiseases.length <= 0){
+    if (!specializedDiseases || specializedDiseases.length <= 0) {
         res.status(404);
         throw new Error("Atleast one disease, the doctor is specialized at is required");
     }
@@ -77,26 +79,26 @@ exports.createProfile = asyncHandler(async(req, res) => {
     //for each disease a doctor is specialized in, create a disease document if it does not already exist and add doctor id to it
     const diseasesArr = await Promise.all(specializedDiseases.map(async (disease) => {
 
-        const diseaseDetails = await Disease.findOne({diseaseName: disease});
+        const diseaseDetails = await Disease.findOne({ diseaseName: disease });
 
         let diseaseId = null;
         //if disease not already exists in db create new
-        if(!diseaseDetails){
+        if (!diseaseDetails) {
             const newDisease = await Disease.create({
                 diseaseName: disease,
-                doctors:  [userId]
+                doctors: [userId]
             })
             diseaseId = newDisease._id;
         }
         //if disease exist but doctor is not added to disease add it
-        else if(!diseaseDetails.doctors.includes(userId)){
+        else if (!diseaseDetails.doctors.includes(userId)) {
             const updatedDisease = await Disease.findOneAndUpdate(
-                {diseaseName: disease},
-                {$push: {doctors: userId}},
-                {new: true}
+                { diseaseName: disease },
+                { $push: { doctors: userId } },
+                { new: true }
             )
             diseaseId = updatedDisease._id;
-        }else{
+        } else {
             diseaseId = diseaseDetails._id;
         }
         return diseaseId;
@@ -104,16 +106,16 @@ exports.createProfile = asyncHandler(async(req, res) => {
     console.log("Disease array: ", diseasesArr);
 
     //3 - check academic_details 
-    if(academic_details && academic_details.length > 0){
+    if (academic_details && academic_details.length > 0) {
 
         academic_details.forEach((detail, index) => {
-            if(!detail.university_name || !detail.course || !detail.certification ){
+            if (!detail.university_name || !detail.course || !detail.certification) {
                 res.status(404);
                 throw new Error(`Academic details at index${index} is missing`)
             }
         });
 
-    }else{
+    } else {
         res.status(404);
         throw new Error("Academic details are required")
     }
@@ -125,13 +127,13 @@ exports.createProfile = asyncHandler(async(req, res) => {
     console.log("Registration year: ", reg_year)
     console.log("Registration state medical council: ", state_medical_council)
     console.log("Checked verification details: ", verification_details);
-    
-    if(!verification_details || !reg_number || !reg_year || !state_medical_council){
+
+    if (!verification_details || !reg_number || !reg_year || !state_medical_council) {
         res.status(404);
         throw new Error("Verification details are missing");
     }
 
-    const profileDetails = await DoctorsProfile.findOne({doctorId: userId});
+    const profileDetails = await DoctorsProfile.findOne({ doctorId: userId });
 
     let profile = {
         doctorId: userId,
@@ -150,7 +152,7 @@ exports.createProfile = asyncHandler(async(req, res) => {
     // }
 
     if (profileDetails) {
-        profile = await DoctorsProfile.findByIdAndUpdate(profileDetails._id, profile, {new: true});
+        profile = await DoctorsProfile.findByIdAndUpdate(profileDetails._id, profile, { new: true });
         console.log("Doctor's updated profile: ", profile);
     } else {
         profile = await DoctorsProfile.create(profile);
@@ -164,4 +166,3 @@ exports.createProfile = asyncHandler(async(req, res) => {
     })
 });
 
-    

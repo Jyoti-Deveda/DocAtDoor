@@ -1,6 +1,6 @@
 export const roles = [
-    { value: "patient", label: "Patient" },
-    { value: "doctor", label: "Doctor" }
+    { value: "Patient", label: "Patient" },
+    { value: "Doctor", label: "Doctor" }
 ]
 
 export const experienceYears = [

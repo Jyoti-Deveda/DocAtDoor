@@ -38,7 +38,7 @@ const Settings = () => {
         verification_details: {
             reg_number: "",
             reg_year: "",
-            state_medial_council: "",
+            state_medical_council: "",
         },
         specialization: [],
         specializedDiseases: []
