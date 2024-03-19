@@ -11,7 +11,8 @@ import { getDoctorDetails } from '@/services/Operations/doctor/getDoctorDetails'
 const Settings = () => {
 
     const { user } = useAuth();
-
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     // doctor's details 
     const [data, setData] = useState({
         personal_details: {
@@ -52,9 +53,18 @@ const Settings = () => {
     useEffect(() => {
 
         const getDoctorInfo = async () => {
+            setLoading(true);
             const response = await getDoctorDetails();
-            // console.log("RESPONSE: ", response);
-            setData(response);
+            console.log("RESPONSE: ", response);
+            if (response.error) {
+                setData(null)
+                setError(response.message);
+            }
+            else {
+                setData(response);
+                setError(null);
+            }
+            setLoading(false);
             // console.log("DATA: ", data);
         }
 
@@ -71,6 +81,8 @@ const Settings = () => {
                     data={data}
                     setData={setData}
                     UserProfileBox={<UserProfileBox />}
+                    loading={loading}
+                    error={error}
                 />
             )
         },

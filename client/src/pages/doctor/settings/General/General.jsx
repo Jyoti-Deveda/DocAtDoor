@@ -9,11 +9,14 @@ import SearchSelect from '@/components/inputs/SearchSelect/SearchSelect'
 import { experienceYears, symptoms } from '@/lib/constant'
 import { createGenrealProfile } from '@/services/Operations/doctor/createProfile'
 import Loading from '@/components/Common/Loading/Loading'
+import { CustomError } from '@/components/Common/CustomError/CustomError'
 
 const General = ({
     UserProfileBox,
     data,
-    setData
+    setData,
+    loading,
+    error
 }) => {
 
     // handle input change 
@@ -97,11 +100,20 @@ const General = ({
         const res = await createGenrealProfile(data);
     }
 
+
+    // handeling data fecthing states like loading and error 
+    if (loading) {
+        return <Loading />
+    }
+    if (error) {
+        return <CustomError message={error} />
+    }
+
     return (
         <SettingsTabWrapper
             UserProfileBox={UserProfileBox}
         >
-            {data ?
+            {data &&
                 <>
                     <SettingsFormContainer
                         title='Personal Details'
@@ -295,8 +307,6 @@ const General = ({
                         </CustomButton>
                     </div>
                 </>
-                :
-                <Loading />
             }
         </SettingsTabWrapper>
 

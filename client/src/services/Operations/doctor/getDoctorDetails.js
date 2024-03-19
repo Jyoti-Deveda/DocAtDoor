@@ -34,8 +34,8 @@ export const getDoctorDetails = async () => {
 
 
     } catch (err) {
-        res = err;
         const message = err?.response?.data?.error || err?.message;
+        res = { error: true, message };
         toast.error(message);
         console.log("Error in doctor general profile", err);
     }

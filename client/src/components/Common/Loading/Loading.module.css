@@ -1,0 +1,16 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 15;
+}
+
+.loading {
+    @apply border-gray-300 h-20 w-20 animate-spin rounded-full border-8 border-t-blue-600
+}

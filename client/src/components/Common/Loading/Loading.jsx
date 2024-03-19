@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import Style from "./Loading.module.css";
 
 const Loading = () => {
     return (
-        <div className={`flex flex-1 justify-center items-center`}>
-            Loading...
+        <div className={`${Style.container}`}>
+            <div className={`${Style.loading} `} />
         </div>
     )
 }

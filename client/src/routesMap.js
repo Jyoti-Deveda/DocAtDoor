@@ -8,6 +8,7 @@ import { VerifyEmailMessage } from "./pages/authentication/email-verification/Ve
 import { EmailVerified } from "./pages/authentication/email-verified/EmailVerified";
 import { CustomError } from "./components/Common/CustomError/CustomError";
 import { userRoles } from "./config/config";
+import PatientSettings from "./pages/patient/settings/Settings";
 
 const PATIENT = userRoles.PATIENT
 const DOCTOR = userRoles.DOCTOR
@@ -50,12 +51,12 @@ export const protectedRoutesMap = {
         path: '/doc-list/:disease',
         component: Home
     },
-    '/settings': {
+    '/patient/settings': {
         protected: true,
         allowed_roles: [PATIENT],
         label: 'Settings',
-        path: '/settings',
-        component: Home
+        path: '/patient/settings',
+        component: PatientSettings
     },
 
     // route for doctor 
