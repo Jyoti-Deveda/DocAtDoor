@@ -53,9 +53,9 @@ const Settings = () => {
 
         const getDoctorInfo = async () => {
             const response = await getDoctorDetails();
-            console.log("RESPONSE: ", response);
+            // console.log("RESPONSE: ", response);
             setData(response);
-            console.log("DATA: ", data);
+            // console.log("DATA: ", data);
         }
 
         getDoctorInfo();
