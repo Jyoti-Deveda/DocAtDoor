@@ -8,6 +8,7 @@ import { userRoles } from '@/config/config';
 const sidebarLinks = {
     [userRoles.PATIENT]: [
         { label: 'Dashboard', path: '/patient/dashboard' },
+        { label: 'Search', path: '/search-doctor' },
         { label: 'Settings', path: '/patient/settings' },
     ],
     [userRoles.DOCTOR]: [

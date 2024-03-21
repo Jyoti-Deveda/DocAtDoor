@@ -1,0 +1,13 @@
+.container {
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    @apply rounded-2xl flex gap-6 items-stretch justify-between
+}
+
+
+.container:hover {
+    background-color: var(--neutral);
+    scale: 1.05;
+}

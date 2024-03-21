@@ -8,9 +8,16 @@ import General from './General/General'
 
 const Settings = () => {
 
+    const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({
+        personal_details: {
+            first_name: "",
+            last_name: "",
+            email: user.email,
+        }
+    });
 
     const tabs = [
         {
@@ -18,6 +25,10 @@ const Settings = () => {
             component: (
                 <General
                     UserProfileBox={<UserProfileBox />}
+                    data={data}
+                    setData={setData}
+                    loading={loading}
+                    error={error}
                 />
             )
         },

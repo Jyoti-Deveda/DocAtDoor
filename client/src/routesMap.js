@@ -9,6 +9,8 @@ import { EmailVerified } from "./pages/authentication/email-verified/EmailVerifi
 import { CustomError } from "./components/Common/CustomError/CustomError";
 import { userRoles } from "./config/config";
 import PatientSettings from "./pages/patient/settings/Settings";
+import DocListing from "./pages/patient/docListing/DocListing";
+import ViewDoctor from "./pages/patient/viewDoctor/ViewDoctor";
 
 const PATIENT = userRoles.PATIENT
 const DOCTOR = userRoles.DOCTOR
@@ -44,12 +46,19 @@ export const protectedRoutesMap = {
         path: '/search-doctor',
         component: DocSearch
     },
-    '/doc-list/:disease': {
+    '/search-doctor/doctor/:id': {
+        protected: true,
+        allowed_roles: [PATIENT],
+        label: 'Doctor',
+        path: '/search-doctor/doctor/:id',
+        component: ViewDoctor
+    },
+    '/search-doctor/:disease': {
         protected: true,
         allowed_roles: [PATIENT],
         label: 'Doctor List',
-        path: '/doc-list/:disease',
-        component: Home
+        path: '/search-doctor/:disease',
+        component: DocListing
     },
     '/patient/settings': {
         protected: true,

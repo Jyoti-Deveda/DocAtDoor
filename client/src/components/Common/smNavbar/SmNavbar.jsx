@@ -74,8 +74,8 @@ const SmNavbar = ({
                     }
 
                     {NavbarLinks.map((link, index) => (
-                        <Link to={link.path} onClick={handleClick}>
-                            <div key={index} className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer px-2'>
+                        <Link key={index} to={link.path} onClick={handleClick}>
+                            <div className='text-sky-600 hover:text-sky-300 text-lg font-semibold cursor-pointer px-2'>
                                 {link.title}
                             </div>
                         </Link>
