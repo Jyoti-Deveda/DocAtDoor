@@ -18,6 +18,7 @@ exports.auth = async (req, res, next) => {
         // console.log("req.body.authToken: ", req.body.authToken);
         // console.log(`req.header("Authorization").replace("Bearer ", ""): `, req.header("Authorization").replace("Bearer ", ""));
 
+        console.log("Req.files: ", req.files);
         if (!token) {
             return res.status(401).json({
                 success: false,

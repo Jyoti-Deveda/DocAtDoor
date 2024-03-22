@@ -5,7 +5,8 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 const mailSender = require("../Utils/mailSender");
-
+const { uploadImageToCloudinary } = require("../Utils/imageUploader");
+const { supportedFiletypes } = require('../constants')
 
 // @desc register user
 // @route POST /api/users/register
@@ -349,3 +350,60 @@ exports.changePassword = asyncHandler(async (req, res) => {
         message: "Password updated successfully" 
     });
 })
+
+
+exports.updateDisplayPicture = asyncHandler(async (req, res) => {
+
+    const { userId } = req.user;
+
+    if(!req.files || Object.keys(req.files).length === 0){
+        res.status(400);
+        throw new Error("file is missing")
+    }
+
+    const profileImage = req.files.profileImage;
+    console.log("Profile image: ", profileImage);
+
+    if(!profileImage){
+        res.status(400);
+        throw new Error("Profile image is missing");
+    }
+
+    const fileType = profileImage.name.split('.').pop();
+    console.log("FILE TYPE: ", fileType);
+    //checking if file type is supported
+    if(!supportedFiletypes.includes(fileType)){
+        res.status(400);
+        throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
+    }
+
+    const image = await uploadImageToCloudinary(profileImage, process.env.FOLDER_NAME, 1000, 1000);
+    console.log("Uploaded image URL: ", image);
+
+    if(!image){
+        res.status(400);
+        throw new Error("Error in uploading image")
+    }
+
+    const updatedUserDetails = await user.findById(
+        userId,
+        { image: image?.secure_url },
+        { new: true }
+    )
+
+    console.log("Updated user details: ", updatedUserDetails);
+
+    if(!updatedUserDetails){
+        res.status(400);
+        throw new Error("Error in updating image")
+    }
+
+    res.status(200).json({
+        success: true,
+        userData: updatedUserDetails,
+        message: "Image updated successfully"
+    })
+
+    
+})
+

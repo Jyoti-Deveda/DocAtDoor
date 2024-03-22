@@ -1,20 +1,30 @@
-const expressAsyncHandler = require('express-async-handler');
-const multer = require('multer');
-const User = require('../Models/user');
+// const multer = require('multer');
 
-const upload = multer({dest: 'uploads/'});
 
-const router = require('express').Router();
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, './uploads/');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, Date.now()+'-'+file.originalname);
+//     }
+// })
 
-router.post('/upload-image', upload.single('profileImage'), expressAsyncHandler(async (req, res) => {
+// const upload = multer({ storage: storage })
 
-    console.log(req.file)
-    const { userId } = req.body;
+// exports.upload = upload;
 
-    await User.findByIdAndUpdate(userId, {
-        image: req.file.pathname
-    })
+const cloudinary = require('cloudinary').v2;
 
-}))
+exports.uploadImageToCloudinary = async (file, folder, height, quality) => {
+    const options = {folder};
+    if(height){
+        options.height = height;
+    }
+    if(quality){
+        options.quality = quality;
+    }
+    options.resource_type = "auto";
 
-module.exports = router;
+    return await cloudinary.uploader.upload(file.tempFilePath, options);
+}

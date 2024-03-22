@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv').config;
 const { spawn } = require("child_process")
+const fileUpload = require('express-fileupload')
 
 const dbConnect = require('./Config/database');
 const errorHandler = require('./Middlewares/errorHandler');
@@ -10,7 +11,7 @@ const cookieParser = require('cookie-parser');
 const pythonRoutes = require("./routes/pythonScriptRoutes")
 const userRoutes = require('./routes/userRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
-
+const { cloudinaryConnect } = require('./Config/Cloudinary');
 
 // connect database here 
 dbConnect();
@@ -24,6 +25,15 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }));
+
+app.use(
+    fileUpload({
+        useTempFiles: true,
+        tempFileDir:'/tmp',
+    })
+)
+
+cloudinaryConnect();
 
 app.use(express.json());
 app.use(cookieParser())

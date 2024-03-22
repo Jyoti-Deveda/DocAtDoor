@@ -6,7 +6,8 @@ export const authEndpoints = {
     RESEND_VERIFICATIONTOKEN_API: `${BACKEND_URL}user/generate-verification-token`,
     VERIFYEMAIL_API: `${BACKEND_URL}user/verify-email`,
     LOGOUT_API: `${BACKEND_URL}user/logout`,
-    CHANGE_PASSWORD_API: `${BACKEND_URL}user/change-password`
+    CHANGE_PASSWORD_API: `${BACKEND_URL}user/change-password`,
+    UPDATE_PROFILE_IMAGE: `${BACKEND}user/update-profile-image`
 }
 
 
