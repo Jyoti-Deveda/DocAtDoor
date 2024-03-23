@@ -19,16 +19,28 @@ export const convertToObjectArray = (stringArray, objectArray) => {
 
 
 // this gives the array of date object label, value of 7 days from today
-export const generateDateOptions = () => {
-    const today = new Date();
+export const generateDateOptions = (availableDates) => {
+
+    const dates = Object.keys(availableDates);
     const options = [];
 
-    for (let i = 0; i < 7; i++) {
-        const date = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
-        const label = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit' });
-        const value = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })
-        options.push({ label, value });
-    }
-
+    dates.map(item => {
+        options.push({
+            label: item.substring(0, 5),
+            value: item,
+        })
+    })
     return options;
+
+    // const today = new Date();
+    // const options = [];
+
+    // for (let i = 0; i < 7; i++) {
+    //     const date = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
+    //     const label = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit' });
+    //     const value = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    //     options.push({ label, value });
+    // }
+
+    // return options;
 };

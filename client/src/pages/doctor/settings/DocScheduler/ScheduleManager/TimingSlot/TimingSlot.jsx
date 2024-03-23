@@ -54,17 +54,18 @@ const TimingSlot = ({
                 />
             </div>
 
-            <CustomButton
-                iconButton
-                size='small'
-                variant='text'
-                color='danger'
-                boxShadow={false}
-                className={`mb-2`}
-                onClick={handleDelete}
-            >
-                <Delete fontSize='small' />
-            </CustomButton>
+            {index > 0 &&
+                <CustomButton
+                    iconButton
+                    size='small'
+                    variant='text'
+                    color='danger'
+                    boxShadow={false}
+                    className={`mb-2`}
+                    onClick={handleDelete}
+                >
+                    <Delete fontSize='small' />
+                </CustomButton>}
         </div>
     )
 }
