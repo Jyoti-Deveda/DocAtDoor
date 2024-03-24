@@ -80,7 +80,11 @@ const Settings = () => {
                 <General
                     data={data}
                     setData={setData}
-                    UserProfileBox={<UserProfileBox />}
+                    UserProfileBox={
+                        <UserProfileBox
+                            data={data}
+                        />
+                    }
                     loading={loading}
                     error={error}
                 />

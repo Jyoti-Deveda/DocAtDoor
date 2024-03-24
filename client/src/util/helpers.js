@@ -31,16 +31,14 @@ export const generateDateOptions = (availableDates) => {
         })
     })
     return options;
-
-    // const today = new Date();
-    // const options = [];
-
-    // for (let i = 0; i < 7; i++) {
-    //     const date = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
-    //     const label = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit' });
-    //     const value = date.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })
-    //     options.push({ label, value });
-    // }
-
-    // return options;
 };
+
+
+// take file object and convert it to data url 
+export const toDataURL = (file) =>
+    new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = () => resolve(fileReader.result);
+        fileReader.onerror = () => reject(fileReader.error);
+        fileReader.readAsDataURL(file);
+    });

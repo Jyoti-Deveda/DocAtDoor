@@ -7,7 +7,8 @@ export const authEndpoints = {
     VERIFYEMAIL_API: `${BACKEND_URL}user/verify-email`,
     LOGOUT_API: `${BACKEND_URL}user/logout`,
     CHANGE_PASSWORD_API: `${BACKEND_URL}user/change-password`,
-    UPDATE_PROFILE_IMAGE: `${BACKEND_URL}user/update-profile-image`
+    UPDATE_PROFILE_IMAGE: `${BACKEND_URL}user/update-profile-image`,
+    GET_PROFILE_IMAGE: `${BACKEND_URL}user/get-profile-image`,
 }
 
 
