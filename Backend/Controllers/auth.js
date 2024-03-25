@@ -385,7 +385,7 @@ exports.updateDisplayPicture = asyncHandler(async (req, res) => {
         throw new Error("Error in uploading image")
     }
 
-    const updatedUserDetails = await user.findById(
+    const updatedUserDetails = await user.findByIdAndUpdate(
         userId,
         { image: image?.secure_url },
         { new: true }
@@ -400,7 +400,7 @@ exports.updateDisplayPicture = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         success: true,
-        userData: updatedUserDetails,
+        image: updatedUserDetails.image,
         message: "Image updated successfully"
     })
 

@@ -37,7 +37,13 @@ const UserProfileBox = ({
 
     // handles the submition of new dp 
     const handleSubmit = async () => {
-        const res = await changeDp(dp);
+        const data = await changeDp(dp);
+        console.log("🚀 ~ handleSubmit ~ data:", data)
+
+        if (data?.success) {
+            setDp(null);
+            setCurrentDp(data?.image)
+        }
     }
 
     useEffect(() => {
@@ -61,7 +67,6 @@ const UserProfileBox = ({
 
                         <img
                             src={dp?.image ? dp?.image : currentDp}
-                            // src={`https://api.dicebear.com/7.x/shapes/svg?seed=A`}
                             alt="Image"
                             className={`h-10 w-10 md:h-20 md:w-20 rounded-full`} />
 
@@ -84,7 +89,7 @@ const UserProfileBox = ({
                             id='edit-dp'
                             style={{ display: 'none' }}
                             onChange={handleDpChange}
-                            accept="image/jpeg, image/png, image/svg+xml"
+                            accept="image/jpeg, image/png, image/jpg"
                         />
                     </div>
                 </div>

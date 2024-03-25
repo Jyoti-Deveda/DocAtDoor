@@ -16,8 +16,10 @@ export const changeDp = async (data) => {
 
         res = await apiConnector('POST', authEndpoints.UPDATE_PROFILE_IMAGE, formData);
 
-        if (res?.success) {
-            toast.success(res?.message)
+        if (res?.data?.success) {
+            toast.success(res?.data?.message)
+            toast.dismiss(toastId);
+            return res?.data;
         }
         else {
             toast.error("An erorr occured");

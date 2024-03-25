@@ -12,4 +12,4 @@ exports.userRoles = {
     PATIENT: 'Patient'
 }
 
-exports.supportedFiletypes = ["jpg", "jpeg", "png", "pdf", "svg"];
+exports.supportedFiletypes = ["jpg", "jpeg", "png", "pdf"];
