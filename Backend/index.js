@@ -21,7 +21,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors({
     origin: "http://localhost:5173",
-    methods:"*",
+    methods: "*",
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }));
@@ -29,7 +29,7 @@ app.use(cors({
 app.use(
     fileUpload({
         useTempFiles: true,
-        tempFileDir:'/tmp',
+        tempFileDir: '/tmp',
     })
 )
 

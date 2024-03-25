@@ -7,7 +7,7 @@ const { userRoles } = require('../constants');
 exports.auth = async (req, res, next) => {
     try {
         //extract token
-        console.log("Before token verification")
+        // console.log("Before token verification")
         // console.log("req ", req);
         const token = req.cookies.authToken ||
             req.body.authToken
@@ -18,7 +18,7 @@ exports.auth = async (req, res, next) => {
         // console.log("req.body.authToken: ", req.body.authToken);
         // console.log(`req.header("Authorization").replace("Bearer ", ""): `, req.header("Authorization").replace("Bearer ", ""));
 
-        console.log("Req.files: ", req.files);
+        // console.log("Req.files: ", req.files);
         if (!token) {
             return res.status(401).json({
                 success: false,
@@ -28,7 +28,7 @@ exports.auth = async (req, res, next) => {
 
         try {
             const decode = jwt.verify(token, process.env.JWT_SECRET);
-            console.log("decode ", decode);
+            // console.log("decode ", decode);
             req.user = decode;
             // console.log("Verified token")
 

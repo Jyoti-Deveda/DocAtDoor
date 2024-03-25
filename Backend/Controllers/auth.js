@@ -248,7 +248,7 @@ exports.login = asyncHandler(async (req, res) => {
         // console.log("Created token")
         userDetails.authToken = authToken;
         userDetails.personalDetails.password = undefined;
-        
+
         const userData = {
             ...userDetails.personalDetails,
             userType: userDetails.userType,
@@ -281,10 +281,10 @@ exports.login = asyncHandler(async (req, res) => {
 
 exports.logout = asyncHandler((req, res) => {
 
-    try{
-        res.clearCookie('authToken', {path: '/'});
-    }catch(err){
-        throw new Error(err);    
+    try {
+        res.clearCookie('authToken', { path: '/' });
+    } catch (err) {
+        throw new Error(err);
     }
 
     res.json({
@@ -295,76 +295,76 @@ exports.logout = asyncHandler((req, res) => {
 })
 
 exports.changePassword = asyncHandler(async (req, res) => {
-	const { userId } = req.user;
-	// Get user data from req.user
-	const userDetails = await user.findById(userId);
+    const { userId } = req.user;
+    // Get user data from req.user
+    const userDetails = await user.findById(userId);
 
-	const { oldPassword, newPassword, confirmNewPassword } = req.body;
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
 
-    if(!oldPassword || !newPassword || !confirmNewPassword){
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
         res.status(404);
         throw new Error("All fields are required")
     }
 
-	// Validate old password
-	const isPasswordMatch = await bcrypt.compare(
-		oldPassword,
-		userDetails.personalDetails.password
-	);
-	if (!isPasswordMatch) {
-		res.status(401)
+    // Validate old password
+    const isPasswordMatch = await bcrypt.compare(
+        oldPassword,
+        userDetails.personalDetails.password
+    );
+    if (!isPasswordMatch) {
+        res.status(401)
         throw new Error("The password is incorrect");
-	}
+    }
 
-	// Match new password and confirm new password
-	if (newPassword !== confirmNewPassword) {
-		res.status(400);
+    // Match new password and confirm new password
+    if (newPassword !== confirmNewPassword) {
+        res.status(400);
         throw new Error("The password and confirm password does not match");
-	}
+    }
 
-	// Update password
-	const encryptedPassword = await bcrypt.hash(newPassword, 10);
-	const updatedUserDetails = await user.findByIdAndUpdate(
-		userId,
-		{ "personalDetails.password": encryptedPassword },
-		{ new: true }
-	);
+    // Update password
+    const encryptedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUserDetails = await user.findByIdAndUpdate(
+        userId,
+        { "personalDetails.password": encryptedPassword },
+        { new: true }
+    );
 
-	// Send notification email
-	try {
-		const emailResponse = await mailSender(
+    // Send notification email
+    try {
+        const emailResponse = await mailSender(
             updatedUserDetails.personalDetails.email,
             "Password Updated",
             `Password updated successfully for ${updatedUserDetails.personalDetails.firstName} ${updatedUserDetails.personalDetails.lastName}`
         )
-		console.log("Email sent successfully:", emailResponse.response);
+        console.log("Email sent successfully:", emailResponse.response);
 
-	} catch (error) {
-		console.error("Error occurred while sending email:", error);
-		throw new Error(error.message);
-	}
+    } catch (error) {
+        console.error("Error occurred while sending email:", error);
+        throw new Error(error.message);
+    }
 
-	// Return success response
-	return res.status(200).json({
+    // Return success response
+    return res.status(200).json({
         success: true,
-        message: "Password updated successfully" 
+        message: "Password updated successfully"
     });
 })
 
-
+// this will update the users's profile image 
 exports.updateDisplayPicture = asyncHandler(async (req, res) => {
 
     const { userId } = req.user;
 
-    if(!req.files || Object.keys(req.files).length === 0){
+    if (!req.files || Object.keys(req.files).length === 0) {
         res.status(400);
         throw new Error("file is missing")
     }
 
-    const profileImage = req.files.profileImage;
-    console.log("Profile image: ", profileImage);
+    const profileImage = req.files.file;
+    // console.log("Profile image: ", profileImage);
 
-    if(!profileImage){
+    if (!profileImage) {
         res.status(400);
         throw new Error("Profile image is missing");
     }
@@ -372,15 +372,15 @@ exports.updateDisplayPicture = asyncHandler(async (req, res) => {
     const fileType = profileImage.name.split('.').pop();
     console.log("FILE TYPE: ", fileType);
     //checking if file type is supported
-    if(!supportedFiletypes.includes(fileType)){
+    if (!supportedFiletypes.includes(fileType)) {
         res.status(400);
-        throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
+        throw new Error("File type is not supported. Type should be png, jpg, jpeg, svg or pdf");
     }
 
     const image = await uploadImageToCloudinary(profileImage, process.env.FOLDER_NAME, 1000, 1000);
     console.log("Uploaded image URL: ", image);
 
-    if(!image){
+    if (!image) {
         res.status(400);
         throw new Error("Error in uploading image")
     }
@@ -393,7 +393,7 @@ exports.updateDisplayPicture = asyncHandler(async (req, res) => {
 
     console.log("Updated user details: ", updatedUserDetails);
 
-    if(!updatedUserDetails){
+    if (!updatedUserDetails) {
         res.status(400);
         throw new Error("Error in updating image")
     }
@@ -404,6 +404,30 @@ exports.updateDisplayPicture = asyncHandler(async (req, res) => {
         message: "Image updated successfully"
     })
 
-    
+
 })
+
+exports.get_profile_image = asyncHandler(async (req, res) => {
+
+    const { userId } = req.user;
+
+    if (!userId) {
+        res.statusCode(400);
+        throw new Error("user not found");
+    }
+
+    const userDetails = await user.findById(userId);
+
+    // console.log(userDetails);
+
+    if (!userDetails) {
+        res.status(404);
+        throw new Error("User Not Found!");
+    }
+    res.status(200).json({
+        success: true,
+        image: userDetails?.image,
+        message: "Image fetched successully"
+    });
+});
 
