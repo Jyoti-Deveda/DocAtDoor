@@ -52,9 +52,9 @@ exports.runPythonScript = async (req, res) => {
 
         const pythonProcess = spawn('python', ["../python/main.py"]);
         const writableStream = pythonProcess.stdin;
-        const test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain'];
+        // const test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain'];
 
-        writableStream.write(JSON.stringify(test_data));
+        writableStream.write(JSON.stringify(symptoms));
         writableStream.end();
 
         const response = [];

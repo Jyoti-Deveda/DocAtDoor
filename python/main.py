@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 import numpy as np
+import json
 
 # Get the directory path of the current Python script
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -102,7 +103,7 @@ class DiseasePrediction:
         if show_fig:
             plt.show()
         plt.savefig('feature_correlation.png')
-        print("Feature correlation done!!")
+        # print("Feature correlation done!!")
 
 
     # Dataset Train Validation Split
@@ -127,7 +128,7 @@ class DiseasePrediction:
         elif self.model_name == 'gradient_boost':
             self.clf = GradientBoostingClassifier(n_estimators=self.config['model']['gradient_boost']['n_estimators'],
                                                   criterion=self.config['model']['gradient_boost']['criterion'])
-        print("Model selection done!!")
+        # print("Model selection done!!")
         return self.clf
 
     # ML Model
@@ -162,7 +163,7 @@ class DiseasePrediction:
 
         # Save Trained Model
         dump(classifier, os.path.join(current_dir, str(self.model_save_path + self.model_name + ".joblib")))
-        print("Model trained and dumped")
+        # print("Model trained and dumped")
 
     # Function to Make Predictions on Test Data
     def make_prediction(self, saved_model_name=None, test_data=None):
@@ -182,7 +183,7 @@ class DiseasePrediction:
             result = clf.predict(self.test_features)
         accuracy = accuracy_score(self.test_labels, result)
         clf_report = classification_report(self.test_labels, result)
-        print("Prediction done")
+        # print("Prediction done")
         return accuracy, clf_report
 
 # a function that converts symptoms in string to an array 
@@ -207,28 +208,39 @@ def main():
     dp = DiseasePrediction(model_name=current_model_name)
     # Train the Model
     dp.train_model()
+
     # Get Model Performance on Test Data as a list
-    test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain']
+    # test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain']
     # print("Type of test data: ", type(test_data))
+
+    #data from user input
+    userInput = json.loads(sys.stdin.read())
+    symptoms_list = userInput['symptoms']
+    # print("Type of user Input: ", type(symptoms_list))
+    # print("User Input: ", symptoms_list)
     
     # get the symptoms as a list from test dataset features 
     allsymptoms = list(dp.test_features.columns)
     # print("All symptoms: ", allsymptoms)
-    data = processUserInput(allsymptoms, test_data)
+    # data = processUserInput(allsymptoms, test_data)
+    data = processUserInput(allsymptoms, symptoms_list)
     if dp.verbose:
         print("Data: ", data)
-    # userInput = sys.stdin.read()
-    # print("User Input: ", userInput)
+    
     # test_accuracy, classification_report = dp.make_prediction(saved_model_name=current_model_name)
 
     # predicted result is a numpy array 
     predResult = dp.make_prediction(saved_model_name=current_model_name, test_data=data)
-    print("PREDICTED RESULT: ", predResult)
+    # print("PREDICTED RESULT: ", predResult)
+    response = {
+        "prediction": predResult.tolist()  # Convert numpy array to list for JSON serialization
+    }
+    print(json.dumps(response))
     
     # print("TYPE OF PREDICTED RESULT: ", type(predResult))
     # print("Model Test Accuracy: ", test_accuracy)
     # print("Test Data Classification Report: \n", classification_report)
-    print("Executed main.py")
+    # print("Executed main.py")
 
 
 if __name__ == "__main__":
@@ -236,4 +248,8 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print("An error occurred: ", e)
+        response = {
+            "error": e.tolist()  
+        }
+        print(json.dumps(response))
 

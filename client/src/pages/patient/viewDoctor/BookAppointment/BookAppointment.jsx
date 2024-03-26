@@ -7,7 +7,6 @@ import { dummyData } from './dummyData'
 
 const BookAppointment = () => {
 
-
     // this will be selected by patient 
     const [data, setData] = useState({
         date: "",

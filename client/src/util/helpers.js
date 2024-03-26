@@ -19,7 +19,6 @@ export const convertToObjectArray = (stringArray, objectArray) => {
     }).filter(obj => obj !== null);
 }
 
-
 // this gives the array of date object label, value of 7 days from today
 export const generateDateOptions = (availableDates) => {
 

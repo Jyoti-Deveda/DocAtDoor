@@ -8,6 +8,7 @@ const DateSelector = ({
     availableData,
 }) => {
 
+    //array of dates
     const datesOption = generateDateOptions(availableData);
     const value = data?.date;
 

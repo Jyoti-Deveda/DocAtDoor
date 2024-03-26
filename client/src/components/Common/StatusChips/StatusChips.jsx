@@ -8,7 +8,7 @@ const StatusChips = ({
     status = '',
     variant = 'default',
     rounded = false,
-    color = 'priamry',
+    color = 'primary',
     style,
     noMargin = false,
     fontSize = 'default',

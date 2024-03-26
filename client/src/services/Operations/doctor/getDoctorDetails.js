@@ -13,14 +13,14 @@ export const getDoctorDetails = async () => {
     try {
 
         res = await apiConnector("GET", doctorEndpoints.GET_DOCTOR_DETAILS);
+        console.log("GET DOCTORS DETAILS API RESPONSE: ", res);
 
         if (!res?.data?.success) {
             throw new Error("Profile creation/updation failed!")
         }
 
+        toast.success(res?.data?.message); 
         res = res?.data?.doctor
-
-        toast.success(res?.data?.message);
 
         const newData = { ...res };
 
@@ -29,8 +29,6 @@ export const getDoctorDetails = async () => {
         newData["specializedDiseases"] = convertToObjectArray(newData?.specializedDiseases, symptoms);
 
         res = newData
-
-        console.log("GET DOCTOR DETAILS RESPONSE: ", newData);
 
 
     } catch (err) {

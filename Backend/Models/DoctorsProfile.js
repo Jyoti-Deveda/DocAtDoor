@@ -30,6 +30,10 @@ const doctorsProfileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    verified: {
+        type: Boolean,
+        default: true
+    },
     educationalQualification: [
         {
             university_name: {
@@ -86,45 +90,11 @@ const doctorsProfileSchema = new mongoose.Schema({
             type: Number,
             required: true
         },
-        // address: {
-        //     hospitalName: {
-        //         type: String,
-        //         required: true
-        //     },
-        //     city: {
-        //         type: String,
-        //         required: true
-        //     },
-        //     state: {
-        //         type: String,
-        //         required: true
-        //     },
-        //     postalCode: {
-        //         type: Number,
-        //         required: true
-        //     },
-        // },
-        // treatments:[
-        //     {
-        //         name: {
-        //             type: String,
-        //             required: true
-        //         },
-        //         desc: {
-        //             type: String,
-        //             required: true,
-        //         },
-        //         fees: {
-        //             type: Number,
-        //             required: true
-        //         }
-
-        //     }
-        // ],
     },
-    timeSlots: [
+    workingDays: [
         {
-            time: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ScheduledDays'
         }
     ],
     rating: {
@@ -154,5 +124,17 @@ const doctorsProfileSchema = new mongoose.Schema({
     }
 
 })
+
+// Post-save middleware to limit workingDays array to only 7 elements
+doctorsProfileSchema.post('save', async function(doc) {
+    if (doc.workingDays.length > 7) {
+        // Remove the older entries to get only the recent 7 days' data
+        const recentWorkingDays = doc.workingDays.slice(-7);
+        doc.workingDays = recentWorkingDays;
+        await doc.save(); // Save the document again to update the workingDays array
+    }
+});
+
+
 
 module.exports = mongoose.model('DoctorsProfile', doctorsProfileSchema);
