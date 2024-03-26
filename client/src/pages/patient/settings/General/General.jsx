@@ -1,3 +1,4 @@
+import { CustomError } from '@/components/Common/CustomError/CustomError'
 import Loading from '@/components/Common/Loading/Loading'
 import SettingsFormContainer from '@/components/Common/settingsFormContainer/SettingsFormContainer'
 import SettingsTabWrapper from '@/components/Common/settingsTabWrapper/SettingsTabWrapper'
@@ -14,12 +15,10 @@ const General = ({
 }) => {
 
     // handle input change 
-    const handleChange = (e, type) => {
+    const handleChange = (e, type = "") => {
         let name = e.target.name;
         let value;
         if (type === "file") {
-            // value = e.target.files ? e.target.files[0] : "";
-            // currently saving only a string [name] for file but later have to save the whole file 
             value = e.target.files[0].name;
         } else {
             value = e.target.value;
@@ -45,6 +44,11 @@ const General = ({
 
     }
 
+
+    if (loading) return <Loading />;
+    if (error) return <CustomError message={error} />;
+
+    // console.log("this is data", data);
 
     return (
         <SettingsTabWrapper

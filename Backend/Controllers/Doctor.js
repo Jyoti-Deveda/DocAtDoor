@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const DoctorsProfile = require("../Models/DoctorsProfile");
 const Disease = require("../Models/Disease");
-const user = require("../Models/user");
+const user = require("../models/user");
 
 exports.createProfile = asyncHandler(async (req, res) => {
 
@@ -62,7 +62,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     // console.log("Registration number: ", reg_number)
     // console.log("Registration year: ", reg_year)
     // console.log("Registration state medical council: ", state_medical_council)
-    
+
     if (!verification_details || !reg_number || !reg_year || !state_medical_council) {
         res.status(404);
         throw new Error("Verification details are missing");
@@ -104,7 +104,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
         throw new Error(err.message);
     }
 
-    
+
     //2 - for each disease a doctor is specialized in, 
     //create a disease document if it does not already exist and add doctorId to it
     const diseasesArr = await Promise.all(specializedDiseases.map(async (disease) => {
@@ -134,7 +134,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
         return diseaseId;
     }))
     // console.log("Disease array: ", diseasesArr);
-    
+
     const profileDetails = await DoctorsProfile.findOne({ doctorId: userId });
 
     let profile = {
@@ -150,8 +150,8 @@ exports.createProfile = asyncHandler(async (req, res) => {
 
     if (profileDetails) {
         profile = await DoctorsProfile.findByIdAndUpdate(
-            profileDetails._id, 
-            profile, 
+            profileDetails._id,
+            profile,
             { new: true }
         );
         // console.log("Doctor's updated profile: ", profile);
@@ -176,17 +176,17 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
     //for firstname and lastname
     const userDetails = await user.findById(userId);
 
-    if(!userDetails){
+    if (!userDetails) {
         res.status(400);
         throw new Error("User not found")
     }
 
     //for rest of the doctors details
     const doctorDetails = await DoctorsProfile.findOne({ doctorId: userId })
-    .populate('specializedDiseases')
-    .exec();
+        .populate('specializedDiseases')
+        .exec();
 
-    if(!doctorDetails){
+    if (!doctorDetails) {
         res.status(400);
         throw new Error("Doctor not found")
     }

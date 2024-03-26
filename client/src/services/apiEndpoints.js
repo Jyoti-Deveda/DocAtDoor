@@ -16,3 +16,8 @@ export const doctorEndpoints = {
     CREATE_GENERAL_PROFILE: `${BACKEND_URL}doctor/create-general-profile`,
     GET_DOCTOR_DETAILS: `${BACKEND_URL}doctor/get-doctor-details`
 }
+
+
+export const patientEndpoints = {
+    GET_PATIENT_DETAILS: `${BACKEND_URL}patient/details`,
+}

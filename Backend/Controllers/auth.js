@@ -1,4 +1,4 @@
-const user = require("../Models/user");
+const user = require("../models/user");
 const bcrypt = require('bcrypt')
 // use async handler for better error handeling 
 const asyncHandler = require('express-async-handler');

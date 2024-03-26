@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const pythonRoutes = require("./routes/pythonScriptRoutes")
 const userRoutes = require('./routes/userRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
+const patientRoutes = require('./routes/patientRoutes');
 const { cloudinaryConnect } = require('./Config/Cloudinary');
 
 // connect database here 
@@ -40,7 +41,8 @@ app.use(cookieParser())
 
 app.use('/api/user', userRoutes);
 app.use('/api/doctor', doctorRoutes);
-app.use('/api/python', pythonRoutes)
+app.use('/api/patient', patientRoutes);
+app.use('/api/python', pythonRoutes);
 
 app.use(errorHandler)
 
