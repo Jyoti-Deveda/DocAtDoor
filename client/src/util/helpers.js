@@ -1,3 +1,5 @@
+import { experienceYears, symptoms } from "@/lib/constant";
+
 // convert object to string array taking the values as string in array 
 export const objToStringArray = (dataArray) => {
     let arr = [];
@@ -42,3 +44,24 @@ export const toDataURL = (file) =>
         fileReader.onerror = () => reject(fileReader.error);
         fileReader.readAsDataURL(file);
     });
+
+
+// get experiance label from its value 
+export const getExp = (value) => {
+    let label = "";
+    for (let i = 0; i < experienceYears.length; i++) {
+        const item = experienceYears[i];
+        if (item.value === value) {
+            label = item.label;
+            break;
+        }
+    }
+    return label;
+};
+
+
+
+// get symptoms that are not selected 
+export const getRemainingSymptoms = (data) => {
+    return symptoms.filter(item => !data.includes(item));
+}

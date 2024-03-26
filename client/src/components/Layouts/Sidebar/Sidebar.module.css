@@ -6,6 +6,20 @@
     width: 200px;
 }
 
+@media screen and (max-width: 640px) {
+    .sidebar {
+        flex-direction: row !important;
+        position: static;
+        height: auto;
+        width: auto;
+        padding-right: 10px;
+    }
+
+    .hide_on_sm {
+        display: none;
+    }
+}
+
 .link {
 
     @apply p-2 px-4 text-gray-500 hover:bg-sky-500 hover:text-white

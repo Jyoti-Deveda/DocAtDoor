@@ -4,9 +4,9 @@ export const roles = [
 ]
 
 export const experienceYears = [
-    { value: 'lessThan1Year', label: "Less than 1 year" },
+    { value: 'lessThan1Year', label: " < 1 years" },
     { value: '1to5Years', label: "1 - 5 years" },
-    { value: 'moreThan5Years', label: "More than 5 years" }
+    { value: 'moreThan5Years', label: "> 5 years" }
 ];
 
 

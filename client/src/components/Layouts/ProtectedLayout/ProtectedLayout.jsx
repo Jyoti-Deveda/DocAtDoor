@@ -25,9 +25,11 @@ const ProtectedLayout = () => {
 
     return (
         <div className={`${Style.container} gap-3`}>
+            {/* hide on small screens  */}
             <div className={`flex flex-col gap-4 border-2 border-black-900 p-1`}>
                 <Sidebar />
             </div>
+
             <div className={`flex flex-col p-3 pr-5`}>
                 <Outlet />
             </div>

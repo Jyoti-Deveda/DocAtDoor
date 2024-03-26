@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Style from "./UserProfileBox.module.css";
-import logo from '../../../../assets/Logo/logo.png'
+import logo from "../../../../assets/Images/default-avatar.webp";
+
 import { userRoles } from '@/config/config';
 import { Edit } from '@mui/icons-material';
 import CustomButton from '@/components/CustomButton/CustomButton';
 import useAuth from '@/util/useAuth';
-import { toDataURL } from '@/util/helpers';
+import { getExp, toDataURL } from '@/util/helpers';
 import { changeDp, getProfilePicture } from '@/services/Operations/DpService';
 
 const UserProfileBox = ({
@@ -38,7 +39,7 @@ const UserProfileBox = ({
     // handles the submition of new dp 
     const handleSubmit = async () => {
         const data = await changeDp(dp);
-        console.log("🚀 ~ handleSubmit ~ data:", data)
+        // console.log("🚀 ~ handleSubmit ~ data:", data)
 
         if (data?.success) {
             setDp(null);
@@ -56,7 +57,7 @@ const UserProfileBox = ({
         })();
     }, []);
 
-    console.log(currentDp);
+    // console.log(currentDp);
 
     return (
         <div className={`${Style.container} flex flex-col gap-5 p-4 rounded-xl border-2 border-black-500 w-full`}>
@@ -109,10 +110,24 @@ const UserProfileBox = ({
                 }
             </div>
 
-            <p className={`text-center text-sm sm:text-lg font-mediam`}>
-                {data?.personal_details?.first_name} {' '}
-                {data?.personal_details?.last_name}
-            </p>
+            <div className={`flex flex-col`}>
+                <p className={`text-center text-sm sm:text-lg font-mediam`}>
+                    {data?.personal_details?.first_name} {' '}
+                    {data?.personal_details?.last_name}
+                </p>
+                {role === userRoles.DOCTOR &&
+                    <>
+                        <p className={`text-center text-sm text-gray-600`}>
+                            Experiance: {getExp(data?.personal_details?.experience)}
+                        </p>
+                        <p className={`text-center text-sm sm:text-md text-gray-600`}>
+                            Hospital: {data?.hospital_details?.name}
+                        </p>
+
+                        {/* //add more details to show on the card as required  */}
+                    </>
+                }
+            </div>
 
         </div>
     )
