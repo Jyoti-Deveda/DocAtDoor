@@ -67,6 +67,7 @@ const SmSidebar = ({
                             to={link.path}
                             key={index}
                             className={` ${Style.link} ${(activePath === link.path || (activePath.startsWith(link.path) && link.path !== '/')) && Style.active_link}`}
+                            onClick={onClose}
                         >
                             {link.icon}
                             {link.label}
