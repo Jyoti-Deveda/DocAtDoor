@@ -67,6 +67,7 @@ export const createGenrealProfile = async (data) => {
     const toastId = toast.loading("Loading..");
     try {
         const res = await apiConnector('POST', doctorEndpoints.CREATE_GENERAL_PROFILE, modifiedData);
+        console.log("CREATE GENERAL PROFILE API RESPONSE: ", res);
         if (!res?.data?.success) {
             throw new Error("Profile creation/updation failed!")
         }

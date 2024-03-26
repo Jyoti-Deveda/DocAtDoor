@@ -73,9 +73,9 @@ exports.createProfile = asyncHandler(async (req, res) => {
     if (academic_details && academic_details.length > 0) {
 
         academic_details.forEach((detail, index) => {
-            if (!detail.university_name || !detail.course || !detail.certification) {
+            if (!detail.university_name || !detail.course) {
                 res.status(404);
-                throw new Error(`Academic details at index${index} is missing`)
+                throw new Error(`Academic details at index ${index} is missing`)
             }
         });
 
@@ -84,20 +84,52 @@ exports.createProfile = asyncHandler(async (req, res) => {
         throw new Error("Academic details are required")
     }
     console.log("Checked academic details")
+    // console.log("req.files: ", req.files);
+
+    //check for image
+    if(!req.files || Object.keys(req.files).length === 0){
+        res.status(400);
+        throw new Error("Certification is missing")
+    }
+
+    const certificate = req.files.certification;
+    console.log("certificate image: ", certificate);
+
+    if(!certificate){
+        res.status(400);
+        throw new Error("certificate image is required");
+    }
+
+    const fileType = certificate.name.split('.').pop();
+    console.log("FILE TYPE: ", fileType);
+    //checking if file type is supported
+    if(!supportedFiletypes.includes(fileType)){
+        res.status(400);
+        throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
+    }
+
+    const image = await uploadImageToCloudinary(certificate, process.env.FOLDER_NAME, 1000, 1000);
+    console.log("Uploaded image URL: ", image);
+
+    if(!image){
+        res.status(400);
+        throw new Error("Error in uploading image")
+    }
 
     //updations
     //1 - update firstname and lastname
     try {
-        //upadte firstname and lastname
+        //upadte firstname and lastname and image
         const userDetails = await user.findByIdAndUpdate(
             userId,
             {
                 "personalDetails.firstName": first_name,
-                "personalDetails.last_name": last_name
+                "personalDetails.last_name": last_name,
+                image: image?.secure_url
             },
             { new: true }
         )
-        // console.log("Updated user details: ", userDetails);
+        console.log("Updated user details: ", userDetails);
     } catch (err) {
         console.log("Error in updating firstname lastname: ", err);
         res.status(400)
@@ -200,7 +232,7 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
 
     //format date as "YYYY-MM-DD"
     const reg_year = formatDate(doctorDetails.verificationDetails.reg_year)
-    console.log("doctorDetails.verificationDetails.reg_year: ", reg_year)
+    // console.log("doctorDetails.verificationDetails.reg_year: ", reg_year)
 
     const doctor = {
         personal_details: {
@@ -237,3 +269,11 @@ function formatDate(dateString) {
 
     return `${year}-${month}-${day}`;
 }
+
+
+exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
+
+    
+
+})
+

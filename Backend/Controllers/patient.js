@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const user = require("../models/user");
+const user = require("../Models/user");
 
 // @desc  Get user (patient) details
 // @route GET /api/patient/details
@@ -29,3 +29,4 @@ exports.get_user_details = asyncHandler(async (req, res) => {
         message: "User details fetched successfully"
     });
 });
+
