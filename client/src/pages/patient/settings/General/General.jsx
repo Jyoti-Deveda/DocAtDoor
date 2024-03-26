@@ -4,6 +4,7 @@ import SettingsFormContainer from '@/components/Common/settingsFormContainer/Set
 import SettingsTabWrapper from '@/components/Common/settingsTabWrapper/SettingsTabWrapper'
 import CustomButton from '@/components/CustomButton/CustomButton'
 import StyledInput from '@/components/inputs/StyledInput/StyledInput'
+import { setProfileDetails } from '@/services/Operations/patient/setProfileDetails'
 import React from 'react'
 
 const General = ({
@@ -24,31 +25,22 @@ const General = ({
             value = e.target.value;
         }
 
-        setData(prevState => {
-            const newData = { ...prevState };
-            let nestedObject = newData;
-            const fieldPath = name.split('.');
-
-            for (let i = 0; i < fieldPath.length - 1; i++) {
-                nestedObject = nestedObject[fieldPath[i]];
-                nestedObject[fieldPath[fieldPath.length - 1]] = value;
-            }
-            return newData;
-        });
+        setData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
 
 
     // handles save and submit
-    const handleSubmit = () => {
-
+    const handleSubmit = async () => {
+        const res = await setProfileDetails(data);
     }
 
 
     if (loading) return <Loading />;
     if (error) return <CustomError message={error} />;
-
-    // console.log("this is data", data);
 
     return (
         <SettingsTabWrapper
@@ -63,16 +55,16 @@ const General = ({
                             <StyledInput
                                 label='First Name'
                                 size={"small"}
-                                name='personal_details.first_name'
-                                value={data?.personal_details?.first_name}
+                                name='first_name'
+                                value={data?.first_name}
                                 onChange={handleChange}
 
                             />
                             <StyledInput
                                 label='Last Name'
                                 size={"small"}
-                                name='personal_details.last_name'
-                                value={data?.personal_details?.last_name}
+                                name='last_name'
+                                value={data?.last_name}
                                 onChange={handleChange}
                             />
                         </div>
@@ -80,8 +72,8 @@ const General = ({
                             label='Email'
                             size={"small"}
                             disabled
-                            name='personal_details.email'
-                            value={data?.personal_details?.email}
+                            name='email'
+                            value={data?.email}
                             onChange={handleChange}
                         />
                     </SettingsFormContainer>
