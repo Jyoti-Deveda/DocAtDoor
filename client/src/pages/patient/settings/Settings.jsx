@@ -12,9 +12,11 @@ const Settings = () => {
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState({});
+    const [data, setData] = useState(null);
+    // console.log("🚀 ~ Settings ~ data:", data)
 
 
+    // have to get the user details from backend as when we update the user details then we have to update the cookies too else there will be now change in the user detals 
 
     useEffect(() => {
 
@@ -27,7 +29,7 @@ const Settings = () => {
                 setError(res.message);
             }
             else {
-                setData(res.userDetails);
+                setData(res.userDetails.personal_details);
                 setError(null);
             }
             setLoading(false);

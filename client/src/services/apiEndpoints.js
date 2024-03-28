@@ -19,5 +19,5 @@ export const doctorEndpoints = {
 
 
 export const patientEndpoints = {
-    GET_PATIENT_DETAILS: `${BACKEND_URL}patient/details`,
+    PATIENT_DETAILS: `${BACKEND_URL}patient/details`,
 }
