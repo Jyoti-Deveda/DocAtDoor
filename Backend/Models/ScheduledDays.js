@@ -12,11 +12,11 @@ const ScheduledDaysSchema = new mongoose.Schema({
     slots: [
         {
             start_time: {
-                type: Date,
+                type: String,
                 required: true
             },
             end_time: {
-                type: Date,
+                type: String,
                 required: true
             },
             avg_no_of_patients: {

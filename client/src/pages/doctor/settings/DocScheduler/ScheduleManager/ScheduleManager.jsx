@@ -3,77 +3,42 @@ import Style from "./ScheduleManager.module.css";
 import SettingsFormContainer from '@/components/Common/settingsFormContainer/SettingsFormContainer';
 import DayContainer from './DayContainer/DayContainer';
 import TimingSlot from './TimingSlot/TimingSlot';
+import CustomButton from '@/components/CustomButton/CustomButton';
+import ConfirmDialog from '@/components/ConfirmDialog/ConfirmDialog';
+import { setSchedule } from '@/services/Operations/doctor/setSchedule';
 
-const ScheduleManager = () => {
+const ScheduleManager = ({
+    data,
+    setData
+}) => {
 
-    const [data, setData] = useState({
-        '01/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-        '02/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-        '03/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-        '04/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-        '05/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-        '06/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-        '07/01/2024': {
-            isHoliday: false,
-            slots: [
-                { start_time: "", end_time: "", avg_no_of_patients: 0 },
-            ]
-        },
-    })
+    const [showConfirm, setShowConfirm] = useState(false);
 
     // this handles the changes in data 
-    const handleChange = (e, isCheckbox) => {
+    const handleChange = (e, index, isCheckbox) => {
         let { name, value } = e.target;
+
         if (isCheckbox) {
             value = e.target.checked;
         }
-        setData(prevState => {
-            // deep copy 
-            const newData = { ...prevState };
 
+        setData(prevState => {
+            const newData = { ...prevState };
             let nestedObject = newData;
             const fieldPath = name.split('.');
+
             for (let i = 0; i < fieldPath.length - 1; i++) {
                 nestedObject = nestedObject[fieldPath[i]];
+                nestedObject[fieldPath[fieldPath.length - 1]] = value;
             }
-            nestedObject[fieldPath[fieldPath.length - 1]] = value;
-
             return newData;
         });
+
     };
 
+
     // handle addition of new slot on specific date 
-    const handleAddition = (date) => {
+    const handleAddition = (index) => {
         const tempObj = {
             start_time: "",
             end_time: "",
@@ -83,64 +48,115 @@ const ScheduleManager = () => {
         setData(prevState => {
             const newData = { ...prevState }
             let nestedData = newData;
-            nestedData[date].slots.push(tempObj);
+            nestedData[index].slots.push(tempObj);
             return newData;
         });
     }
-    //handles deletion of a slot on specific date
-    const handleDeletion = (date, index) => {
+
+
+    /**
+     * Handles the deletion of a slot from the data.
+     *
+     * @param {number} parentIndex - The index of the parent element in the data array.
+     * @param {number} index - The index of the slot to be deleted in the parent element's slots array.
+     */
+    const handleDeletion = (parentIndex, index) => {
         setData(prevState => {
-            const updatedSlots = [...prevState[date].slots];
+            const updatedSlots = [...prevState[parentIndex].slots];
             updatedSlots.splice(index, 1);
             return {
                 ...prevState,
-                [date]: {
-                    ...prevState[date],
+                [parentIndex]: {
+                    ...prevState[parentIndex],
                     slots: updatedSlots
                 }
             }
         })
     }
 
-    // handles the apply to all 
-    const handleApplyToAll = (key) => {
-        const day = data[key];
-        if (day) {
-            const newData = {};
-            Object.keys(data).forEach((item) => {
-                newData[item] = JSON.parse(JSON.stringify(day));
+
+    /**
+     * Applies the slots of a specific index to all other data objects.
+     *
+     * @param {number} index - The index of the data object whose slots will be applied to others.
+     */
+    const handleApplyToAll = (index) => {
+        const slots = data[index].slots;
+
+        if (slots.length > 0) {
+            setData(prevState => {
+                const newData = { ...prevState };
+                Object.values(newData).forEach((item, i) => {
+                    if (i != index) {
+                        const copiedSlots = slots.map(slot => ({ ...slot }));
+                        newData[i] = {
+                            ...newData[i],
+                            slots: copiedSlots
+                        };
+                    }
+                });
+                return newData;
             });
-            setData(newData);
         }
     }
 
+
+    const handleSubmit = () => {
+        const res = setSchedule(data);
+    }
+
+
+    console.log("🚀 ~ data:", data)
+
     return (
-        <SettingsFormContainer title='Manage Schedule' >
-            {data && Object.keys(data).map((item, index) => (
-                <DayContainer
-                    key={item}
-                    index={index}
-                    date={item}
-                    data={data}
-                    onAdd={() => handleAddition(item)}
-                    handleChange={handleChange}
-                    onApplyToAll={() => handleApplyToAll(item)}
-                >
-                    {
-                        data[item] && data[item].slots?.map((slot, idx) => (
-                            <TimingSlot
-                                index={idx}
-                                data={slot}
-                                key={`${index}-${idx}`}
-                                handleChange={handleChange}
-                                name={`${item}.slots.${idx}`}
-                                handleDelete={() => handleDeletion(item, idx)}
-                            />
-                        ))
-                    }
-                </DayContainer>
-            ))}
-        </SettingsFormContainer>
+        <>
+            {data &&
+                <SettingsFormContainer title='Manage Schedule' >
+                    {Object.values(data)?.map((item, index) => (
+                        <DayContainer
+                            key={item.date}
+                            index={index}
+                            date={item.date}
+                            data={data}
+                            onAdd={() => handleAddition(index)}
+                            handleChange={handleChange}
+                            onApplyToAll={() => handleApplyToAll(index)}
+                        >
+                            {
+                                item?.slots?.map((slot, idx) => (
+                                    <TimingSlot
+                                        index={idx}
+                                        parentIndex={index}
+                                        data={slot}
+                                        key={`${index}-${idx}`}
+                                        handleChange={handleChange}
+                                        name={`${index}.slots.${idx}`}
+                                        handleDelete={() => handleDeletion(index, idx)}
+                                    />
+                                ))
+                            }
+                        </DayContainer>
+                    ))}
+
+                    <div className='mt-3'>
+                        <CustomButton
+                            variant='contained'
+                            color='primary'
+                            onClick={() => setShowConfirm(true)}
+                        >
+                            Submit
+                        </CustomButton>
+                    </div>
+                    <ConfirmDialog
+                        open={showConfirm}
+                        question='Are you sure you want to submit changes?'
+                        heading={'Confirm Submission'}
+                        setOpen={setShowConfirm}
+                        action={handleSubmit}
+                    />
+                </SettingsFormContainer>
+            }
+        </>
     )
 }
 

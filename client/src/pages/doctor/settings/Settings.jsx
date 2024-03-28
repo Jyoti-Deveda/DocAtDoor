@@ -7,12 +7,14 @@ import DocScheduler from './DocScheduler/DocScheduler'
 import { ChangePassword } from './ChangePassword/ChangePassword'
 import useAuth from '@/util/useAuth'
 import { getDoctorDetails } from '@/services/Operations/doctor/getDoctorDetails'
+import { getSchedule } from '@/services/Operations/doctor/getSchedule'
 
 const Settings = () => {
 
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [scheduleError, setScheduleError] = useState(null);
     // doctor's details 
     const [data, setData] = useState({
         personal_details: {
@@ -45,6 +47,7 @@ const Settings = () => {
         specialization: [],
         specializedDiseases: []
     })
+    const [scheduleDetails, setScheduleDetails] = useState({});
 
     const getDoctorInfo = async () => {
         return await getDoctorDetails();
@@ -54,17 +57,30 @@ const Settings = () => {
 
         const getDoctorInfo = async () => {
             setLoading(true);
-            const response = await getDoctorDetails();
-            console.log("RESPONSE: ", response);
-            if (response.error) {
+
+            const [docDetailRes, scheduleRes] = await Promise.all([getDoctorDetails(), getSchedule()]);
+
+            // const response = await getDoctorDetails();
+            if (docDetailRes.error) {
                 setData(null)
-                setError(response.message);
+                setError(docDetailRes.message);
             }
             else {
-                setData(response);
+                setData(docDetailRes);
                 setError(null);
             }
+
             setLoading(false);
+
+            // setting the schedule details 
+            if (scheduleRes.error) {
+                setScheduleDetails(null);
+                setScheduleError(scheduleRes.message);
+            }
+            else {
+                setScheduleDetails(scheduleRes.scheduledDays);
+                setScheduleError(null);
+            }
             // console.log("DATA: ", data);
         }
 
@@ -95,6 +111,8 @@ const Settings = () => {
             component: (
                 <DocScheduler
                     UserProfileBox={<UserProfileBox />}
+                    data={scheduleDetails}
+                    setData={setScheduleDetails}
                 />
             )
         },

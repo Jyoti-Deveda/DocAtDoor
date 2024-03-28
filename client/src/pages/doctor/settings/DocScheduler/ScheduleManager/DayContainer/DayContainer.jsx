@@ -1,5 +1,6 @@
 import ConfirmDialog from '@/components/ConfirmDialog/ConfirmDialog'
 import CustomButton from '@/components/CustomButton/CustomButton'
+import { getFormatedDate } from '@/util/helpers'
 import Add from '@mui/icons-material/Add'
 import React, { useState } from 'react'
 
@@ -20,7 +21,7 @@ const DayContainer = ({
         <div className={`flex flex-col gap-4 p-2 border-2 border-dashed border-black-600`}>
             <div className={`flex justify-between gap-4 items-center`}>
 
-                <p className={`text-md font-bold ${data[date]?.isHoliday ? 'text-red-500' : 'text-gray-500'}`}>{date}</p>
+                <p className={`text-md font-bold ${data[index]?.isHoliday ? 'text-red-500' : 'text-gray-500'}`}>{getFormatedDate(date)}</p>
 
                 <div className={`flex gap-4 items-center`}>
                     <CustomButton
@@ -45,11 +46,11 @@ const DayContainer = ({
 
                     <label className={`flex gap-2 items-center text-gray-500 text-sm`}>
                         <input
-                            onChange={(e) => handleChange(e, true)}
-                            name={`${date}.isHoliday`}
-                            checked={data[date]?.isHoliday}
+                            onChange={(e) => handleChange(e, index, true)}
+                            name={`${index}.isHoliday`}
+                            checked={data[index]?.isHoliday}
                             type="checkbox"
-                            value={data[date]?.isHoliday}
+                            value={data[index]?.isHoliday}
                         />
                         is off day?
                     </label>

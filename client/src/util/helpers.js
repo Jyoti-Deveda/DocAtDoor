@@ -64,3 +64,16 @@ export const getExp = (value) => {
 export const getRemainingSymptoms = (data) => {
     return symptoms.filter(item => !data.includes(item));
 }
+
+
+// formats date in "DD Month" format
+export const getFormatedDate = (dateString) => {
+    const date = new Date(dateString);
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const day = date.getDate();
+    const monthIndex = date.getMonth();
+
+    const formattedDate = `${day} ${monthNames[monthIndex]}`;
+
+    return formattedDate;
+};

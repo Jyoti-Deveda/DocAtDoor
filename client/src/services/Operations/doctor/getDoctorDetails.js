@@ -13,13 +13,13 @@ export const getDoctorDetails = async () => {
     try {
 
         res = await apiConnector("GET", doctorEndpoints.GET_DOCTOR_DETAILS);
-        console.log("GET DOCTORS DETAILS API RESPONSE: ", res);
+        // console.log("GET DOCTORS DETAILS API RESPONSE: ", res);
 
         if (!res?.data?.success) {
             throw new Error("Profile creation/updation failed!")
         }
 
-        toast.success(res?.data?.message); 
+        toast.success(res?.data?.message);
         res = res?.data?.doctor
 
         const newData = { ...res };

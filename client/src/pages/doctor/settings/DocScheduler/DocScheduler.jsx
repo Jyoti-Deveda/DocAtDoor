@@ -5,10 +5,15 @@ import ScheduleManager from './ScheduleManager/ScheduleManager';
 
 const DocScheduler = ({
     UserProfileBox,
+    data,
+    setData
 }) => {
     return (
         <SettingsTabWrapper hasProfileBox={false}>
-            <ScheduleManager />
+            <ScheduleManager
+                data={data}
+                setData={setData}
+            />
         </SettingsTabWrapper>
     )
 }

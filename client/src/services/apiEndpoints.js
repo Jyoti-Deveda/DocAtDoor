@@ -14,7 +14,9 @@ export const authEndpoints = {
 
 export const doctorEndpoints = {
     CREATE_GENERAL_PROFILE: `${BACKEND_URL}doctor/create-general-profile`,
-    GET_DOCTOR_DETAILS: `${BACKEND_URL}doctor/get-doctor-details`
+    GET_DOCTOR_DETAILS: `${BACKEND_URL}doctor/get-doctor-details`,
+    GET_SCHEDULED_DAYS: `${BACKEND_URL}doctor/get-scheduled-days`,
+    SET_SCHEDULED_DAYS: `${BACKEND_URL}doctor/set-scheduled-days`,
 }
 
 

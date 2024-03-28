@@ -8,6 +8,7 @@ import Style from "./TimingSlot.module.css";
 const TimingSlot = ({
     data,
     index,
+    parentIndex,
     name = "",
     handleChange,
     handleDelete,
