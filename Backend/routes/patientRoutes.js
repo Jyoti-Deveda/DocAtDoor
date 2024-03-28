@@ -1,5 +1,5 @@
 const express = require('express');
-const { get_user_details } = require('../controllers/patient');
+const { get_user_details }  = require('../Controllers/patient')
 const { auth, isPatient } = require('../Middlewares/auth');
 const router = express.Router();
 

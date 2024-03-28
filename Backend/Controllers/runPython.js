@@ -1,3 +1,4 @@
+const expressAsyncHandler = require('express-async-handler')
 const { spawn } = require('node:child_process')
 
 
@@ -46,49 +47,138 @@ const { spawn } = require('node:child_process')
 // }
 
 
-exports.runPythonScript = async (req, res) => {
-    try {
-        const symptoms = req.body;
+// exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
+//     try {
+//         const symptoms = req.body;
 
-        const pythonProcess = spawn('python', ["../python/main.py"]);
-        const writableStream = pythonProcess.stdin;
-        // const test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain'];
+//         if(!symptoms){
+//             res.status(200);
+//             throw new Error("Symptoms are missing")
+//         }
 
-        writableStream.write(JSON.stringify(symptoms));
-        writableStream.end();
+//         const pythonProcess = spawn('python', ["../python/main.py"]);
+//         const writableStream = pythonProcess.stdin;
+//         // const test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain'];
 
-        const response = [];
+//         writableStream.write(JSON.stringify(symptoms));
+//         writableStream.end();
+
+//         const onDataReceived = new Promise((resolve, reject) => {
+//             let buffer = ''; // Buffer to accumulate incoming data
         
-        // Create a Promise to wait for all data events
-        const onDataReceived = new Promise((resolve, reject) => {
-            pythonProcess.stdout.on("data", (data) => {
-                response.push(data.toString('utf-8').split("\r\n"));
-                console.log(`stdout: ${data}`);
-            });
+//             pythonProcess.stdout.on("data", (data) => {
+//                 buffer += data.toString('utf-8'); // Append incoming data to buffer
+//                 // console.log("BUFFER: ", buffer);
+//             });
+        
+//             pythonProcess.stdout.on("end", () => {
+//                 try {
+//                     const jsonData = JSON.parse(buffer); // Parse accumulated data as JSON
+//                     console.log("Received data:", jsonData);
+//                     resolve(jsonData);
+//                 } catch (error) {
+//                     console.error("Error parsing JSON:", error);
+//                     reject(error);
+//                 }
+//             });
+        
+//             pythonProcess.stderr.on("err", (err) => {
+//                 console.error(`Error: ${err}`);
+//                 reject(err);
+//             });
+        
+//             pythonProcess.on('exit', (code) => {
+//                 console.log("Python script exited with code ", code);
+//                 resolve(); // Resolve the promise when the Python script exits
+//             });
+//         });
+        
 
-            pythonProcess.stderr.on("err", (err) => {
-                console.log(`Error: ${err}`);
-                reject(err);
-            });
+//         // Wait for all data events to be processed
+//         onDataReceived.then((jsonData) => {
+//             console.log("Received data:", jsonData);
+//             //predicted result is an array of diseases
+//             const diseases = jsonData?.prediction;
+//             next(diseases);
+//             // Use jsonData as needed
+//         }).catch((error) => {
+//             console.error("An error occurred:", error);
+//             res.status(400);
+//             throw new Error("Error in parsing data")
+//         });
+        
 
-            pythonProcess.on('exit', (code) => {
-                console.log("Python script exited with code ", code);
-                resolve();
-            });
-        });
+//         // return res.status(200).json({
+//         //     success: true,
+//         //     // response
+//         // });
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json({
+//             success: false,
+//             message: "Internal server error"
+//         });
+//     }
+// })
 
-        // Wait for all data events to be processed
-        await onDataReceived;
+exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
+    const symptoms = req.body;
 
-        return res.status(200).json({
-            success: true,
-            response
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(500).json({
-            success: false,
-            message: "Internal server error"
-        });
+    if (!symptoms) {
+        res.status(200);
+        throw new Error("Symptoms are missing");
     }
-};
+
+    const pythonProcess = spawn('python', ["../python/main.py"]);
+    const writableStream = pythonProcess.stdin;
+
+    writableStream.write(JSON.stringify(symptoms));
+    writableStream.end();
+
+    const onDataReceived = new Promise((resolve, reject) => {
+        let buffer = '';
+
+        pythonProcess.stdout.on("data", (data) => {
+            buffer += data.toString('utf-8');
+        });
+
+        pythonProcess.stdout.on("end", async () => {
+            if (buffer.trim() === '') {
+                // No data received, throw an error
+                res.status(400);
+                throw new Error("No data received from Python process.");
+            }
+            try {
+                const jsonData = JSON.parse(buffer);
+                console.log("Received data:", jsonData);
+                resolve(jsonData);
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                res.status(400);
+                throw new Error("Error parsing JSON: " );
+            }
+        });
+
+        pythonProcess.stderr.on("err", async (err) => {
+            console.error(`Error: ${err}`);
+            res.status(400);
+            throw new Error("Error in Python script: " + err);
+        });
+
+        pythonProcess.on('exit', async (code) => {
+            console.log("Python script exited with code ", code);
+            resolve();
+        });
+    });
+
+    onDataReceived.then((jsonData) => {
+        console.log("Received data:", jsonData);
+        const diseases = jsonData?.prediction;
+        next(diseases);
+    }).catch((error) => {
+        console.error("An error occurred:", error);
+        res.status(400);
+        throw new Error("An error occurred: " + error.message);
+    });
+
+});
