@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../../../assets/Logo/logo.png';
 import ReactStars from 'react-rating-stars-component'
 import { FaStar } from 'react-icons/fa';
@@ -7,20 +7,20 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import SettingsFormContainer from '@/components/Common/settingsFormContainer/SettingsFormContainer';
 import { Divider } from '@mui/material';
 import BookAppointment from './BookAppointment/BookAppointment';
+import { getDoctorDetails } from '@/services/Operations/doctor/getDoctorDetails';
+import { useParams } from 'react-router-dom';
 
 const ViewDoctor = () => {
+
+    const { id } = useParams();
+
+    const [doctorDetails, setDoctorDetails] = useState(null);
+
+
+
+
     return (
         <div className={`flex flex-col gap-4`}>
-            {/* dp
-          name 
-          hospital name
-          experiance
-          rating
-
-          bio
-          specialization
-
-          appointment booking */}
 
             <SettingsFormContainer>
 
