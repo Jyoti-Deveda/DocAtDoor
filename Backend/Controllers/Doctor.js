@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const DoctorsProfile = require("../Models/DoctorsProfile");
 const Disease = require("../Models/Disease");
-const user = require("../models/user");
+const User = require("../models/user");
 
 exports.createProfile = asyncHandler(async (req, res) => {
 
@@ -120,7 +120,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     //1 - update firstname and lastname
     try {
         //upadte firstname and lastname and image
-        const userDetails = await user.findByIdAndUpdate(
+        const userDetails = await User.findByIdAndUpdate(
             userId,
             {
                 "personalDetails.firstName": first_name,
@@ -206,7 +206,7 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
     const { userId } = req.user;
 
     //for firstname and lastname
-    const userDetails = await user.findById(userId);
+    const userDetails = await User.findById(userId);
 
     if (!userDetails) {
         res.status(400);
@@ -271,9 +271,29 @@ function formatDate(dateString) {
 }
 
 
-exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
+exports.getDoctorsOfDisease = asyncHandler(async (diseases, req, res) => {
 
-    
+    if(!diseases){
+        res.status(400);
+        throw new Error("Diseases are required")
+    }
+
+    var doctorsList = [];
+    for (const disease of diseases) {
+        
+        const diseaseDetails = await Disease.findOne({ diseaseName:disease }).populate('doctors');
+
+        console.log("DIsease details: ", diseaseDetails)
+
+        doctorsList.push(diseaseDetails?.doctors)
+
+    }
+
+    res.status(200).json({
+        success: true,
+        doctorsList,
+        message: "Doctors fetched successfully"
+    })
 
 })
 

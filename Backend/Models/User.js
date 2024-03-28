@@ -80,6 +80,10 @@ const UserSchema = new mongoose.Schema(
         },
         tokenExpiry: {
             type: Date,
+        },
+        doctorsProfile: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "DoctorsProfile"
         }
     },
     { timestamps: true }
