@@ -49,10 +49,6 @@ const Settings = () => {
     })
     const [scheduleDetails, setScheduleDetails] = useState({});
 
-    const getDoctorInfo = async () => {
-        return await getDoctorDetails();
-    }
-
     useEffect(() => {
 
         const getDoctorInfo = async () => {

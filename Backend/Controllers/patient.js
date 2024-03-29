@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const user = require("../models/user");
+const Disease = require("../Models/Disease");
+const User = require("../Models/User")
 
 // @desc  Get user (patient) details
 // @route GET /api/patient/details
@@ -8,7 +9,7 @@ exports.get_user_details = asyncHandler(async (req, res) => {
 
     const { userId } = req?.user;
 
-    const userDetails = await user.findById(userId);
+    const userDetails = await User.findById(userId);
 
     if (!userDetails) {
         res.status(404);
@@ -49,7 +50,7 @@ exports.set_user_details = asyncHandler(async (req, res) => {
         throw new Error("First name and Last name should be atleast 2 characters long");
     }
 
-    const updatedUserDetails = await user.findByIdAndUpdate(
+    const updatedUserDetails = await User.findByIdAndUpdate(
         userId,
         {
             $set: {
@@ -71,3 +72,30 @@ exports.set_user_details = asyncHandler(async (req, res) => {
     })
 
 });
+
+exports.getDoctorsOfDisease = asyncHandler(async (diseases, req, res) => {
+
+    if(!diseases){
+        res.status(400);
+        throw new Error("Diseases are required")
+    }
+
+    var doctorsList = [];
+    for (const disease of diseases) {
+        
+        const diseaseDetails = await Disease.findOne({ diseaseName:disease }).populate('doctors');
+
+        console.log("DIsease details: ", diseaseDetails)
+
+        doctorsList.push(diseaseDetails?.doctors)
+
+    }
+
+    res.status(200).json({
+        success: true,
+        doctorsList,
+        message: "Doctors fetched successfully"
+    })
+
+})
+

@@ -200,7 +200,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
 });
 
 
-//get invidual doctor details
+//get invidual doctor details for general settings
 exports.getDoctorDetails = asyncHandler(async (req, res) => {
 
     const { userId } = req.user;
@@ -223,7 +223,7 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
         throw new Error("Doctor not found")
     }
 
-    console.log("Doctor details: ", doctorDetails);
+    // console.log("Doctor details: ", doctorDetails);
 
     //creating an array of disease names
     const diseasesNames = await Promise.all(doctorDetails?.specializedDiseases?.map(disease => {
@@ -269,31 +269,4 @@ function formatDate(dateString) {
 
     return `${year}-${month}-${day}`;
 }
-
-
-exports.getDoctorsOfDisease = asyncHandler(async (diseases, req, res) => {
-
-    if(!diseases){
-        res.status(400);
-        throw new Error("Diseases are required")
-    }
-
-    var doctorsList = [];
-    for (const disease of diseases) {
-        
-        const diseaseDetails = await Disease.findOne({ diseaseName:disease }).populate('doctors');
-
-        console.log("DIsease details: ", diseaseDetails)
-
-        doctorsList.push(diseaseDetails?.doctors)
-
-    }
-
-    res.status(200).json({
-        success: true,
-        doctorsList,
-        message: "Doctors fetched successfully"
-    })
-
-})
 
