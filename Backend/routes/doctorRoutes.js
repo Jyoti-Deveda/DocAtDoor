@@ -10,6 +10,6 @@ Router.post('/create-general-profile', auth, isUserVerified, isDoctor, createPro
 Router.get('/get-doctor-details', auth, isUserVerified, isDoctor, getDoctorDetails);
 Router.get('/get-scheduled-days', auth, isDoctor, fetchScheduledDays);
 Router.post('/set-scheduled-days', auth, isDoctor, setScheduledDays);
-Router.get('/get-disease-doctor', runPythonScript, getDoctorsOfDisease);
+Router.post('/get-disease-doctor', runPythonScript, getDoctorsOfDisease);
 
 module.exports = Router;

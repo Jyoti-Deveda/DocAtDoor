@@ -7,12 +7,14 @@ import CustomButton from '@/components/CustomButton/CustomButton';
 import SettingsFormContainer from '@/components/Common/settingsFormContainer/SettingsFormContainer';
 import { getRemainingSymptoms } from '@/util/helpers';
 import StatusChips from '@/components/Common/StatusChips/StatusChips';
+import { predictDisease } from '@/services/Operations/patient/predictDisease';
 
 const animatedComponents = makeAnimated();
 
 const DocSearch = () => {
 
     const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleSymptomChange = (selectedOptions) => {
         setSelectedSymptoms(selectedOptions);
@@ -26,11 +28,14 @@ const DocSearch = () => {
     }
 
     const remainingSymptoms = getRemainingSymptoms(selectedSymptoms);
-    // console.log("🚀 ~ DocSearch ~ remainingSymptoms:", remainingSymptoms)
 
 
+    /**
+     * Handles the prediction of disease based on selected symptoms.
+     */
     const handlePredict = () => {
-        // predict disease then direct to doctor list page 
+        const res = predictDisease(selectedSymptoms, setLoading);
+
     }
 
     return (

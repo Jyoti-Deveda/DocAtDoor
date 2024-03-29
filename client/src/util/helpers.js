@@ -66,7 +66,11 @@ export const getRemainingSymptoms = (data) => {
 }
 
 
-// formats date in "DD Month" format
+/**
+ * Formats a given date string into a formatted date string.
+ * @param {string} dateString - The date string to be formatted.
+ * @returns {string} The formatted date string.
+ */
 export const getFormatedDate = (dateString) => {
     const date = new Date(dateString);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

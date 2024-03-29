@@ -15,7 +15,7 @@ const { spawn } = require('node:child_process')
 //         const writableStream  = pythonProcess.stdin
 
 //         const test_data = ['skin_rash','nodal_skin_eruptions','continuous_sneezing','shivering','chills','joint_pain']
-        
+
 //         //pass the symptoms to the stream
 //         writableStream.write(JSON.stringify(test_data))
 //         writableStream.end();  
@@ -40,7 +40,7 @@ const { spawn } = require('node:child_process')
 //             response
 //         })
 
-       
+
 //     }catch(err){
 //         console.log(err)
 //     }
@@ -65,12 +65,12 @@ const { spawn } = require('node:child_process')
 
 //         const onDataReceived = new Promise((resolve, reject) => {
 //             let buffer = ''; // Buffer to accumulate incoming data
-        
+
 //             pythonProcess.stdout.on("data", (data) => {
 //                 buffer += data.toString('utf-8'); // Append incoming data to buffer
 //                 // console.log("BUFFER: ", buffer);
 //             });
-        
+
 //             pythonProcess.stdout.on("end", () => {
 //                 try {
 //                     const jsonData = JSON.parse(buffer); // Parse accumulated data as JSON
@@ -81,18 +81,18 @@ const { spawn } = require('node:child_process')
 //                     reject(error);
 //                 }
 //             });
-        
+
 //             pythonProcess.stderr.on("err", (err) => {
 //                 console.error(`Error: ${err}`);
 //                 reject(err);
 //             });
-        
+
 //             pythonProcess.on('exit', (code) => {
 //                 console.log("Python script exited with code ", code);
 //                 resolve(); // Resolve the promise when the Python script exits
 //             });
 //         });
-        
+
 
 //         // Wait for all data events to be processed
 //         onDataReceived.then((jsonData) => {
@@ -106,7 +106,7 @@ const { spawn } = require('node:child_process')
 //             res.status(400);
 //             throw new Error("Error in parsing data")
 //         });
-        
+
 
 //         // return res.status(200).json({
 //         //     success: true,
@@ -124,7 +124,7 @@ const { spawn } = require('node:child_process')
 exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
     const symptoms = req.body;
 
-    if (!symptoms) {
+    if (symptoms.length === 0) {
         res.status(200);
         throw new Error("Symptoms are missing");
     }
@@ -155,7 +155,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
             } catch (error) {
                 console.error("Error parsing JSON:", error);
                 res.status(400);
-                throw new Error("Error parsing JSON: " );
+                throw new Error("Error parsing JSON: ");
             }
         });
 
