@@ -10,6 +10,7 @@ import { experienceYears, symptoms } from '@/lib/constant'
 import { createGenrealProfile } from '@/services/Operations/doctor/createProfile'
 import Loading from '@/components/Common/Loading/Loading'
 import { CustomError } from '@/components/Common/CustomError/CustomError'
+// import UserProfileBox from '../userProfileBox/UserProfileBox'
 
 const General = ({
     UserProfileBox,
@@ -112,6 +113,7 @@ const General = ({
     return (
         <SettingsTabWrapper
             UserProfileBox={UserProfileBox}
+            userProfileData={data}
         >
             {data &&
                 <>

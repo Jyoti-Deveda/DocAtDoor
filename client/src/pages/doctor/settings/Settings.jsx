@@ -85,6 +85,9 @@ const Settings = () => {
     }, [])
 
 
+    const MemoizedUserProfileBox = React.memo(UserProfileBox);
+
+
     const tabs = [
         {
             label: "General",
@@ -92,11 +95,7 @@ const Settings = () => {
                 <General
                     data={data}
                     setData={setData}
-                    UserProfileBox={
-                        <UserProfileBox
-                            data={data}
-                        />
-                    }
+                    UserProfileBox={MemoizedUserProfileBox}
                     loading={loading}
                     error={error}
                 />
@@ -106,7 +105,6 @@ const Settings = () => {
             label: "Doc Scheduler",
             component: (
                 <DocScheduler
-                    UserProfileBox={<UserProfileBox />}
                     data={scheduleDetails}
                     setData={setScheduleDetails}
                 />
@@ -116,7 +114,8 @@ const Settings = () => {
             label: "Change Password",
             component: (
                 <ChangePassword
-                    UserProfileBox={<UserProfileBox />}
+                    data={data}
+                    UserProfileBox={MemoizedUserProfileBox}
                 />
             )
         },

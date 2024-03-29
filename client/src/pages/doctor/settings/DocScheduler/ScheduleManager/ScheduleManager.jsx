@@ -114,7 +114,7 @@ const ScheduleManager = ({
                 <SettingsFormContainer title='Manage Schedule' >
                     {Object.values(data)?.map((item, index) => (
                         <DayContainer
-                            key={item.date}
+                            key={`${index}-${item.date}`}
                             index={index}
                             date={item.date}
                             data={data}
