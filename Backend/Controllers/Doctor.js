@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const DoctorsProfile = require("../Models/DoctorsProfile");
 const Disease = require("../Models/Disease");
-const User = require("../models/user");
+const User = require("../Models/User");
 
 exports.createProfile = asyncHandler(async (req, res) => {
 
@@ -87,7 +87,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     // console.log("req.files: ", req.files);
 
     //check for image
-    if(!req.files || Object.keys(req.files).length === 0){
+    if (!req.files || Object.keys(req.files).length === 0) {
         res.status(400);
         throw new Error("Certification is missing")
     }
@@ -95,7 +95,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     const certificate = req.files.certification;
     console.log("certificate image: ", certificate);
 
-    if(!certificate){
+    if (!certificate) {
         res.status(400);
         throw new Error("certificate image is required");
     }
@@ -103,7 +103,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     const fileType = certificate.name.split('.').pop();
     console.log("FILE TYPE: ", fileType);
     //checking if file type is supported
-    if(!supportedFiletypes.includes(fileType)){
+    if (!supportedFiletypes.includes(fileType)) {
         res.status(400);
         throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
     }
@@ -111,7 +111,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     const image = await uploadImageToCloudinary(certificate, process.env.FOLDER_NAME, 1000, 1000);
     console.log("Uploaded image URL: ", image);
 
-    if(!image){
+    if (!image) {
         res.status(400);
         throw new Error("Error in uploading image")
     }
@@ -200,7 +200,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
 });
 
 
-//get invidual doctor details
+//get invidual doctor details for general settings
 exports.getDoctorDetails = asyncHandler(async (req, res) => {
 
     const { userId } = req.user;
@@ -223,7 +223,7 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
         throw new Error("Doctor not found")
     }
 
-    console.log("Doctor details: ", doctorDetails);
+    // console.log("Doctor details: ", doctorDetails);
 
     //creating an array of disease names
     const diseasesNames = await Promise.all(doctorDetails?.specializedDiseases?.map(disease => {
@@ -269,31 +269,4 @@ function formatDate(dateString) {
 
     return `${year}-${month}-${day}`;
 }
-
-
-exports.getDoctorsOfDisease = asyncHandler(async (diseases, req, res) => {
-
-    if(!diseases){
-        res.status(400);
-        throw new Error("Diseases are required")
-    }
-
-    var doctorsList = [];
-    for (const disease of diseases) {
-        
-        const diseaseDetails = await Disease.findOne({ diseaseName:disease }).populate('doctors');
-
-        console.log("DIsease details: ", diseaseDetails)
-
-        doctorsList.push(diseaseDetails?.doctors)
-
-    }
-
-    res.status(200).json({
-        success: true,
-        doctorsList,
-        message: "Doctors fetched successfully"
-    })
-
-})
 

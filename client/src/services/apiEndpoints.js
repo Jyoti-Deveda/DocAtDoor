@@ -22,5 +22,5 @@ export const doctorEndpoints = {
 
 export const patientEndpoints = {
     PATIENT_DETAILS: `${BACKEND_URL}patient/details`,
-    PREDICT_DISEASE: `${BACKEND_URL}doctor/get-disease-doctor`,
+    PREDICT_DISEASE: `${BACKEND_URL}patient/get-disease-doctor`,
 }
