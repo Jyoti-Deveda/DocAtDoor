@@ -126,7 +126,7 @@ const doctorsProfileSchema = new mongoose.Schema({
 })
 
 // Post-save middleware to limit workingDays array to only 7 elements
-doctorsProfileSchema.post('save', async function(doc) {
+doctorsProfileSchema.post('save', async function (doc) {
     if (doc.workingDays.length > 7) {
         // Remove the older entries to get only the recent 7 days' data
         const recentWorkingDays = doc.workingDays.slice(-7);

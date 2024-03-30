@@ -214,13 +214,17 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
     }
 
     //for rest of the doctors details
-    const doctorDetails = await DoctorsProfile.findOne({ doctorId: userId })
+    let doctorDetails = await DoctorsProfile.findOne({ doctorId: userId })
         .populate('specializedDiseases')
         .exec();
 
     if (!doctorDetails) {
-        res.status(400);
-        throw new Error("Doctor not found")
+        // if there is no doctor detail for the user, then it is a new doctor
+        res.status(200).json({
+            success: true,
+            message: "Fetched Data successfully",
+            new_doctor: true
+        });
     }
 
     // console.log("Doctor details: ", doctorDetails);
