@@ -19,16 +19,21 @@ export const getDoctorDetails = async () => {
             throw new Error("Profile creation/updation failed!")
         }
 
-        toast.success(res?.data?.message);
-        res = res?.data?.doctor
+        toast.success();
+        if (res?.data?.new_doctor) {
+            res = res.data;
+        }
+        else {
+            res = res?.data?.doctor
 
-        const newData = { ...res };
+            const newData = { ...res };
 
-        // converting the string array to Object array 
-        newData["specialization"] = convertToObjectArray(newData?.specialization, symptoms);
-        newData["specializedDiseases"] = convertToObjectArray(newData?.specializedDiseases, symptoms);
+            // converting the string array to Object array 
+            newData["specialization"] = convertToObjectArray(newData?.specialization, symptoms);
+            newData["specializedDiseases"] = convertToObjectArray(newData?.specializedDiseases, symptoms);
 
-        res = newData
+            res = newData
+        }
 
 
     } catch (err) {

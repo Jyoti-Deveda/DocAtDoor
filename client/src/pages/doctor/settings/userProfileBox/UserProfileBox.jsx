@@ -10,11 +10,13 @@ import { getExp, toDataURL } from '@/util/helpers';
 import { changeDp, getProfilePicture } from '@/services/Operations/DpService';
 
 const UserProfileBox = ({
-    data
+    data,
+    currentDp,
+    setCurrentDp
 }) => {
 
     const { role } = useAuth();
-    const [currentDp, setCurrentDp] = useState(logo);
+    // const [currentDp, setCurrentDp] = useState(logo);
     const [dp, setDp] = useState({
         image: "",
         file: ""
@@ -39,7 +41,6 @@ const UserProfileBox = ({
     // handles the submition of new dp 
     const handleSubmit = async () => {
         const data = await changeDp(dp);
-        // console.log("🚀 ~ handleSubmit ~ data:", data)
 
         if (data?.success) {
             setDp(null);
@@ -47,17 +48,16 @@ const UserProfileBox = ({
         }
     }
 
-    useEffect(() => {
-        ; (async () => {
-            const res = await getProfilePicture();
+    // useEffect(() => {
+    //     ; (async () => {
+    //         const res = await getProfilePicture();
 
-            if (res) {
-                setCurrentDp(res.image);
-            }
-        })();
-    }, []);
+    //         if (res) {
+    //             setCurrentDp(res.image);
+    //         }
+    //     })();
+    // }, []);
 
-    // console.log(currentDp);
 
     return (
         <div className={`${Style.container} flex flex-col gap-5 p-4 rounded-xl border-2 border-black-500 w-full`}>
@@ -117,12 +117,16 @@ const UserProfileBox = ({
                 </p>
                 {role === userRoles.DOCTOR &&
                     <>
-                        <p className={`text-center text-sm text-gray-600`}>
-                            Experiance: {getExp(data?.personal_details?.experience)}
-                        </p>
-                        <p className={`text-center text-sm sm:text-md text-gray-600`}>
-                            Hospital: {data?.hospital_details?.name}
-                        </p>
+                        {data?.personal_details?.experience &&
+                            <p className={`text-center text-sm text-gray-600`}>
+                                Experiance: {getExp(data?.personal_details?.experience)}
+                            </p>
+                        }
+                        {data?.hospital_details?.name &&
+                            <p className={`text-center text-sm sm:text-md text-gray-600`}>
+                                Hospital: {data?.hospital_details?.name}
+                            </p>
+                        }
 
                         {/* //add more details to show on the card as required  */}
                     </>

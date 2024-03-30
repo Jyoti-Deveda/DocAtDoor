@@ -4,7 +4,6 @@ import SettingsTabWrapper from '@/components/Common/settingsTabWrapper/SettingsT
 import ScheduleManager from './ScheduleManager/ScheduleManager';
 
 const DocScheduler = ({
-    UserProfileBox,
     data,
     setData
 }) => {

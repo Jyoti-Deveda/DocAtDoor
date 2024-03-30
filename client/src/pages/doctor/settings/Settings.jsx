@@ -8,18 +8,22 @@ import { ChangePassword } from './ChangePassword/ChangePassword'
 import useAuth from '@/util/useAuth'
 import { getDoctorDetails } from '@/services/Operations/doctor/getDoctorDetails'
 import { getSchedule } from '@/services/Operations/doctor/getSchedule'
+import logo from "../../../assets/Images/default-avatar.webp";
+import { getProfilePicture } from '@/services/Operations/DpService'
+
 
 const Settings = () => {
 
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [currentDp, setCurrentDp] = useState(logo);
     const [scheduleError, setScheduleError] = useState(null);
     // doctor's details 
     const [data, setData] = useState({
         personal_details: {
-            first_name: "",
-            last_name: "",
+            first_name: user.firstName,
+            last_name: user.lastName,
             email: user.email,
             bio: "",
             experience: "",
@@ -49,23 +53,25 @@ const Settings = () => {
     })
     const [scheduleDetails, setScheduleDetails] = useState({});
 
+    console.log(data)
+
     useEffect(() => {
 
         const getDoctorInfo = async () => {
             setLoading(true);
+            const [docDetailRes, scheduleRes, profileImgRes] = await Promise.all([getDoctorDetails(), getSchedule(), getProfilePicture()]);
 
-            const [docDetailRes, scheduleRes] = await Promise.all([getDoctorDetails(), getSchedule()]);
-
-            // const response = await getDoctorDetails();
+            // setting the doctor details 
             if (docDetailRes.error) {
                 setData(null)
                 setError(docDetailRes.message);
             }
             else {
-                setData(docDetailRes);
+                if (!docDetailRes.new_doctor) {
+                    setData(docDetailRes.doctor);
+                }
                 setError(null);
             }
-
             setLoading(false);
 
             // setting the schedule details 
@@ -77,15 +83,15 @@ const Settings = () => {
                 setScheduleDetails(scheduleRes.scheduledDays);
                 setScheduleError(null);
             }
-            // console.log("DATA: ", data);
+            //set profile picture 
+            if (profileImgRes) {
+                setCurrentDp(profileImgRes.image)
+            }
         }
 
         getDoctorInfo();
 
     }, [])
-
-
-    const MemoizedUserProfileBox = React.memo(UserProfileBox);
 
 
     const tabs = [
@@ -95,7 +101,7 @@ const Settings = () => {
                 <General
                     data={data}
                     setData={setData}
-                    UserProfileBox={MemoizedUserProfileBox}
+                    UserProfileBox={<UserProfileBox data={data} currentDp={currentDp} setCurrentDp={setCurrentDp} />}
                     loading={loading}
                     error={error}
                 />
@@ -115,7 +121,7 @@ const Settings = () => {
             component: (
                 <ChangePassword
                     data={data}
-                    UserProfileBox={MemoizedUserProfileBox}
+                    UserProfileBox={<UserProfileBox data={data} currentDp={currentDp} setCurrentDp={setCurrentDp} />}
                 />
             )
         },
