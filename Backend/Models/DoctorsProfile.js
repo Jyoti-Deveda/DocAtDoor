@@ -11,7 +11,6 @@ const doctorsProfileSchema = new mongoose.Schema({
     specialization: [
         {
             type: String,
-            required: true
         }
     ],
     specializedDiseases: [
@@ -22,13 +21,12 @@ const doctorsProfileSchema = new mongoose.Schema({
     ],
     bio: {
         type: String,
-        required: true,
+        default: '',
         maxlength: 200
     },
     //will get user's experince by a dropdown of predefined experience periods e.g x<1, 1<x<5 , x>5 where x is years
     experience: {
         type: String,
-        required: true
     },
     verified: {
         type: Boolean,
@@ -38,11 +36,9 @@ const doctorsProfileSchema = new mongoose.Schema({
         {
             university_name: {
                 type: String,
-                required: true
             },
             course: {
                 type: String,
-                required: true,
             },
             certification: {
                 type: String,
@@ -54,33 +50,26 @@ const doctorsProfileSchema = new mongoose.Schema({
     verificationDetails: {
         reg_number: {
             type: String,
-            required: true,
         },
         reg_year: {
             type: Date,
-            required: true,
         },
         state_medical_council: {
             type: String,
-            required: true
         },
     },
     hospitalDetails: {
         name: {
             type: String,
-            required: true
         },
         city: {
             type: String,
-            required: true
         },
         state: {
             type: String,
-            required: true
         },
         postal_code: {
             type: Number,
-            required: true
         },
         contact_info: {
             type: Number,
@@ -88,6 +77,7 @@ const doctorsProfileSchema = new mongoose.Schema({
         },
         appointment_fee: {
             type: Number,
+            default: 0,
             required: true
         },
     },

@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 const mailSender = require("../Utils/mailSender");
 const { uploadImageToCloudinary } = require("../Utils/imageUploader");
-const { supportedFiletypes } = require('../constants')
+const { supportedFiletypes } = require('../constants');
+const DoctorsProfile = require("../Models/DoctorsProfile");
 
 // @desc register user
 // @route POST /api/users/register
@@ -70,6 +71,22 @@ exports.userRegister = asyncHandler(async (req, res, next) => {
 
 
     if (newUser) {
+        if(role === "Doctor"){
+            const doctorsProfile = await DoctorsProfile.create({
+                doctorId: newUser._id,
+                specialization: [],
+                specializedDiseases: [],
+                bio: "",
+                experience: "",
+                educationalQualification: [],
+                hospitalDetails: {},
+                verificationDetails: {},
+                workingDays: []
+            })
+
+            newUser.doctorsProfile = doctorsProfile._id;
+            await newUser.save();
+        }
         next();
         // res.status(201).json({
         //     message: "User created successflly",

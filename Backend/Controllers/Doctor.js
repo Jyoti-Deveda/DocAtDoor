@@ -12,9 +12,9 @@ exports.createProfile = asyncHandler(async (req, res) => {
     const {
         personal_details,
         hospital_details,
-        academic_details,
+        academic_details, 
         verification_details,
-        specialization,
+        specialization,    
         specializedDiseases
     } = req.body;
 

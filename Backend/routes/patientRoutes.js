@@ -1,6 +1,6 @@
 const express = require('express');
 const { auth, isPatient } = require('../Middlewares/auth');
-const { get_user_details, set_user_details, getDoctorsOfDisease } = require('../Controllers/Patient');
+const { get_user_details, set_user_details, getDoctorsOfDisease } = require('../Controllers/patient');
 const { runPythonScript } = require('../Controllers/runPython');
 const router = express.Router();
 
