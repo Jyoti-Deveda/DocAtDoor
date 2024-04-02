@@ -97,7 +97,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
 
     if (!certificate) {
         res.status(400);
-        throw new Error("certificate image is required");
+        throw new Error("Certificate image is required");
     }
 
     const fileType = certificate.name.split('.').pop();
@@ -108,13 +108,13 @@ exports.createProfile = asyncHandler(async (req, res) => {
         throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
     }
 
-    const image = await uploadImageToCloudinary(certificate, process.env.FOLDER_NAME, 1000, 1000);
-    console.log("Uploaded image URL: ", image);
+    // const image = await uploadImageToCloudinary(certificate, process.env.FOLDER_NAME, 1000, 1000);
+    // console.log("Uploaded image URL: ", image);
 
-    if (!image) {
-        res.status(400);
-        throw new Error("Error in uploading image")
-    }
+    // if (!image) {
+    //     res.status(400);
+    //     throw new Error("Error in uploading image")
+    // }
 
     //updations
     //1 - update firstname and lastname
@@ -125,7 +125,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
             {
                 "personalDetails.firstName": first_name,
                 "personalDetails.last_name": last_name,
-                image: image?.secure_url
+                // image: image?.secure_url
             },
             { new: true }
         )

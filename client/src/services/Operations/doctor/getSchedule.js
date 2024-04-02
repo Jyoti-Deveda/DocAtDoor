@@ -10,8 +10,6 @@ export const getSchedule = async () => {
 
         res = await apiConnector("GET", doctorEndpoints.GET_SCHEDULED_DAYS);
 
-
-
         if (!res?.data?.success) {
             throw new Error("Seomthing went wrong while fetching data.")
         }

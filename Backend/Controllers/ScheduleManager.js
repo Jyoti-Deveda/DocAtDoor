@@ -8,20 +8,23 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
   const doctorDetails = await DoctorsProfile.findOne({
     doctorId: userId,
   }).populate("workingDays");
+  
   console.log("Doctor details: ", doctorDetails);
 
   //check for scheduled days
-  const scheduledDays = await ScheduledDays.find({
+  let scheduledDays = await ScheduledDays.find({
     doctorId: userId,
     date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) },
   }).sort({ date: 1 });
 
-  console.log("Scheduled days: ", scheduledDays);
+  // console.log("Scheduled days: ", scheduledDays);
   console.log("Scheduled days length: ", scheduledDays.length);
 
   //if 7 days data from today to next seven days is present simply return it
   if (scheduledDays && scheduledDays.length >= 7) {
     scheduledDays = scheduledDays.slice(0, 7);
+    console.log("Scheduled days length after slicing: ", scheduledDays.length);
+
     return res.status(200).json({
       success: true,
       scheduledDays,
@@ -40,25 +43,34 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
 
     //this many dates need to be generated
     if (remainingDays != 0) {
-      generatedDates = generateScheduledDays(
-        scheduledDays[len - 1].date,
-        remainingDays
-      );
+      const lastAvailableDate = scheduledDays[len - 1].date;
+      console.log("Last available date: ", lastAvailableDate);
+      generatedDates = generateScheduledDays(lastAvailableDate, remainingDays);
     }
   }
   console.log("Generated dates: ", generatedDates);
 
+  const uniqueGeneratedDates = generatedDates.filter(
+    (date) =>
+      !scheduledDays.some((day) => day.date.getTime() === date.getTime())
+  );
+
+  console.log("Unique dates: ", uniqueGeneratedDates);
+
   //for the generated dates, create ScheduledDay document and save to db
-  generatedDates.forEach(async (date) => {
-    const newDate = await ScheduledDays.create({
-      doctorId: userId,
-      date: date,
-    });
+  await Promise.all(
+    uniqueGeneratedDates.map(async (date) => {
+      const newDate = await ScheduledDays.create({
+        doctorId: userId,
+        date: date,
+      });
 
-    scheduledDays.push(newDate);
-  });
+      scheduledDays.push(newDate);
+    })
+  );
 
-  console.log("Final scheduled days: ", scheduledDays);
+  // console.log("Final scheduled days: ", scheduledDays);
+  console.log("Final scheduled days length: ", scheduledDays.length);
 
   doctorDetails.workingDays = scheduledDays;
   await doctorDetails.save();
@@ -75,8 +87,8 @@ const generateScheduledDays = (startDate, noOfDays) => {
   const currentDate = new Date(startDate);
 
   for (let i = 0; i < noOfDays; i++) {
-    scheduledDays.push(new Date(currentDate));
     currentDate.setDate(currentDate.getDate() + 1);
+    scheduledDays.push(new Date(currentDate));
   }
 
   return scheduledDays;
@@ -121,3 +133,14 @@ exports.setScheduledDays = expressAsyncHandler(async (req, res) => {
     message: "Updated scheduled days successfully",
   });
 });
+
+const deleteScheduledDays = async () => {
+  try {
+    const deletedDays = await ScheduledDays.deleteMany({});
+    console.log("Deleted days: ", deletedDays);
+    return deletedDays;
+  } catch (err) {
+    console.log("Error in deleting scheduled days: ", err);
+    throw err;
+  }
+};
