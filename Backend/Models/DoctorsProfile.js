@@ -41,8 +41,12 @@ const doctorsProfileSchema = new mongoose.Schema({
                 type: String,
             },
             certification: {
-                type: String,
-                // required: true
+                url: {
+                    type: String
+                },
+                name: {
+                    type: String
+                }
             }
         },
 
