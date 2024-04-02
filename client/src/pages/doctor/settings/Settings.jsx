@@ -67,9 +67,10 @@ const Settings = () => {
                 setError(docDetailRes.message);
             }
             else {
-                if (!docDetailRes.new_doctor) {
-                    setData(docDetailRes.doctor);
-                }
+                // if (!docDetailRes.new_doctor) {
+                //     setData(docDetailRes.doctor);
+                // }
+                setData(docDetailRes);
                 setError(null);
             }
             setLoading(false);

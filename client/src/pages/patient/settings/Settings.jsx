@@ -15,8 +15,7 @@ const Settings = () => {
     const [data, setData] = useState(null);
     // console.log("🚀 ~ Settings ~ data:", data)
 
-
-    // have to get the user details from backend as when we update the user details then we have to update the cookies too else there will be now change in the user detals 
+    // have to get the user details from backend as when we update the user details then we have to update the cookies too else there will be now change in the user details 
 
     useEffect(() => {
 

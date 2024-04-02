@@ -125,7 +125,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
     const symptoms = req.body;
 
     if (symptoms.length === 0) {
-        res.status(200);
+        res.status(400);
         throw new Error("Symptoms are missing");
     }
 
@@ -180,5 +180,4 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
         res.status(400);
         throw new Error("An error occurred: " + error.message);
     });
-
 });

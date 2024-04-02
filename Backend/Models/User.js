@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const DoctorsProfile = require('./DoctorsProfile');
 
 const UserSchema = new mongoose.Schema(
     {
@@ -88,6 +89,22 @@ const UserSchema = new mongoose.Schema(
     },
     { timestamps: true }
 )
+
+// UserSchema.pre('save', async function(next) {
+//     if (this.userType === 'Doctor' && !this.doctorsProfile) {
+//         try {
+//             const doctorsProfile = await DoctorsProfile.create({ doctorId: this._id });
+//             this.doctorsProfile = doctorsProfile._id;
+//             next();
+//         } catch (error) {
+//             next(error);
+//         }
+//     } else {
+//         next();
+//     }
+// });
+
+module.exports = mongoose.model('User', UserSchema);
 
 
 module.exports = mongoose.model('User', UserSchema);
