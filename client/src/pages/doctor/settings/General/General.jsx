@@ -24,9 +24,8 @@ const General = ({
         let name = e.target.name;
         let value;
         if (type === "file") {
-            // value = e.target.files ? e.target.files[0] : "";
             // currently saving only a string [name] for file but later have to save the whole file 
-            value = e.target.files[0].name;
+            value = e.target.files[0];
         } else {
             value = e.target.value;
         }
@@ -43,7 +42,7 @@ const General = ({
             return newData;
         });
     };
-    // console.log(data?.academic_details)
+    console.log(data?.academic_details)
 
     // handles specialization changes 
     const handleSearchSelectChange = (selectedOptions, name) => {

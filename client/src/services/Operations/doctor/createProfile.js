@@ -7,8 +7,51 @@ export const createGenrealProfile = async (data) => {
 
     const modifiedData = { ...data };
     let res = null;
-    const currentDate = new Date();
 
+    // validation of the modifiedData (data) 
+    if (!validateData(modifiedData)) return;
+
+    modifiedData.specialization = objToStringArray(modifiedData.specialization);
+    modifiedData.specializedDiseases = objToStringArray(modifiedData.specializedDiseases);
+
+    const formData = new FormData();
+    const { academic_details } = modifiedData;
+    const certificationFiles = academic_details.map(item => item.certification);
+
+    certificationFiles.forEach((file, index) => {
+        formData.append(`certifications[${index}]`, file, file.name);
+    });
+
+    formData.append('data', JSON.stringify(modifiedData));
+
+    // request to backend 
+    const toastId = toast.loading("Loading..");
+    try {
+        const res = await apiConnector('POST', doctorEndpoints.CREATE_GENERAL_PROFILE, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log("CREATE GENERAL PROFILE API RESPONSE: ", res);
+        if (!res?.data?.success) {
+            throw new Error("Profile creation/updation failed!")
+        }
+
+        toast.success(res?.data.message);
+
+    } catch (err) {
+        res = err;
+        const message = err?.response?.data?.error || err?.message;
+        toast.error(message);
+        console.log("Error in doctor general profile", err);
+    }
+    toast.dismiss(toastId)
+    return res;
+}
+
+
+const validateData = (data) => {
+    let res = false;
     const {
         personal_details,
         hospital_details,
@@ -16,7 +59,7 @@ export const createGenrealProfile = async (data) => {
         verification_details,
         specialization,
         specializedDiseases
-    } = modifiedData;
+    } = data;
 
     // extract modifiedData 
     const {
@@ -55,33 +98,13 @@ export const createGenrealProfile = async (data) => {
         return res;
     }
     const reg_date = new Date(reg_year);
+    const currentDate = new Date();
     if (reg_date > currentDate) {
         toast.error("Please input the correct registration year");
         return res;
     }
 
-    modifiedData.specialization = objToStringArray(modifiedData.specialization);
-    modifiedData.specializedDiseases = objToStringArray(modifiedData.specializedDiseases);
-
-    // request to backend 
-    const toastId = toast.loading("Loading..");
-    try {
-        const res = await apiConnector('POST', doctorEndpoints.CREATE_GENERAL_PROFILE, modifiedData);
-        console.log("CREATE GENERAL PROFILE API RESPONSE: ", res);
-        if (!res?.data?.success) {
-            throw new Error("Profile creation/updation failed!")
-        }
-
-        toast.success(res?.data.message);
-
-    } catch (err) {
-        res = err;
-        const message = err?.response?.data?.error || err?.message;
-        toast.error(message);
-        console.log("Error in doctor general profile", err);
-    }
-    toast.dismiss(toastId)
-    return res;
+    return true;
 }
 
 const academicDetailsCheck = (academic_details) => {

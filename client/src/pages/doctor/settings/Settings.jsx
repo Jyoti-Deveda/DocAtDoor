@@ -53,7 +53,7 @@ const Settings = () => {
     })
     const [scheduleDetails, setScheduleDetails] = useState({});
 
-    console.log(data)
+    // console.log(data)
 
     useEffect(() => {
 
@@ -67,9 +67,6 @@ const Settings = () => {
                 setError(docDetailRes.message);
             }
             else {
-                // if (!docDetailRes.new_doctor) {
-                //     setData(docDetailRes.doctor);
-                // }
                 setData(docDetailRes);
                 setError(null);
             }

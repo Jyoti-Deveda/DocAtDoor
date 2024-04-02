@@ -11,7 +11,7 @@ export const getDoctorDetails = async () => {
   let res = null;
   try {
     res = await apiConnector("GET", doctorEndpoints.GET_DOCTOR_DETAILS);
-    console.log("GET DOCTORS DETAILS API RESPONSE: ", res);
+    // console.log("GET DOCTORS DETAILS API RESPONSE: ", res);
 
     if (!res?.data?.success) {
       throw new Error("Profile creation/updation failed!");

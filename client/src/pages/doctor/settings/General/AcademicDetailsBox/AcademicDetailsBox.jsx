@@ -69,7 +69,7 @@ const AcademicDetailsBox = ({
                         :
                         <div className={`flex gap-2 flex-1 justify-center border-2 border-dashed border-gray-200 p-1`}>
                             {/* <span>{data?.certification?.name}</span> */}
-                            <span>{data?.certification}</span>
+                            <span>{data?.certification.name}</span>
                             <CustomButton
                                 iconButton
                                 boxShadow={false}

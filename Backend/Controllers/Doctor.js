@@ -2,21 +2,25 @@ const asyncHandler = require("express-async-handler");
 const DoctorsProfile = require("../Models/DoctorsProfile");
 const Disease = require("../Models/Disease");
 const User = require("../Models/User");
+const { supportedFiletypes } = require("../constants");
+const { uploadImageToCloudinary } = require("../Utils/imageUploader");
 
 exports.createProfile = asyncHandler(async (req, res) => {
 
     const { userId } = req.user;
 
-    // console.log(req.body)
+    const data = JSON.parse(req.body.data);
+
+    const certifications = Object.values(req.files);
 
     const {
         personal_details,
         hospital_details,
-        academic_details, 
+        academic_details,
         verification_details,
-        specialization,    
+        specialization,
         specializedDiseases
-    } = req.body;
+    } = data;
 
     const {
         first_name, last_name, email, bio, experience
@@ -59,9 +63,6 @@ exports.createProfile = asyncHandler(async (req, res) => {
     console.log("Checked specialization details")
 
     //4 - check verification details
-    // console.log("Registration number: ", reg_number)
-    // console.log("Registration year: ", reg_year)
-    // console.log("Registration state medical council: ", state_medical_council)
 
     if (!verification_details || !reg_number || !reg_year || !state_medical_council) {
         res.status(404);
@@ -70,7 +71,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
     console.log("Checked verification details: ");
 
     //5 - check academic_details 
-    if (academic_details && academic_details.length > 0) {
+    if (academic_details && academic_details.length > 0 && certifications.length > 0) {
 
         academic_details.forEach((detail, index) => {
             if (!detail.university_name || !detail.course) {
@@ -84,37 +85,36 @@ exports.createProfile = asyncHandler(async (req, res) => {
         throw new Error("Academic details are required")
     }
     console.log("Checked academic details")
-    // console.log("req.files: ", req.files);
 
-    //check for image
-    if (!req.files || Object.keys(req.files).length === 0) {
-        res.status(400);
-        throw new Error("Certification is missing")
+
+    // UPLOAD AND GET THE URLS OF CERTIFICATIONS ------------------------------
+
+    const uploadedCertifications = [];
+
+    for (certificate of certifications) {
+        const fileType = certificate.name.split('.').pop();
+
+        if (!supportedFiletypes.includes(fileType)) {
+            res.status(400);
+            throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
+        }
+
+        const document = await uploadImageToCloudinary(certificate, process.env.FOLDER_NAME, 1000, 1000);
+
+        if (!document) {
+            res.status(400);
+            throw new Error("Error in uploading certifications")
+        }
+
+        uploadedCertifications.push(document.secure_url);
     }
 
-    const certificate = req.files.certification;
-    console.log("certificate image: ", certificate);
 
-    if (!certificate) {
-        res.status(400);
-        throw new Error("Certificate image is required");
-    }
+    //set the certification urls to the academic details
+    academic_details.forEach((detail, index) => {
+        detail.certification = uploadedCertifications[index];
+    });
 
-    const fileType = certificate.name.split('.').pop();
-    console.log("FILE TYPE: ", fileType);
-    //checking if file type is supported
-    if (!supportedFiletypes.includes(fileType)) {
-        res.status(400);
-        throw new Error("File type is not supported. Type should be png, jpg, jpeg or pdf");
-    }
-
-    // const image = await uploadImageToCloudinary(certificate, process.env.FOLDER_NAME, 1000, 1000);
-    // console.log("Uploaded image URL: ", image);
-
-    // if (!image) {
-    //     res.status(400);
-    //     throw new Error("Error in uploading image")
-    // }
 
     //updations
     //1 - update firstname and lastname
