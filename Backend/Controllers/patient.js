@@ -134,6 +134,7 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
     if(doctorMap.size === 0){
         res.status(200).json({
             success: true,
+            diseases,
             doctorsList: [],
             message: "No doctors found"
         })

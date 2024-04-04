@@ -1,4 +1,4 @@
-const { createProfile, getDoctorDetails } = require('../Controllers/Doctor');
+const { createProfile, getDoctorDetails, getDoctorsInfo } = require('../Controllers/Doctor');
 const { fetchScheduledDays, setScheduledDays } = require('../Controllers/ScheduleManager');
 const { auth, isDoctor, isUserVerified } = require('../Middlewares/auth');
 
@@ -9,5 +9,6 @@ Router.post('/create-general-profile', auth, isUserVerified, isDoctor, createPro
 Router.get('/get-doctor-details', auth, isUserVerified, isDoctor, getDoctorDetails);
 Router.get('/get-scheduled-days', auth, isDoctor, fetchScheduledDays);
 Router.post('/set-scheduled-days', auth, isDoctor, setScheduledDays);
+Router.get('/get-doctors-info', auth, getDoctorsInfo);
 
 module.exports = Router;

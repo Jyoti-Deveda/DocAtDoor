@@ -94,11 +94,11 @@ const ViewDoctor = () => {
                 </div>
 
 
-            </SettingsFormContainer >
+            </SettingsFormContainer>
 
             <BookAppointment />
 
-        </div >
+        </div>
     )
 }
 
