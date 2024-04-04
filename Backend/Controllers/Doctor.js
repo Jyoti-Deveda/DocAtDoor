@@ -106,9 +106,8 @@ exports.createProfile = asyncHandler(async (req, res) => {
             throw new Error("Error in uploading certifications")
         }
 
-        uploadedCertifications.push(document.secure_url);
+        uploadedCertifications.push({ url: document.secure_url, name: certificate.name });
     }
-
 
     //set the certification urls to the academic details
     academic_details.forEach((detail, index) => {
@@ -260,7 +259,8 @@ exports.getDoctorDetails = asyncHandler(async (req, res) => {
     res.status(200).json({
         success: true,
         doctor,
-        message: "Doctor's details fetched successfully"
+        message: "Doctor's details fetched successfully",
+        edu: doctorDetails.educationalQualification
     })
 
 })
