@@ -306,7 +306,12 @@ function formatDate(dateString) {
 exports.getDoctorsInfo = asyncHandler(async (req, res) => {
   const { doctorId } = req.body;
 
-  const userDetails = await User.findById(doctorId).populate("doctorsProfile");
+  const userDetails = await User.findById(doctorId).populate({
+    path: "doctorsProfile",
+    populate: {
+      path: "workingDays",
+    },
+  });
 
   if (!userDetails) {
     res.status(400);
@@ -324,15 +329,14 @@ exports.getDoctorsInfo = asyncHandler(async (req, res) => {
     rating: userDetails?.doctorsProfile?.rating,
     specialization: userDetails?.doctorsProfile?.specialization,
     specializedDiseases: userDetails?.doctorsProfile?.specializedDiseases,
-    scheduledDays: userDetails?.doctorsProfile?.specializedDiseases,
+    scheduledDays: userDetails?.doctorsProfile?.workingDays,
     appointment_fee: userDetails?.doctorsProfile?.appointment_fee,
-    appointments_count: userDetails?.doctorsAppointments?.length
+    appointments_count: userDetails?.doctorsAppointments?.length,
   };
-
 
   res.status(200).json({
     success: false,
     doctorsData: data,
-    message: "Doctors info fetched successfully"
-  })
+    message: "Doctors info fetched successfully",
+  });
 });
