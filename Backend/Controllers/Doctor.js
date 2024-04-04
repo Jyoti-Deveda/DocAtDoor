@@ -40,14 +40,14 @@ exports.createProfile = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Personal details are missing")
     }
-    console.log("Checked personal details")
+    // console.log("Checked personal details")
 
     //2 - check for hospital_details
     if (!hospital_details || !name || !city || !state || !postal_code || !contact_info || !experience || !appointment_fee) {
         res.status(404);
         throw new Error("Hospital details are missing")
     }
-    console.log("Checked hospital details: ");
+    // console.log("Checked hospital details: ");
 
 
     //3 - check for specialization and specialized diseases 
@@ -60,7 +60,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Atleast one disease, the doctor is specialized at is required");
     }
-    console.log("Checked specialization details")
+    // console.log("Checked specialization details")
 
     //4 - check verification details
 
@@ -68,7 +68,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Verification details are missing");
     }
-    console.log("Checked verification details: ");
+    // console.log("Checked verification details: ");
 
     //5 - check academic_details 
     if (academic_details && academic_details.length > 0 && certifications.length > 0) {
@@ -84,7 +84,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Academic details are required")
     }
-    console.log("Checked academic details")
+    // console.log("Checked academic details")
 
 
     // UPLOAD AND GET THE URLS OF CERTIFICATIONS ------------------------------
@@ -129,7 +129,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
             },
             { new: true }
         )
-        console.log("Updated user details: ", userDetails);
+        // console.log("Updated user details: ", userDetails);
     } catch (err) {
         console.log("Error in updating firstname lastname: ", err);
         res.status(400)

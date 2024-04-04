@@ -145,6 +145,43 @@ export const symptoms = [
     { value: 'yellow_crust_ooze', label: 'Yellow Crust Ooze' }
 ]
 
+export const diseases = [
+  { "value": "fungal_infection", "label": "Fungal infection" },
+  { "value": "allergy", "label": "Allergy" },
+  { "value": "gerd", "label": "GERD" },
+  { "value": "chronic_cholestasis", "label": "Chronic cholestasis" },
+  { "value": "drug_reaction", "label": "Drug Reaction" },
+  { "value": "peptic_ulcer_disease", "label": "Peptic ulcer disease" },
+  { "value": "aids", "label": "AIDS" },
+  { "value": "diabetes", "label": "Diabetes" },
+  { "value": "gastroenteritis", "label": "Gastroenteritis" },
+  { "value": "bronchial_asthma", "label": "Bronchial Asthma" },
+  { "value": "hypertension", "label": "Hypertension" },
+  { "value": "migraine", "label": "Migraine" },
+  { "value": "cervical_spondylosis", "label": "Cervical spondylosis" },
+  { "value": "paralysis_brain_hemorrhage", "label": "Paralysis (brain hemorrhage)" },
+  { "value": "jaundice", "label": "Jaundice" },
+  { "value": "malaria", "label": "Malaria" },
+  { "value": "chicken_pox", "label": "Chicken pox" },
+  { "value": "dengue", "label": "Dengue" },
+  { "value": "typhoid", "label": "Typhoid" },
+  { "value": "hepatitis_a", "label": "Hepatitis A" },
+  { "value": "hepatitis_b", "label": "Hepatitis B" },
+  { "value": "hepatitis_c", "label": "Hepatitis C" },
+  { "value": "hepatitis_d", "label": "Hepatitis D" },
+  { "value": "hepatitis_e", "label": "Hepatitis E" },
+  { "value": "alcoholic_hepatitis", "label": "Alcoholic hepatitis" },
+  { "value": "tuberculosis", "label": "Tuberculosis" },
+  { "value": "common_cold", "label": "Common Cold" },
+  { "value": "pneumonia", "label": "Pneumonia" },
+  { "value": "dimorphic_hemmorhoids_piles", "label": "Dimorphic hemmorhoids(piles)" },
+  { "value": "heart_attack", "label": "Heart attack" },
+  { "value": "varicose_veins", "label": "Varicose veins" },
+  { "value": "hypothyroidism", "label": "Hypothyroidism" },
+  { "value": "hyperthyroidism", "label": "Hyperthyroidism" }
+]
+
+
 
 export const initialSymptomState = {
     "itching": false,

@@ -73,29 +73,82 @@ exports.set_user_details = asyncHandler(async (req, res) => {
 
 });
 
-exports.getDoctorsOfDisease = asyncHandler(async (diseases, req, res) => {
+// exports.getDoctorsOfDisease = asyncHandler(async ( req, res) => {
 
-    if(!diseases){
-        res.status(400);
-        throw new Error("Diseases are required")
-    }
+//     const diseases = req.diseases;
 
-    var doctorsList = [];
-    for (const disease of diseases) {
+//     if(!diseases){
+//         res.status(400);
+//         throw new Error("Diseases are required")
+//     }
+
+//     var doctorsList = [];
+//     for (const disease of diseases) {
         
-        const diseaseDetails = await Disease.findOne({ diseaseName:disease }).populate('doctors');
+//         const diseaseDetails = await Disease.findOne({ diseaseName:disease }).populate('doctors');
 
-        console.log("DIsease details: ", diseaseDetails)
+//         console.log("DIsease details: ", diseaseDetails)
 
-        doctorsList.push(diseaseDetails?.doctors)
+//         if(diseaseDetails?.doctors){
+//             doctorsList.push(diseaseDetails?.doctors)
+//         }
 
+//     }
+
+//     res.status(200).json({
+//         success: true,
+//         doctorsList,
+//         message: "Doctors fetched successfully"
+//     })
+
+// })
+
+
+exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
+    const diseases = req.diseases;
+
+    if (!diseases) {
+        res.status(400);
+        throw new Error("Diseases are required");
     }
+
+    // Map to store doctor details along with the count of diseases they cover
+    const doctorMap = new Map();
+
+    // Iterate through each disease
+    for (const disease of diseases) {
+        const diseaseDetails = await Disease.findOne({ diseaseName: disease }).populate('doctors');
+
+        if (diseaseDetails?.doctors) {
+            for (const doctor of diseaseDetails.doctors) {
+                // Increment the count of diseases covered by the doctor
+                if (doctorMap.has(doctor._id)) {
+                    doctorMap.get(doctor._id).count++;
+                } else {
+                    doctorMap.set(doctor._id, { doctor, count: 1 });
+                }
+            }
+        }
+    }
+
+    if(doctorMap.size === 0){
+        res.status(200).json({
+            success: true,
+            doctorsList: [],
+            message: "No doctors found"
+        })
+    }
+
+    // Sort the doctors based on the count of diseases they cover
+    const sortedDoctors = [...doctorMap.values()].sort((a, b) => b.count - a.count);
+
+    // Extract doctor details from the sorted list
+    const doctorsList = sortedDoctors.map(({ doctor }) => doctor);
 
     res.status(200).json({
         success: true,
         doctorsList,
         message: "Doctors fetched successfully"
-    })
-
-})
+    });
+});
 

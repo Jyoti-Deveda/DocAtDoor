@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import AcademicDetailsBox from './AcademicDetailsBox/AcademicDetailsBox'
 import SearchSelect from '@/components/inputs/SearchSelect/SearchSelect'
-import { experienceYears, symptoms } from '@/lib/constant'
+import { diseases, experienceYears, symptoms } from '@/lib/constant'
 import { createGenrealProfile } from '@/services/Operations/doctor/createProfile'
 import Loading from '@/components/Common/Loading/Loading'
 import { CustomError } from '@/components/Common/CustomError/CustomError'
@@ -42,7 +42,7 @@ const General = ({
             return newData;
         });
     };
-    console.log(data?.academic_details)
+    // console.log(data?.academic_details)
 
     // handles specialization changes 
     const handleSearchSelectChange = (selectedOptions, name) => {
@@ -234,7 +234,7 @@ const General = ({
                             <SearchSelect
                                 value={data?.specializedDiseases}
                                 onChange={(list) => handleSearchSelectChange(list, 'specializedDiseases')}
-                                options={symptoms}
+                                options={diseases}
                                 isMulti
                                 placeholder='Select Specialized Diseases'
                             />

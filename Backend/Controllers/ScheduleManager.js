@@ -9,7 +9,7 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
     doctorId: userId,
   }).populate("workingDays");
   
-  console.log("Doctor details: ", doctorDetails);
+  // console.log("Doctor details: ", doctorDetails);
 
   //check for scheduled days
   let scheduledDays = await ScheduledDays.find({
@@ -18,7 +18,7 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
   }).sort({ date: 1 });
 
   // console.log("Scheduled days: ", scheduledDays);
-  console.log("Scheduled days length: ", scheduledDays.length);
+  // console.log("Scheduled days length: ", scheduledDays.length);
 
   //if 7 days data from today to next seven days is present simply return it
   if (scheduledDays && scheduledDays.length >= 7) {
@@ -48,14 +48,14 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
       generatedDates = generateScheduledDays(lastAvailableDate, remainingDays);
     }
   }
-  console.log("Generated dates: ", generatedDates);
+  // console.log("Generated dates: ", generatedDates);
 
   const uniqueGeneratedDates = generatedDates.filter(
     (date) =>
       !scheduledDays.some((day) => day.date.getTime() === date.getTime())
   );
 
-  console.log("Unique dates: ", uniqueGeneratedDates);
+  // console.log("Unique dates: ", uniqueGeneratedDates);
 
   //for the generated dates, create ScheduledDay document and save to db
   await Promise.all(
@@ -70,7 +70,7 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
   );
 
   // console.log("Final scheduled days: ", scheduledDays);
-  console.log("Final scheduled days length: ", scheduledDays.length);
+  // console.log("Final scheduled days length: ", scheduledDays.length);
 
   doctorDetails.workingDays = scheduledDays;
   await doctorDetails.save();
@@ -124,7 +124,7 @@ exports.setScheduledDays = expressAsyncHandler(async (req, res) => {
         throw new Error("Scheduled day not found");
       }
 
-      console.log("Updated scheduled day: ", updatedScheduledDay);
+      // console.log("Updated scheduled day: ", updatedScheduledDay);
     })
   );
 

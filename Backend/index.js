@@ -42,7 +42,7 @@ app.use(cookieParser())
 app.use('/api/user', userRoutes);
 app.use('/api/doctor', doctorRoutes);
 app.use('/api/patient', patientRoutes);
-// app.use('/api/python', pythonRoutes);
+app.use('/api/python', pythonRoutes);
 
 app.use(errorHandler)
 
