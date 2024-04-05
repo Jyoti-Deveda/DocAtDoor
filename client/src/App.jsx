@@ -6,6 +6,7 @@ import Login from "./pages/authentication/login/Login";
 import Register from "./pages/authentication/register/Register";
 import { VerifyEmailMessage } from "./pages/authentication/email-verification/VerifyEmailMessage";
 import { EmailVerified } from "./pages/authentication/email-verified/EmailVerified";
+import { DocListProvider } from "./globalStates/DocListProvider";
 
 const App = () => {
   return (
@@ -17,7 +18,9 @@ const App = () => {
           <Route path="/verify-email" element={<VerifyEmailMessage />} />
           <Route path="/email-verified/:token" element={<EmailVerified />} />
         </ReactRoutes>
-        <Routes />
+        <DocListProvider>
+          <Routes />
+        </DocListProvider>
       </BrowserRouter>
     </div>
   );

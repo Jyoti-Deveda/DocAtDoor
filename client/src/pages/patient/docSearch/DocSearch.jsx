@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Style from "./DocSearch.module.css";
 import { symptoms, initialSymptomState } from '@/lib/constant';
 import Select from 'react-select';
@@ -8,13 +8,19 @@ import SettingsFormContainer from '@/components/Common/settingsFormContainer/Set
 import { getRemainingSymptoms } from '@/util/helpers';
 import StatusChips from '@/components/Common/StatusChips/StatusChips';
 import { predictDisease } from '@/services/Operations/patient/predictDisease';
+import { DocListContext } from '@/globalStates/DocListProvider';
+import Loading from '@/components/Common/Loading/Loading';
+import { useNavigate } from 'react-router-dom';
 
 const animatedComponents = makeAnimated();
 
 const DocSearch = () => {
 
     const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+    const docListManage = useContext(DocListContext);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [diseaseList, setDiseaseList] = useState([]);
 
     const handleSymptomChange = (selectedOptions) => {
         setSelectedSymptoms(selectedOptions);
@@ -33,10 +39,28 @@ const DocSearch = () => {
     /**
      * Handles the prediction of disease based on selected symptoms.
      */
-    const handlePredict = () => {
-        const res = predictDisease(selectedSymptoms, setLoading);
-
+    const handlePredict = async () => {
+        const res = await predictDisease(selectedSymptoms, setLoading);
+        // if (res.error) {
+        //     console.log(res.message);
+        // } else {
+        //     docListManage.setDocList(res);
+        //     navigate('/search-doctor/list');
+        // }
+        const dummy = [{ name: "Akshay", experiance: 5 }]
+        const dummyDiseaseList = ["fungal_infection", "allergy", "gerd", "diabetes"];
+        docListManage.setDocList(dummy);
+        setDiseaseList(dummyDiseaseList);
     }
+
+    useEffect(() => {
+        if (diseaseList.length > 0 && docListManage.docList.length > 0) {
+            const diseaseListString = diseaseList.join(',');
+            navigate(`/search-doctor/list?diseases=${diseaseListString}`);
+        }
+    }, [diseaseList]);
+
+    if (loading) return <Loading />
 
     return (
         <div className={`flex flex-col gap-6 sm:pt-4`}>

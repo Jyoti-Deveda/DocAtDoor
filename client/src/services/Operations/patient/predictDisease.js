@@ -19,6 +19,7 @@ export const predictDisease = async (data, setLoading) => {
         if (!res?.data?.success) {
             throw new Error(res?.data?.message)
         }
+        res = res?.data;
         setLoading(false);
     } catch (err) {
         setLoading(false);

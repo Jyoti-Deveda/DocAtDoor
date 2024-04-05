@@ -53,11 +53,11 @@ export const protectedRoutesMap = {
         path: '/search-doctor/doctor/:id',
         component: ViewDoctor
     },
-    '/search-doctor/:disease': {
+    '/search-doctor/list': {
         protected: true,
         allowed_roles: [PATIENT],
         label: 'Doctor List',
-        path: '/search-doctor/:disease',
+        path: '/search-doctor/list',
         component: DocListing
     },
     '/patient/settings': {

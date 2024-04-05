@@ -1,13 +1,36 @@
 import DocCard from '@/components/docsComp/DocCard/DocCard'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DocList from './DocList/DocList'
 import StyledInput from '@/components/inputs/StyledInput/StyledInput';
 import CustomButton from '@/components/CustomButton/CustomButton';
 import { Search } from '@mui/icons-material';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { DocListContext } from '@/globalStates/DocListProvider';
+import { useLocation } from 'react-router-dom';
+import { getListFromDiseases } from '@/services/Operations/patient/getListFromDiseases';
 
 const DocListing = () => {
-    const name = "HEllo this is data";
+    const docListManage = useContext(DocListContext);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const diseases = searchParams.get('diseases').split(',');
+    const [doctorList, setDoctorList] = useState([]);
+
+    useEffect(() => {
+
+        if (docListManage.docList.length > 0) return;
+        else {
+            ; (async () => {
+                const res = await getListFromDiseases(diseases);
+                if (res.error) {
+                    console.log(res.message);
+                } else {
+                    setDoctorList(res.doctorList);
+                }
+            })();
+        }
+
+    }, [docListManage.docList])
 
 
     return (
@@ -42,7 +65,7 @@ const DocListing = () => {
 
             </div>
 
-            <DocList />
+            {docListManage?.docList.length > 0 ? <DocList /> : "No Doctors Found"}
         </div>
     )
 }
