@@ -9,6 +9,8 @@ export const getListFromDiseases = async (diseases) => {
     try {
         res = await apiConnector('POST', patientEndpoints.GET_DOC_LIST, diseases);
 
+        console.log("GET LIST OF DOCTORS API RESPONSE: ", res);
+
         if (!res?.data?.success) {
             throw new Error("Something went wrong, please try agian later")
         }

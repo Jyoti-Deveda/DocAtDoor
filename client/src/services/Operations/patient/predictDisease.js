@@ -15,12 +15,14 @@ export const predictDisease = async (data, setLoading) => {
     try {
         setLoading(true);
         res = await apiConnector('POST', patientEndpoints.PREDICT_DISEASE, convertedData);
+        console.log("PREDICT DISEASE API RESPONSE: ", res);
 
         if (!res?.data?.success) {
             throw new Error(res?.data?.message)
         }
         res = res?.data;
         setLoading(false);
+        toast.success(res?.data?.message);
     } catch (err) {
         setLoading(false);
         const message = err?.response?.data?.error || err?.message;

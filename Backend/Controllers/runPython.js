@@ -36,7 +36,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
         }
         try {
           const jsonData = JSON.parse(buffer);
-          console.log("Received data:", jsonData);
+          // console.log("Received data:", jsonData);
           resolve(jsonData);
         } catch (error) {
           console.error("Error parsing JSON:", error);
@@ -64,7 +64,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
           throw new Error(jsonData?.error)
         }
         const diseases = jsonData?.prediction[0];
-        console.log("Diseases: ", diseases);
+        // console.log("Diseases: ", diseases);
         req.diseases = diseases
         next();
       })

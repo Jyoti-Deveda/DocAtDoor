@@ -6,6 +6,8 @@ import { ChangePassword } from '@/pages/doctor/settings/ChangePassword/ChangePas
 import UserProfileBox from '@/pages/doctor/settings/userProfileBox/UserProfileBox'
 import General from './General/General'
 import { getProfileDetails } from '@/services/Operations/patient/getProfileDetails'
+import logo from "../../../assets/Images/default-avatar.webp";
+import { getProfilePicture } from '@/services/Operations/DpService'
 
 const Settings = () => {
 
@@ -13,6 +15,7 @@ const Settings = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
+    const [currentDp, setCurrentDp] = useState(logo);
     // console.log("🚀 ~ Settings ~ data:", data)
 
     // have to get the user details from backend as when we update the user details then we have to update the cookies too else there will be now change in the user details 
@@ -22,6 +25,7 @@ const Settings = () => {
         ; (async () => {
             setLoading(true);
             const res = await getProfileDetails();
+            const profileImage = await getProfilePicture();
             // console.log("🚀 ~ ; ~ res:", res)
             if (res.error) {
                 setData(null);
@@ -30,6 +34,10 @@ const Settings = () => {
             else {
                 setData(res.userDetails.personal_details);
                 setError(null);
+            }
+
+            if (profileImage) {
+                setCurrentDp(profileImage.image)
             }
             setLoading(false);
         })();
@@ -42,7 +50,8 @@ const Settings = () => {
             label: "General",
             component: (
                 <General
-                    UserProfileBox={<UserProfileBox />}
+                    // UserProfileBox={<UserProfileBox />}
+                    UserProfileBox={<UserProfileBox data={data} currentDp={currentDp} setCurrentDp={setCurrentDp} />}
                     data={data}
                     setData={setData}
                     loading={loading}
@@ -54,7 +63,8 @@ const Settings = () => {
             label: "Change Password",
             component: (
                 <ChangePassword
-                    UserProfileBox={<UserProfileBox />}
+                    // UserProfileBox={<UserProfileBox />}
+                    UserProfileBox={<UserProfileBox data={data} currentDp={currentDp} setCurrentDp={setCurrentDp} />}
                 />
             )
         },
