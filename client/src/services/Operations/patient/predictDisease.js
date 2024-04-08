@@ -22,7 +22,9 @@ export const predictDisease = async (data, setLoading) => {
         }
         res = res?.data;
         setLoading(false);
-        toast.success(res?.data?.message);
+        if (res.doctorsList.length === 0) {
+            toast.error("No doctors found for the selected symptoms");
+        } else toast.success(res?.data?.message);
     } catch (err) {
         setLoading(false);
         const message = err?.response?.data?.error || err?.message;

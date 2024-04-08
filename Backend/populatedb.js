@@ -108,7 +108,7 @@ async function addDoctorToDisease() {
 // create a number of diseasess 
 async function createDiseases() {
     console.log("Adding diseases")
-    await Promise.all(allDiseases.map((disease, index) => diseaseCreate(index, disease.value)))
+    await Promise.all(allDiseases.map((disease, index) => diseaseCreate(index, disease.label)))
 }
 // create a number of doctors 
 async function createDoctoruser() {

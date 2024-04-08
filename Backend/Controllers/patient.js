@@ -120,6 +120,7 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
 
   return res.status(200).json({
     success: true,
+    diseases,
     doctorsList,
     message: "Doctors fetched successfully",
   });

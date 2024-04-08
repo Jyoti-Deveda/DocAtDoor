@@ -50,7 +50,7 @@ const DocSearch = () => {
     }
 
     useEffect(() => {
-        if (diseaseList.length > 0 && !loading) {
+        if (diseaseList?.length > 0 && !loading) {
             const diseaseListString = diseaseList.join(',');
             navigate(`/search-doctor/list?diseases=${diseaseListString}`);
         }
