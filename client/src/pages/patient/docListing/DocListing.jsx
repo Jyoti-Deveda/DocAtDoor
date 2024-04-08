@@ -14,10 +14,10 @@ const DocListing = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const diseases = searchParams.get('diseases').split(',');
-    const [doctorList, setDoctorList] = useState([]);
 
+
+    // this will fetch the list of doctors when user refresh or the global doc list is empty 
     useEffect(() => {
-
         if (docListManage.docList.length > 0) return;
         else {
             ; (async () => {
@@ -25,12 +25,11 @@ const DocListing = () => {
                 if (res.error) {
                     console.log(res.message);
                 } else {
-                    setDoctorList(res.doctorList);
+                    docListManage.setDocList(res.doctorsList);
                 }
             })();
         }
-
-    }, [docListManage.docList])
+    }, []);
 
 
     return (
@@ -65,7 +64,7 @@ const DocListing = () => {
 
             </div>
 
-            {docListManage?.docList.length > 0 ? <DocList /> : "No Doctors Found"}
+            {docListManage?.docList.length > 0 ? <DocList data={docListManage.docList} /> : "No Doctors Found"}
         </div>
     )
 }

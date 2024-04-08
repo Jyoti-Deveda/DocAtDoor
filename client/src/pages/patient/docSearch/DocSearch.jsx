@@ -41,20 +41,16 @@ const DocSearch = () => {
      */
     const handlePredict = async () => {
         const res = await predictDisease(selectedSymptoms, setLoading);
-        // if (res.error) {
-        //     console.log(res.message);
-        // } else {
-        //     docListManage.setDocList(res);
-        //     navigate('/search-doctor/list');
-        // }
-        const dummy = [{ name: "Akshay", experiance: 5 }]
-        const dummyDiseaseList = ["fungal_infection", "allergy", "gerd", "diabetes"];
-        docListManage.setDocList(dummy);
-        setDiseaseList(dummyDiseaseList);
+        if (res.error) {
+            console.log(res.message);
+        } else {
+            docListManage.setDocList(res?.doctorsList);
+            setDiseaseList(res?.diseases);
+        }
     }
 
     useEffect(() => {
-        if (diseaseList.length > 0 && docListManage.docList.length > 0) {
+        if (diseaseList.length > 0 && !loading) {
             const diseaseListString = diseaseList.join(',');
             navigate(`/search-doctor/list?diseases=${diseaseListString}`);
         }

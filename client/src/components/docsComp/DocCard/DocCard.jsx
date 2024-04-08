@@ -7,7 +7,9 @@ import ReactStars from 'react-rating-stars-component'
 import { FaStar } from 'react-icons/fa';
 
 
-const DocCard = () => {
+const DocCard = ({
+    data
+}) => {
     return (
         <div
             // whole card is clickable 
