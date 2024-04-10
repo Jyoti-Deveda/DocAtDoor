@@ -17,7 +17,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
     const pythonProcess = spawn("python", ["../python/main.py"]);
     const writableStream = pythonProcess.stdin;
 
-    writableStream.write(JSON.stringify(symptoms));
+    writableStream.write( JSON.stringify(symptoms) );
     writableStream.end();
 
     const onDataReceived = new Promise((resolve, reject) => {

@@ -11,7 +11,7 @@ const DocCard = ({
     data
 }) => {
 
-    console.log(data);
+    // console.log(data);
 
     return (
         <>

@@ -21,17 +21,19 @@ export const predictDisease = async (data, setLoading) => {
             throw new Error(res?.data?.message)
         }
         res = res?.data;
-        setLoading(false);
         if (res.doctorsList.length === 0) {
             toast.error("No doctors found for the selected symptoms");
-        } else toast.success(res?.data?.message);
+        } 
+        else 
+            toast.success(res?.data?.message);
+        
     } catch (err) {
-        setLoading(false);
-        const message = err?.response?.data?.error || err?.message;
+        console.log("🚀 ~ predictDisease ~ err:", err);
+        const message = res?.data?.error || err?.message;
         res = { error: true, message };
         toast.error(message);
-        console.log("🚀 ~ predictDisease ~ err:", err);
     }
+    setLoading(false);
 
     return res;
 

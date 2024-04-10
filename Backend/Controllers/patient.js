@@ -85,21 +85,35 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
 
   // Iterate through each disease
   for (const disease of diseases) {
+    // const diseaseName = disease.toLowerCase();
+    // console.log("Disease name: ", diseaseName);
     const diseaseDetails = await Disease.findOne({
       diseaseName: disease,
-    }).populate("doctors");
+    }).populate({
+      path: "doctors",
+      select: "personalDetails image userType doctorsProfile",
+      populate: {
+        path: "doctorsProfile" ,
+        select: "specialization experience verified rating"
+      },
+    });
+    console.log("Disease details: ", diseaseDetails) 
+
 
     if (diseaseDetails?.doctors) {
       for (const doctor of diseaseDetails.doctors) {
         // Increment the count of diseases covered by the doctor
+        doctor.personalDetails.password = undefined;
         if (doctorMap.has(doctor._id)) {
           doctorMap.get(doctor._id).count++;
         } else {
           doctorMap.set(doctor._id, { doctor, count: 1 });
         }
+        console.log("Doctors map: ", doctorMap);
       }
     }
   }
+  console.log("Final doctors map size: ", doctorMap.size);
 
   if (doctorMap.size === 0) {
     return res.status(200).json({
@@ -117,11 +131,12 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
 
   // Extract doctor details from the sorted list
   const doctorsList = sortedDoctors.map(({ doctor }) => doctor);
+  console.log("Doctors list: ", doctorsList);
 
   return res.status(200).json({
     success: true,
     diseases,
     doctorsList,
-    message: "Doctors fetched successfully",
+    message: "Doctors fetched successfully", 
   });
 });

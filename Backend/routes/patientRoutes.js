@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get('/details', auth, isPatient, get_user_details).post('/details', auth, isPatient, set_user_details);
 router.post('/get-disease-doctor', runPythonScript, getDoctorsOfDisease);
-
+router.post('/get-doctors', getDoctorsOfDisease)
 
 module.exports = router;

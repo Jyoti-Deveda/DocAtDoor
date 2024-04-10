@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 console.log(
-    'This script populates some test books, authors, genres and bookinstances to your database.'
+    'This script populates some users, doctors, diseases and scheduled days to database.'
 );
 // mongodb://localhost:27017/test
 
@@ -79,7 +79,7 @@ async function doctorProfileCreate(index, data) {
     doctorProfile[index] = profile;
     console.log(`Added doctor profile for: ${profile.doctorId}`);
 }
-// create working day 9scheduledDay and save to db 
+// create working day scheduledDay and save to db 
 async function workingDayCreate(index, data) {
     const workingDay = new ScheduledDays(data);
     await workingDay.save();
