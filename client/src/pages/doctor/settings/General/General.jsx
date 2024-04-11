@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import AcademicDetailsBox from './AcademicDetailsBox/AcademicDetailsBox'
 import SearchSelect from '@/components/inputs/SearchSelect/SearchSelect'
-import { diseases, experienceYears, symptoms } from '@/lib/constant'
+import { diseases, experienceYears, specializations, symptoms } from '@/lib/constant'
 import { createGenrealProfile } from '@/services/Operations/doctor/createProfile'
 import Loading from '@/components/Common/Loading/Loading'
 import { CustomError } from '@/components/Common/CustomError/CustomError'
@@ -222,7 +222,7 @@ const General = ({
                             <SearchSelect
                                 value={data?.specialization}
                                 onChange={(list) => handleSearchSelectChange(list, 'specialization')}
-                                options={symptoms}
+                                options={specializations}
                                 isMulti
                                 placeholder='Select Specializations'
                             />
