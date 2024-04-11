@@ -477,7 +477,7 @@ def process_user_input(all_symptoms, user_symptoms):
 
 def main():
     try:
-        test = True
+        test = False
         current_model_name = 'random_forest'
         dp = DiseasePrediction(model_name=current_model_name)
         dp.train_model()

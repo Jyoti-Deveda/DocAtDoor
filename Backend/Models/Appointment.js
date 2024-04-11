@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const appointmentSchema = new mongoose.Schema(
     {
-        diseaseName: [
+        diseaseNames: [
             {
                 type: String,
                 requred: true
