@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#! /usr/bin/env node 
 
 console.log(
     'This script populates some users, doctors, diseases and scheduled days to database.'
@@ -17,7 +17,6 @@ let doctors = [];
 let doctorProfile = [];
 let diseases = [];
 let workingDays = [[]];
-
 
 //main function
 const mongoose = require("mongoose");
@@ -119,12 +118,12 @@ async function createDiseases() {
 }
 // create a number of doctors 
 async function createDoctoruser() {
-    console.log("Adding doctors")
+    console.log("Adding doctors: ", allDoctors);
     await Promise.all(allDoctors.map((doctor, index) => doctorCreate(index, doctor)))
 }
 // create a number of doctor profiles
 async function createDoctorProfiles() {
-    console.log("Adding doctor profiles");
+    console.log("Adding doctor profiles: ", doctors);
     await Promise.all(doctors.map((doctor, index) => doctorProfileCreate(index, getProfile(index, doctor._id))));
 }
 async function addProfilesToUser() {

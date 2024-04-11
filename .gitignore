@@ -3,3 +3,6 @@ client/node_modules
 Backend/.env
 client/.env
 .env
+
+./python/saved_model
+./python/feature_correlation.png

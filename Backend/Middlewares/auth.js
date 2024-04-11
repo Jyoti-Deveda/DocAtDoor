@@ -41,7 +41,7 @@ exports.isUserVerified = asyncHandler(async (req, res, next) => {
 });
 
 exports.isDoctor = asyncHandler(async (req, res, next) => {
-  console.log("User type: ", req.user.userType);
+  // console.log("User type: ", req.user.userType);
 
   if (req.user.userType !== userRoles.DOCTOR) {
     res.status(401);
