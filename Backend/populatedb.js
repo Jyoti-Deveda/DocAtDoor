@@ -40,6 +40,8 @@ async function main() {
 
     await addDoctorToDisease();
 
+    await addProfilesToUser();
+
     console.log("Debug: Closing mongoose");
     mongoose.connection.close();
 }
@@ -105,6 +107,11 @@ async function addDoctorToDisease() {
     console.log("Doctors added to diseases doctors")
 }
 
+async function addProfileToDoctorUser(data) {
+    await User.findByIdAndUpdate(data.doctorId, { doctorsProfile: data._id }, { new: true });
+    console.log("Profile added to doctor user");
+}
+
 // create a number of diseasess 
 async function createDiseases() {
     console.log("Adding diseases")
@@ -119,6 +126,10 @@ async function createDoctoruser() {
 async function createDoctorProfiles() {
     console.log("Adding doctor profiles");
     await Promise.all(doctors.map((doctor, index) => doctorProfileCreate(index, getProfile(index, doctor._id))));
+}
+async function addProfilesToUser() {
+    console.log("Adding doctor profile to user")
+    await Promise.all(doctorProfile.map((profile) => addProfileToDoctorUser(profile)));
 }
 
 // set data in object and return it accordinglt 
