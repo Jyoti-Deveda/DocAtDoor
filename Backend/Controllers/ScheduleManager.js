@@ -23,7 +23,7 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
   //if 7 days data from today to next seven days is present simply return it
   if (scheduledDays && scheduledDays.length >= 7) {
     scheduledDays = scheduledDays.slice(0, 7);
-    console.log("Scheduled days length after slicing: ", scheduledDays.length);
+    // console.log("Scheduled days length after slicing: ", scheduledDays.length);
 
     return res.status(200).json({
       success: true,

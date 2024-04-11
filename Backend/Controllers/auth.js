@@ -200,7 +200,7 @@ exports.verifyEmail = asyncHandler(async (req, res) => {
     // console.log("USERDETAILS VERIFIED: ", userDetails.verified)
     if (userDetails.verified) {
         //if user is already verified
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "User verified success"
         })
@@ -221,7 +221,7 @@ exports.verifyEmail = asyncHandler(async (req, res) => {
     userDetails.verified = true;
     userDetails.save();
     // console.log("Marked verified and return response")
-    res.status(200).json({
+    return res.status(200).json({
         success: true,
         message: "User verified successfully"
     })

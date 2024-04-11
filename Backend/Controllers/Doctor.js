@@ -5,6 +5,9 @@ const User = require("../Models/User");
 const { supportedFiletypes } = require("../constants");
 const { uploadImageToCloudinary } = require("../Utils/imageUploader");
 
+
+//desc- to create or update doctors profile
+//route- POST /api/doctor/create-general-profile
 exports.createProfile = asyncHandler(async (req, res) => {
   const { userId } = req.user;
 
@@ -340,3 +343,12 @@ exports.getDoctorsInfo = asyncHandler(async (req, res) => {
     message: "Doctors info fetched successfully",
   });
 });
+
+
+exports.deleteData = asyncHandler(async(req, res) => {
+
+  await User.deleteMany({});
+  await DoctorsProfile.deleteMany({});
+  await Disease
+
+})

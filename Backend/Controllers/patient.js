@@ -97,7 +97,7 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
         select: "specialization experience verified rating"
       },
     });
-    console.log("Disease details: ", diseaseDetails) 
+    // console.log("Disease details: ", diseaseDetails) 
 
 
     if (diseaseDetails?.doctors) {
@@ -109,7 +109,7 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
         } else {
           doctorMap.set(doctor._id, { doctor, count: 1 });
         }
-        console.log("Doctors map: ", doctorMap);
+        // console.log("Doctors map: ", doctorMap);
       }
     }
   }
@@ -131,7 +131,7 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
 
   // Extract doctor details from the sorted list
   const doctorsList = sortedDoctors.map(({ doctor }) => doctor);
-  console.log("Doctors list: ", doctorsList);
+  // console.log("Doctors list: ", doctorsList);
 
   return res.status(200).json({
     success: true,

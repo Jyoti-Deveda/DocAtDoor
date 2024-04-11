@@ -57,7 +57,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
 
     onDataReceived
       .then((jsonData) => {
-        console.log("Received data:", jsonData);
+        // console.log("Received data:", jsonData);
 
         if (jsonData?.error) {
           res.status(400)
