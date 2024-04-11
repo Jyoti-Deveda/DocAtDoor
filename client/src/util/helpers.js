@@ -58,6 +58,16 @@ export const getExp = (value) => {
     return label;
 };
 
+export const getSpecializationString = (specializations) => {
+    let str = "";
+    specializations.forEach((item, index) => {
+        str += item;
+        if (index !== specializations.length - 1) {
+            str += ", ";
+        }
+    });
+    return str;
+}
 
 
 // get symptoms that are not selected 

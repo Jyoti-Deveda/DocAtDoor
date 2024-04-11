@@ -1,4 +1,3 @@
-import DocCard from '@/components/docsComp/DocCard/DocCard'
 import React, { useContext, useEffect, useState } from 'react'
 import DocList from './DocList/DocList'
 import StyledInput from '@/components/inputs/StyledInput/StyledInput';

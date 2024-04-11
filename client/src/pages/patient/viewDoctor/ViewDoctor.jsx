@@ -7,8 +7,8 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import SettingsFormContainer from '@/components/Common/settingsFormContainer/SettingsFormContainer';
 import { Divider } from '@mui/material';
 import BookAppointment from './BookAppointment/BookAppointment';
-import { getDoctorDetails } from '@/services/Operations/doctor/getDoctorDetails';
 import { useParams } from 'react-router-dom';
+import { getDocById } from '@/services/Operations/patient/getDocById';
 
 const ViewDoctor = () => {
 
@@ -16,7 +16,19 @@ const ViewDoctor = () => {
 
     const [doctorDetails, setDoctorDetails] = useState(null);
 
-
+    useEffect(() => {
+        if (id) {
+            getDocById(id)
+                .then(res => {
+                    if (!res.error) {
+                        setDoctorDetails(res.data);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    }, []);
 
 
     return (

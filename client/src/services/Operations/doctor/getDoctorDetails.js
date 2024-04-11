@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { doctorEndpoints } from "@/services/apiEndpoints";
 
 //change to specialization constant
-import { symptoms } from "@/lib/constant";
+import { diseases, specializations, symptoms } from "@/lib/constant";
 import { convertToObjectArray } from "@/util/helpers";
 
 export const getDoctorDetails = async () => {
@@ -23,8 +23,8 @@ export const getDoctorDetails = async () => {
     const newData = { ...res };
 
     // converting the string array to Object array
-    newData["specialization"] = convertToObjectArray(newData?.specialization, symptoms);
-    newData["specializedDiseases"] = convertToObjectArray(newData?.specializedDiseases, symptoms);
+    newData["specialization"] = convertToObjectArray(newData?.specialization, specializations);
+    newData["specializedDiseases"] = convertToObjectArray(newData?.specializedDiseases, diseases);
 
     res = newData;
 
