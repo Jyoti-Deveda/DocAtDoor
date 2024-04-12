@@ -72,7 +72,8 @@ exports.set_user_details = asyncHandler(async (req, res) => {
 });
 
 exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
-  const diseases = req.diseases;
+  // console.log("Req body: ", req.body);
+  const diseases = req.diseases || req.body.diseases;
 
   if (!diseases) {
     res.status(400);

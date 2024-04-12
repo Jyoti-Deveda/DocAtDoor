@@ -6,8 +6,9 @@ import toast from "react-hot-toast"
 export const getListFromDiseases = async (diseases) => {
     let res = null;
     const toastId = toast.loading();
+    console.log("Diseases in get doc list: ", diseases)
     try {
-        res = await apiConnector('POST', patientEndpoints.GET_DOC_LIST, diseases);
+        res = await apiConnector('POST', patientEndpoints.GET_DOC_LIST, { diseases: diseases });
 
         console.log("GET LIST OF DOCTORS API RESPONSE: ", res);
 
