@@ -11,10 +11,11 @@ export const predictDisease = async (data, setLoading) => {
     }
 
     const convertedData = objToStringArray(data);
+    console.log("Symptoms from frontend: ", convertedData)
     let res = null;
     try {
         setLoading(true);
-        res = await apiConnector('POST', patientEndpoints.PREDICT_DISEASE, convertedData);
+        res = await apiConnector('POST', patientEndpoints.PREDICT_DISEASE, {symptoms: convertedData});
         console.log("PREDICT DISEASE API RESPONSE: ", res);
 
         if (!res?.data?.success) {

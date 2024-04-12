@@ -35,12 +35,12 @@ const DocSearch = () => {
 
     const remainingSymptoms = getRemainingSymptoms(selectedSymptoms);
 
-
     /**
      * Handles the prediction of disease based on selected symptoms.
      */
     const handlePredict = async () => {
         const res = await predictDisease(selectedSymptoms, setLoading);
+
         if (res.error) {
             console.log(res.message);
         } else {

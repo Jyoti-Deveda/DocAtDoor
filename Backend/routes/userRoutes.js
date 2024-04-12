@@ -4,7 +4,6 @@ const { auth } = require('../Middlewares/auth');
 const { bookAppointment } = require('../Controllers/Appointments');
 const router = express.Router();
 
-
 router.post('/register', userRegister, generateVerificationToken);
 router.post('/login', login);
 router.post('/logout', logout);

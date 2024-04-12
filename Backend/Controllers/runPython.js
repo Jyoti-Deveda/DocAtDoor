@@ -5,6 +5,8 @@ const path = require("node:path");
 exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
   try {
     const symptoms = req.body;
+    console.log("Req body: ", req.body);
+
 
     if (symptoms.length === 0) {
       res.status(400);
@@ -57,7 +59,7 @@ exports.runPythonScript = expressAsyncHandler(async (req, res, next) => {
 
     onDataReceived
       .then((jsonData) => {
-        // console.log("Received data:", jsonData);
+        console.log("Received data:", jsonData);
 
         if (jsonData?.error) {
           res.status(400)

@@ -15,7 +15,7 @@ const DocCard = ({
 
     const navigate = useNavigate();
 
-    console.log(data);
+    // console.log(data);
 
     const handleClick = () => {
         if (data?._id) {
