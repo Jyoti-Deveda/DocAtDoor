@@ -9,6 +9,7 @@ export const authEndpoints = {
     CHANGE_PASSWORD_API: `${BACKEND_URL}user/change-password`,
     UPDATE_PROFILE_IMAGE: `${BACKEND_URL}user/update-profile-image`,
     GET_PROFILE_IMAGE: `${BACKEND_URL}user/get-profile-image`,
+    BOOK_APPOINTMENT: `${BACKEND_URL}user/book-appointment`,
 }
 
 

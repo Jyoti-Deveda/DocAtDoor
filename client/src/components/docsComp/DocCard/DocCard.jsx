@@ -6,20 +6,25 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactStars from 'react-rating-stars-component'
 import { FaStar } from 'react-icons/fa';
 import { getExp, getSpecializationString } from '@/util/helpers';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 
 const DocCard = ({
     data
 }) => {
 
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const diseases = searchParams.get('diseases').split(',');
+
     const navigate = useNavigate();
 
     // console.log(data);
 
     const handleClick = () => {
+        const diseaseListString = diseases.join(',');
         if (data?._id) {
-            navigate(`/search-doctor/doctor/${data._id}`)
+            navigate(`/search-doctor/doctor/${data._id}${diseaseListString && `?diseases=${diseaseListString}`}`)
         }
     }
 

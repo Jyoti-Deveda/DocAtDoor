@@ -1,4 +1,4 @@
-import { generateDateOptions } from '@/util/helpers';
+import { generateDateOptions, getFormatedDate } from '@/util/helpers';
 import React from 'react'
 import StatusChips from '../StatusChips/StatusChips';
 
@@ -9,44 +9,40 @@ const DateSelector = ({
 }) => {
 
     //array of dates
-    const datesOption = generateDateOptions(availableData);
+    // const datesOption = generateDateOptions(availableData);
     const value = data?.date;
 
-    const getVariant = (currentDate) => {
+    const getVariant = (currentDate, index) => {
 
-        // if the current date is off day or there is no slot available then make its variant disable
-        //for no available slots 
+        if (availableData[index]?.isHoliday === true || availableData[index]?.booked === true) return "disable";
 
-        //for holiday
-        if (availableData[currentDate]?.isHoliday === true) return "disable"
-
-        if (currentDate == value) return 'contained';
+        if (currentDate === value) return 'contained';
 
         return 'outlined';
     }
 
 
     //handles the chagne of date selection 
-    const handleChange = (newDate) => {
+    const handleChange = (day) => {
         setData(prevstate => ({
             ...prevstate,
-            date: newDate
+            slotId: day._id,
+            date: day.date,
         }))
     }
 
     return (
         <div className={`flex flex-col gap-1 border border-dashed border-gray-400 rounded p-2`}>
             <p className={`text-xs sm:text-sm text-gray-600`}>Select Date of Appointment</p>
-            {/* will use select on small screens and tab like chips on large screen  */}
             <div className={`flex gap-3 mt-2`}>
-                {datesOption &&
-                    datesOption.map((date, index) => (
+                {availableData &&
+                    availableData.map((day, index) => (
                         <StatusChips
-                            status={date.label}
+                            status={getFormatedDate(day?.date)}
                             noMargin
                             key={index}
-                            variant={getVariant(date.value)}
-                            onClick={() => handleChange(date?.value)}
+                            variant={getVariant(day.date, index)}
+                            onClick={() => handleChange(day)}
                         />
                     ))
                 }

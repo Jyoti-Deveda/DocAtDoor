@@ -53,20 +53,20 @@ exports.bookAppointment = expressAsyncHandler(async (req, res) => {
 
     //check if an appointment is already booked on that slot
     const appointmentDetails = await Appointment.findOne({
-    patient: userDetails._id,
-    doctor: doctorId,
-    scheduledDay: scheduledDayDetails._id,
-    'timeslot.start_time': timeslot?.start_time,
-    'timeslot.end_time': timeslot?.end_time,
-});
+        patient: userDetails._id,
+        doctor: doctorId,
+        scheduledDay: scheduledDayDetails._id,
+        'timeslot.start_time': timeslot?.start_time,
+        'timeslot.end_time': timeslot?.end_time,
+    });
 
     console.log("Appointment details: ", appointmentDetails);
 
-    if(appointmentDetails){
+    if (appointmentDetails) {
         res.status(400);
         throw new Error("Appointment already booked on that slot");
     }
-    
+
 
     // Increase appointmentsBooked by 1 and mark slot as not free if needed
     scheduledDayDetails.slots[slotIndex].appointmentsBooked += 1;
@@ -99,5 +99,9 @@ exports.bookAppointment = expressAsyncHandler(async (req, res) => {
     doctorDetails.doctorsAppointments.push(newAppointment._id);
     await doctorDetails.save();
 
-    res.status(201).json({ message: "Appointment booked successfully", appointment: newAppointment });
+    res.status(201).json({
+        message: "Appointment booked successfully",
+        appointment: newAppointment,
+        success: true
+    });
 });

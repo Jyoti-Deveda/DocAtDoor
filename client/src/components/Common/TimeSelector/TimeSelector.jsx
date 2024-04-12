@@ -9,18 +9,17 @@ const TimeSelector = ({
 
     let timeSlots = [];
     if (data?.date) {
-        timeSlots = availableData[data.date]?.slots;
+        timeSlots = availableData?.find(item => item.date === data.date)?.slots;
     }
 
 
-    const getVariant = (currentTime) => {
+    const getVariant = (currentTime, index) => {
+        if (
+            timeSlots[index].isSlotFree === false ||
+            timeSlots[index].appointmentsBooked === timeSlots[index].avg_no_of_patients
+        ) return 'disable';
 
-        // if the current time slot is not available or is full then disable it
-        //for no available slot on that time 
-        //here
-
-        //selected
-        if (currentTime == data?.time) return 'contained';
+        if (currentTime == data?.time?.start_time) return 'contained';
 
         return 'outlined';
     }
@@ -46,8 +45,8 @@ const TimeSelector = ({
                                 status={item.start_time}
                                 noMargin
                                 key={index}
-                                variant={getVariant(item.start_time)}
-                                onClick={() => handleChange(item.start_time)}
+                                variant={getVariant(item.start_time, index)}
+                                onClick={() => handleChange(item)}
                             />
                         ))}
                     </div>

@@ -10,7 +10,7 @@ export const getDocById = async (id) => {
         }
 
         res = res?.data;
-        console.log("🚀 ~ getDocById ~ res:", res)
+        // console.log("🚀 ~ getDocById ~ res:", res)
 
     } catch (error) {
         const message = error?.response?.data?.error || error?.message;
