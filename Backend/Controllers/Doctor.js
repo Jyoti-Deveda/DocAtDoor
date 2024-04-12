@@ -307,8 +307,8 @@ function formatDate(dateString) {
 //@route- GET /api/doctor/get-doctors-info
 
 exports.getDoctorsInfo = asyncHandler(async (req, res) => {
-  const { doctorId } = req.body;
-
+  const { id: doctorId } = req.params;
+  console.log("DoctorId: ", doctorId);
   const userDetails = await User.findById(doctorId).populate({
     path: "doctorsProfile",
     populate: {
@@ -338,14 +338,14 @@ exports.getDoctorsInfo = asyncHandler(async (req, res) => {
   };
 
   res.status(200).json({
-    success: false,
+    success: true,
     doctorsData: data,
     message: "Doctors info fetched successfully",
   });
 });
 
 
-exports.deleteData = asyncHandler(async(req, res) => {
+exports.deleteData = asyncHandler(async (req, res) => {
 
   await User.deleteMany({});
   await DoctorsProfile.deleteMany({});

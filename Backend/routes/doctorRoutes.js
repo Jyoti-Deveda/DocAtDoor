@@ -9,6 +9,6 @@ Router.post('/create-general-profile', auth, isUserVerified, isDoctor, createPro
 Router.get('/get-doctor-details', auth, isUserVerified, isDoctor, getDoctorDetails);
 Router.get('/get-scheduled-days', auth, isDoctor, fetchScheduledDays);
 Router.post('/set-scheduled-days', auth, isDoctor, setScheduledDays);
-Router.get('/get-doctors-info', auth, getDoctorsInfo);
+Router.get('/get-doctors-info/:id', auth, getDoctorsInfo);
 
 module.exports = Router;

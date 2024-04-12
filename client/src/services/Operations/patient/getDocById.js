@@ -1,10 +1,10 @@
-import { patientEndpoints } from "@/services/apiEndpoints"
+import { doctorEndpoints } from "@/services/apiEndpoints"
 import { apiConnector } from "@/services/apiConnector"
 
 export const getDocById = async (id) => {
     let res = null;
     try {
-        res = await apiConnector('GET', patientEndpoints.GET_DOC_BY_ID, { id });
+        res = await apiConnector('GET', `${doctorEndpoints.GET_DOC_BY_ID}${id}`);
         if (!res?.data?.success) {
             throw new Error("Something went wrong, please try agian later")
         }
