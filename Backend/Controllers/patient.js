@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Disease = require("../Models/Disease");
 const User = require("../Models/User");
+const Appointment = require("../Models/Appointment");
 
 // @desc  Get user (patient) details
 // @route GET /api/patient/details
@@ -86,7 +87,6 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
 
   // Iterate through each disease
   for (const disease of diseases) {
-    // const diseaseName = disease.toLowerCase();
     // console.log("Disease name: ", diseaseName);
     const diseaseDetails = await Disease.findOne({
       diseaseName: disease,
@@ -141,3 +141,37 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
     message: "Doctors fetched successfully", 
   });
 });
+
+
+exports.getAppointments = asyncHandler(async (req, res) => {
+  
+  const { userId } = req.user;
+
+  const userDetails = await User.findById(userId).populate({
+    path: 'patientsAppointments',
+    populate: {
+      path: 'scheduledDay',
+      options: { sort: { date: -1 } }
+    }
+  });
+  console.log("UserDetails patient appointments: ", userDetails?.patientsAppointments);
+
+  if (!userDetails) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  
+  if (userDetails?.patientsAppointments?.length === 0) {
+    return res.status(200).json({
+      success: true,
+      appointments: [],
+      messages: "No appointments booked so far"
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    appointments: userDetails.patientsAppointments,
+    messages: "Appointments fetched successfully"
+  });
+})

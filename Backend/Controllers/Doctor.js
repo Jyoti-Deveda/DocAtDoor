@@ -4,6 +4,7 @@ const Disease = require("../Models/Disease");
 const User = require("../Models/User");
 const { supportedFiletypes } = require("../constants");
 const { uploadImageToCloudinary } = require("../Utils/imageUploader");
+const Appointment = require("../Models/Appointment");
 
 
 //desc- to create or update doctors profile
@@ -308,7 +309,8 @@ function formatDate(dateString) {
 
 exports.getDoctorsInfo = asyncHandler(async (req, res) => {
   const { id: doctorId } = req.params;
-  console.log("DoctorId: ", doctorId);
+  // console.log("DoctorId: ", doctorId);
+  
   const userDetails = await User.findById(doctorId).populate({
     path: "doctorsProfile",
     populate: {
@@ -352,3 +354,52 @@ exports.deleteData = asyncHandler(async (req, res) => {
   await Disease
 
 })
+
+
+exports.getDoctorsAppointments = asyncHandler(async (req, res) => {
+  
+  const { userId } = req.user;
+
+  const userDetails = await User.findById(userId).populate('doctorsAppointments');
+
+  if (!userDetails) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  
+  if (userDetails?.doctorsAppointments?.length === 0) {
+    return res.status(200).json({
+      success: true,
+      appointments: [],
+      messages: "No appointments booked so far"
+    });
+  }
+  
+  res.status(200).json({
+    success: true,
+    appointments: userDetails.doctorsAppointments,
+    messages: "Appointments fetched successfully"
+  });
+})
+
+exports.markAppointmentAttended = asyncHandler(async(req, res) => {
+
+  const { id: appointmentId } = req.params;
+  const { userId } = req.user;
+
+  const appointmentDetails = await Appointment.findOne({ _id: appointmentId, doctor: userId });
+  if (!appointmentDetails) {
+    res.status(404);
+    throw new Error("Appointment not found");
+  }
+
+  appointmentDetails.attended = true;
+  await appointmentDetails.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Appointment marked as attended"
+  })
+
+})
+

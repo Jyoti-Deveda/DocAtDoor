@@ -17,7 +17,7 @@ export const getListFromDiseases = async (diseases) => {
         }
 
         res = res?.data;
-        toast.success();
+        toast.success(res?.message);
 
         console.log("🚀 ~ getListFromDiseases ~ res:", res)
 
