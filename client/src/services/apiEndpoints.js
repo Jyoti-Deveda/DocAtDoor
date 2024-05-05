@@ -19,6 +19,8 @@ export const doctorEndpoints = {
     GET_SCHEDULED_DAYS: `${BACKEND_URL}doctor/get-scheduled-days`,
     SET_SCHEDULED_DAYS: `${BACKEND_URL}doctor/set-scheduled-days`,
     GET_DOC_BY_ID: `${BACKEND_URL}doctor/get-doctors-info/`,
+    GET_DOC_APPOINTMENTS: `${BACKEND_URL}doctor/doctors-appointments`,
+    MARK_APPOINTMENT_ATTENDED: `${BACKEND_URL}doctor/mark-appointment-attended`,
 }
 
 
@@ -26,4 +28,5 @@ export const patientEndpoints = {
     PATIENT_DETAILS: `${BACKEND_URL}patient/details`,
     PREDICT_DISEASE: `${BACKEND_URL}patient/get-disease-doctor`,
     GET_DOC_LIST: `${BACKEND_URL}patient/get-doc-list`,
+    GET_APPOINTMENTS: `${BACKEND_URL}patient/patients-appointments`
 }

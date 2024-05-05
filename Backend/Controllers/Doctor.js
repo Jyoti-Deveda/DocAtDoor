@@ -347,27 +347,36 @@ exports.getDoctorsInfo = asyncHandler(async (req, res) => {
 });
 
 
-exports.deleteData = asyncHandler(async (req, res) => {
+// exports.deleteData = asyncHandler(async (req, res) => {
 
-  await User.deleteMany({});
-  await DoctorsProfile.deleteMany({});
-  await Disease
+//   await User.deleteMany({});
+//   await DoctorsProfile.deleteMany({});
+//   await Disease
 
-})
+// })
 
 
 exports.getDoctorsAppointments = asyncHandler(async (req, res) => {
   
   const { userId } = req.user;
 
-  const userDetails = await User.findById(userId).populate('doctorsAppointments');
+  console.log("Fetch appointments")
+  const appointments = await Appointment.find({ doctor: userId }).populate({
+    path: 'patient',
+    select: "personalDetails.firstName personalDetails.lastName image",
+    populate: {
+      path: 'doctorsProfile',
+      select: 'specialization experience verified rating'
+    },
+  })
+  .populate({
+    path: 'scheduledDay',
+    options: { sort: { date: -1 } }
+  })
 
-  if (!userDetails) {
-    res.status(404);
-    throw new Error("User not found");
-  }
-  
-  if (userDetails?.doctorsAppointments?.length === 0) {
+  console.log("Appointmets: ", appointments)
+
+  if (appointments?.length === 0) {
     return res.status(200).json({
       success: true,
       appointments: [],
@@ -377,7 +386,7 @@ exports.getDoctorsAppointments = asyncHandler(async (req, res) => {
   
   res.status(200).json({
     success: true,
-    appointments: userDetails.doctorsAppointments,
+    appointments,
     messages: "Appointments fetched successfully"
   });
 })
@@ -390,7 +399,7 @@ exports.markAppointmentAttended = asyncHandler(async(req, res) => {
   const appointmentDetails = await Appointment.findOne({ _id: appointmentId, doctor: userId });
   if (!appointmentDetails) {
     res.status(404);
-    throw new Error("Appointment not found");
+    throw new Error("Appointment not found"); 
   }
 
   appointmentDetails.attended = true;

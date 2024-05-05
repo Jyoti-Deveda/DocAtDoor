@@ -44,7 +44,7 @@ exports.fetchScheduledDays = expressAsyncHandler(async (req, res) => {
     //this many dates need to be generated
     if (remainingDays != 0) {
       const lastAvailableDate = scheduledDays[len - 1].date;
-      console.log("Last available date: ", lastAvailableDate);
+      // console.log("Last available date: ", lastAvailableDate);
       generatedDates = generateScheduledDays(lastAvailableDate, remainingDays);
     }
   }

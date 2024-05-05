@@ -1,5 +1,5 @@
 const express = require('express');
-const { userRegister, generateVerificationToken, verifyEmail, login, logout, changePassword, updateDisplayPicture, get_profile_image, } = require('../controllers/auth');
+const { userRegister, generateVerificationToken, verifyEmail, login, logout, changePassword, updateDisplayPicture, get_profile_image, } = require('../Controllers/auth');
 const { auth } = require('../Middlewares/auth');
 const { bookAppointment } = require('../Controllers/Appointments');
 const router = express.Router();

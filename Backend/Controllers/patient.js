@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Disease = require("../Models/Disease");
 const User = require("../Models/User");
 const Appointment = require("../Models/Appointment");
+const DoctorsProfile = require("../Models/DoctorsProfile");
 
 // @desc  Get user (patient) details
 // @route GET /api/patient/details
@@ -143,25 +144,26 @@ exports.getDoctorsOfDisease = asyncHandler(async (req, res) => {
 });
 
 
-exports.getAppointments = asyncHandler(async (req, res) => {
+exports.getPatientsAppointments = asyncHandler(async (req, res) => {
   
   const { userId } = req.user;
 
-  const userDetails = await User.findById(userId).populate({
-    path: 'patientsAppointments',
+  const appointments = await Appointment.find({ patient: userId }).populate({
+    path: 'doctor',
+    select: "personalDetails.firstName personalDetails.lastName image",
     populate: {
-      path: 'scheduledDay',
-      options: { sort: { date: -1 } }
-    }
-  });
-  console.log("UserDetails patient appointments: ", userDetails?.patientsAppointments);
+      path: 'doctorsProfile',
+      select: 'specialization experience verified rating'
+    },
+  })
+  .populate({
+    path: 'scheduledDay',
+    options: { sort: { date: -1 } }
+  })
 
-  if (!userDetails) {
-    res.status(404);
-    throw new Error("User not found");
-  }
+  console.log("Appointments: ", appointments);
   
-  if (userDetails?.patientsAppointments?.length === 0) {
+  if (appointments?.length === 0) {
     return res.status(200).json({
       success: true,
       appointments: [],
@@ -171,7 +173,44 @@ exports.getAppointments = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    appointments: userDetails.patientsAppointments,
+    appointments,
     messages: "Appointments fetched successfully"
   });
+})
+
+exports.rateDoctor = asyncHandler(async (req, res) => {
+
+  const { userId } = req.user;
+  const { doctorId, rating } = req.body;
+
+  if (!doctorId || !rating) {
+    res.status(400);
+    throw new Error("All fields are required");
+  }
+
+  if(rating > 5 || rating < 1){
+    res.status(400);
+    throw new Error("Rating must be between 1 and 5");
+  }
+
+  //check if the patient has any appointment with the given doctor and it attended
+  // only then will the patient be eligible to rate the doctor
+  const appointment = await Appointment.findOne({ doctor: doctorId, patient: userId, attended: true });
+
+  if(!appointment){
+    res.status(400);
+    throw new Error("You have not attended any appointment with this doctor... No appointment found");
+  }
+
+  const doctor = await DoctorsProfile.findOne({ doctorId });
+  // console.log("Doctor: ", doctor)
+
+  doctor.rating.ratedBy.push({ userId, rating });
+
+  await doctor.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Doctor rated successfully" 
+  })
 })

@@ -119,15 +119,19 @@ const doctorsProfileSchema = new mongoose.Schema({
 
 })
 
-// Post-save middleware to limit workingDays array to only 7 elements
-// doctorsProfileSchema.post('save', async function(doc) {
-//     if (doc.workingDays.length > 7) {
-//         // Remove the older entries to get only the recent 7 days' data
-//         const recentWorkingDays = doc.workingDays.slice(-7);
-//         doc.workingDays = recentWorkingDays;
-//         await doc.save(); // Save the document again to update the workingDays array
-//     }
-// });
+doctorsProfileSchema.pre('save', function(next) {
+    // Calculate the average rating
+    if(this?.rating?.ratedBy?.length > 0){
+        const totalRatings = this.rating.ratedBy.reduce((acc, curr) => acc + curr.rating, 0);
+        const averageRating = totalRatings / this.rating.ratedBy.length;
+
+        // Update the rating value and count
+        this.rating.value = averageRating;
+        this.rating.count = this.rating.ratedBy.length;
+    }
+
+    next();
+});
 
 
 module.exports = mongoose.model('DoctorsProfile', doctorsProfileSchema);
